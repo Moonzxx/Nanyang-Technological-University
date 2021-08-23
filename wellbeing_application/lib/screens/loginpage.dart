@@ -1,6 +1,9 @@
+// @dart=2.10
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:package_info/package_info.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -15,6 +18,9 @@ class _LoginPageState extends State<LoginPage> {
   //May need to modify this for error sake
 
   final _formKey = GlobalKey<FormState>();
+  bool _autoValidate = false;
+  final _formKey2 = GlobalKey<FormState>();
+  bool _autoValidate2 = false;
 
 
   // Since we will have multiple state for the page
@@ -38,8 +44,8 @@ class _LoginPageState extends State<LoginPage> {
 
   bool _keyboardVisible = false;
 
-  late String _email;
-  late String _password;
+  String _email;
+  String _password;
 
   @override
   void initState() {
@@ -120,13 +126,14 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
 
-    var EmailFormInput = new InputWithIcon(icon: Icons.email, hint: "NTU Email.",  obscure: false, control: emailController, label: "NTU Email", question: true);
-    var PasswordFormInput = new InputWithIcon(icon: Icons.vpn_key, hint: "Enter password...",  obscure: true, control: passwordController, label: "Password", question: false);
-    var RegisterEmailFormInput = new InputWithIcon(icon: Icons.email, hint: "NTU Email",  obscure: false, control: emailController, label: "NTU Email", question:true);
-    var RegisterPasswordFormInput = new InputWithIcon(icon: Icons.vpn_key, hint: "Enter password...",  obscure: true, control: passwordController, label: "Password",question: false);
+    var EmailFormInput = new InputWithIcon(icon: Icons.email, hint: "NTU Email.",  obscure: false, control: emailController, label: "NTU Email", passwordVisible: false, emailbutton: true);
+    var PasswordFormInput = new InputWithIcon(icon: Icons.vpn_key, hint: "Enter password...",  obscure: true, control: passwordController, label: "Password", passwordVisible: true, emailbutton: false);
+    var RegisterEmailFormInput = new InputWithIcon(icon: Icons.email, hint: "NTU Email",  obscure: false, control: emailController, label: "NTU Email", passwordVisible:false, emailbutton: true);
+    var RegisterPasswordFormInput = new InputWithIcon(icon: Icons.vpn_key, hint: "Enter password...",  obscure: true, control: passwordController, label: "Password",passwordVisible: true, emailbutton: false);
 
 
     windowHeight = MediaQuery.of(context).size.height;
@@ -288,7 +295,6 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
           child: Form(
-            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -303,78 +309,9 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                      EmailFormInput,
-                    /*Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color:Color(0xFFBC7C7C7),
-                          width: 2
-                        ),
-                        borderRadius: BorderRadius.circular(50)
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width:60,
-                            child: Icon(
-                              Icons.email,
-                              size: 20,
-                              color: Color(0xFFBB9B9B9)
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              decoration:InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 20),
-                                border: InputBorder.none,
-                                hintText: "Enter NTU Email"
-                              ),
-                              onChanged: (value){
-                                _email = value;
-                              },
-                            ),
-                          )
-                        ]
-                        ,
-                      ),
-                    )*/
 
                     SizedBox(height: 20,),
                     PasswordFormInput,
-                    /*Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color:Color(0xFFBC7C7C7),
-                              width: 2
-                          ),
-                          borderRadius: BorderRadius.circular(50)
-                      ),
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            width:60,
-                            child: Icon(
-                                Icons.vpn_key,
-                                size: 20,
-                                color: Color(0xFFBB9B9B9)
-                            ),
-                          ),
-                          Expanded(
-                            child: TextField(
-                              decoration:InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(vertical: 20),
-                                  border: InputBorder.none,
-                                  hintText: "Enter password"
-                              ),
-                              onChanged: (value){
-                                _password = value;
-                              },
-                              obscureText: true,
-                            ),
-                          )
-                        ]
-                        ,
-                      ),
-                    ),*/
                   ],
                 ),
                 Column(
@@ -398,7 +335,6 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         );*/
-                        print("User: $_email and $_password");
                         _login();
                       },
                       child: PrimaryButton(
@@ -440,51 +376,76 @@ class _LoginPageState extends State<LoginPage> {
                 topRight: Radius.circular(25)
             ),
           ),
-          child:Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 20),
-                    child: Text("Create a New Account",
-                      style: TextStyle(
-                          fontSize: 20
+          child:Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,   // Will validate on the go
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 20),
+                      child: Text("Create a New Account",
+                        style: TextStyle(
+                            fontSize: 20
+                        ),
                       ),
                     ),
-                  ),
-                  RegisterEmailFormInput,
-                  SizedBox(height: 20,),
-                  RegisterPasswordFormInput
-                ],
-              ),
-              Column(
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: (){
-                      print("User: $_email and $_password");
-                      _createUser();
-                      //print("$_email and $_password");
-                    },
-                    child: PrimaryButton(
-                        buttonText: "Create Account"),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _pageState = 1;
-                      });
-                    },
-                    child: OutlineButton(
-                      buttonText: "Back to Login",
+                    RegisterEmailFormInput,
+                    SizedBox(height: 20,),
+                    RegisterPasswordFormInput
+                  ],
+                ),
+                Column(
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: (){
+
+
+                        if (_formKey.currentState.validate()){
+                        // _formKey.currentState.save();     // If all data are correct, then save data to out variable
+                          final message = 'Email: $_email\nPassword: $_password' ;
+                          final snackBar = SnackBar(
+                        content: Text(
+                        message,
+                        style: TextStyle(fontSize: 20),
+                        ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);   // Will show up from the bottom
+                          _createUser();
+                        }
+                        else{
+                        setState(() {
+                        _autoValidate = true;     // If all data are not valid then start auto validation.
+                        });
+                        }
+                        }
+
+
+
+                        //print("$_email and $_password");
+                      ,
+                      child: PrimaryButton(
+                          buttonText: "Create Account"),
                     ),
-                  )
-                ],
-              ),
-            ],
+                    SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          _pageState = 1;
+                        });
+                      },
+                      child: OutlineButton(
+                        buttonText: "Back to Login",
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         )
       ],
@@ -492,15 +453,52 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
+/*
+ If need more rules on forms, Use nested For-loop
+ */
+
+// Form validation name (If needed)
+// for regex testing: try https://regexr.com/
+String validateName(String value){
+  RegExp nameregex = new RegExp(r'[a-zA-z]');
+  if (!nameregex.hasMatch(value)){
+    return 'Name must contain only alphabets';
+  }
+  else{
+    return null;
+  }
+}
+
+// Form validating email
+String validateEmail(String value){
+  RegExp emailregex = new RegExp(r'[a-zA-z0-9]@e.ntu.edu.sg$');
+  if (!emailregex.hasMatch(value)){
+    return 'Email must end with @e.ntu.edu.sg';
+  }
+  else{
+    return null;
+  }
+}
+// Form validating password
+String validatePassword(String value){
+  RegExp passwordregex = new RegExp(r'[a-zA-z0-9]');
+  if (!passwordregex.hasMatch(value)){
+    return 'Password can only be alphanumeric';
+  }
+  else{
+    return null;
+  }
+}
 
 class InputWithIcon extends StatefulWidget {
   final IconData icon;
   final String hint;
-  final bool obscure;
+   bool obscure;
   final TextEditingController control;
   final String label;
-  final bool question;
-  InputWithIcon({required this.icon, required this.hint, required this.obscure, required this.control, required this.label, required this.question});
+  final bool passwordVisible;
+  final bool emailbutton;
+  InputWithIcon({ this.icon,  this.hint,  this.obscure,  this.control,  this.label,  this.passwordVisible, this.emailbutton});
 
   @override
   _InputWithIconState createState() => _InputWithIconState();
@@ -509,55 +507,106 @@ class InputWithIcon extends StatefulWidget {
 class _InputWithIconState extends State<InputWithIcon> {
 
 
+  /*
+  TEXTFORMFIELD can have property maxlength
+  */
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        Container(
-          decoration:BoxDecoration(
+    if (widget.emailbutton){
+      return Stack(
+        children: <Widget>[
+          Container(
+            decoration:BoxDecoration(
               border: Border.all(
                   color: Color(0xFFBC7C7C7),
                   width: 2
               ),
               borderRadius: BorderRadius.circular(50),
+            ),
+            child: Row(
+              children: <Widget>[
+                Container(
+                    width: 60,
+                    child: Icon(
+                        widget.icon,
+                        size: 20,
+                        color: Color(0xFFBB9B9B9))
+                ),
+                Expanded(
+                    child: TextFormField(
+                      validator: validateEmail,
+                      controller: widget.control,
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 20),
+                          border: InputBorder.none,
+                          hintText: widget.hint
+                      ),
+                      obscureText: widget.obscure,
+                    )
+                )
+                ,
+              ],
+            ),
           ),
-          child: Row(
-            children: <Widget>[
-              Container(
-                  width: 60,
-                  child: Icon(
-                      widget.icon,
-                      size: 20,
-                      color: Color(0xFFBB9B9B9))
+        ],
+      );
+    }else{
+      return Stack(
+        children: <Widget>[
+          Container(
+            decoration:BoxDecoration(
+              border: Border.all(
+                  color: Color(0xFFBC7C7C7),
+                  width: 2
               ),
-              Expanded(
-                  child: TextFormField(
-                    /*validator: (value) {
-                      if(value == null | ki)
-                    }, */
-                    controller: widget.control,
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 20),
-                        border: InputBorder.none,
-                        hintText: widget.hint
-                    ),
-                    obscureText: widget.obscure,
-                  )
-              ),
-              if (widget.question) ToolTip(tool: Icons.help_rounded) ,
-            ],
-          ),
-        ),
+              borderRadius: BorderRadius.circular(50),
+            ),
+            child: Row(
+              children: <Widget>[
+                Container(
+                    width: 60,
+                    child: Icon(
+                        widget.icon,
+                        size: 20,
+                        color: Color(0xFFBB9B9B9))
+                ),
+                Expanded(
+                    child: TextFormField(
+                      validator: validatePassword,
+                      controller: widget.control,
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 20),
+                          border: InputBorder.none,
+                          hintText: widget.hint
+                      ),
+                      obscureText: widget.obscure,
+                    )
+                )
+                ,
+                if (widget.passwordVisible) GestureDetector(
+                  onTap: (){
+                    setState(() {
+                      widget.obscure = !widget.obscure;
+                    });
 
-      ],
-    );
+                  },
+                    child: ToolTip(tool: Icons.help_rounded)) ,
+              ],
+            ),
+          ),
+
+        ],
+      );
+    }
+
   }
 }
 
 class ToolTip extends StatefulWidget {
   final IconData tool;
 
-  ToolTip({required this.tool});
+  ToolTip({ this.tool});
 
   @override
   _ToolTipState createState() => _ToolTipState();
@@ -585,7 +634,7 @@ class _ToolTipState extends State<ToolTip> {
 class PrimaryButton extends StatefulWidget {
 
   final String buttonText;
-  PrimaryButton({required this.buttonText});   // This is the class constructor
+  PrimaryButton({ this.buttonText});   // This is the class constructor
 
   @override
   _PrimaryButtonState createState() => _PrimaryButtonState();
@@ -619,7 +668,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
 
 class OutlineButton extends StatefulWidget {
   final String buttonText;
-  OutlineButton({required this.buttonText});   // This is the class constructor
+  OutlineButton({ this.buttonText});   // This is the class constructor
 
   @override
   _OutlineButtonState createState() => _OutlineButtonState();

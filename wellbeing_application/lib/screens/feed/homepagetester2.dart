@@ -1,6 +1,10 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'profile/profile.dart';
+import '../profile/profile.dart';
+import '../../widgets/navigation_drawer.dart';
+//Testing
+import '../../widgets/choosing_avatar.dart';
 
 /*
 This is for the homepage.
@@ -13,15 +17,15 @@ Homepage Information:
  */
 
 
-class HomePageTester extends StatefulWidget {
+class HomePageTester2 extends StatefulWidget {
 
   @override
-  _HomePageTesterState createState() => _HomePageTesterState();
+  _HomePageTester2State createState() => _HomePageTester2State();
 
 
 }
 
-class _HomePageTesterState extends State<HomePageTester> {
+class _HomePageTester2State extends State<HomePageTester2> {
   Widget build(BuildContext context) {
 
     //Creation of the Bottom Menu
@@ -36,49 +40,54 @@ class _HomePageTesterState extends State<HomePageTester> {
 
 
     return Scaffold(
-        body: Stack(
-          children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
+      drawer: NavDrawer(),
+      appBar: AppBar(
+        title: Text('Side Menu')
+      ),
+      body: Stack(
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center ,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.center ,
-                    children: <Widget>[
-                      feed,
-                      forum,
-                      tips,
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => ProfilePage()),);
-                        },
-                        child:profile,
-                      ),
+                  feed,
+                  forum,
+                  tips,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        //MaterialPageRoute(builder: (context) => ProfilePage()),);
+                        MaterialPageRoute(builder: (context) => ChooseAvatar()),);
+                    },
+                    child:profile,
+                  ),
                 ],
               ),
             ], // Children for Col
           ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              heightFactor: 11.75,
-              child: TextButton(
-                style: ButtonStyle(
-                  fixedSize: MaterialStateProperty.all(Size(70.0,70.0)),
-                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50.0),
-                  )),
-                  backgroundColor: MaterialStateProperty.all(Colors.lightBlue),
-                ),
-                onPressed: () {},
-                child: Icon(
-                    Icons.headphones_battery_rounded ,size: 15.0),
+          Align(
+            alignment: Alignment.bottomCenter,
+            heightFactor: 11.75,
+            child: TextButton(
+              style: ButtonStyle(
+                fixedSize: MaterialStateProperty.all(Size(70.0,70.0)),
+                shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0),
+                )),
+                backgroundColor: MaterialStateProperty.all(Colors.lightBlue),
+              ),
+              onPressed: () {},
+              child: Icon(
+                  Icons.headphones_battery_rounded ,size: 15.0),
 
-              ),/*Container(
+            ),/*Container(
                   width: 70.0,
                   height:70.0,
                   decoration: BoxDecoration(
@@ -90,23 +99,9 @@ class _HomePageTesterState extends State<HomePageTester> {
                     Icons.headphones_battery_rounded ,size: 15.0),
 
                 ),*/
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height / 10,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.lightBlue,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.end ,
-                children: <Widget>[
-                  here,
-                  there,
+          ),
 
-                ],
-              ),
-            ),
-            /* Column(
+          /* Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -145,7 +140,7 @@ class _HomePageTesterState extends State<HomePageTester> {
               ],
             ), */
         ],
-        ),
+      ),
     );
   }
 }
@@ -224,7 +219,7 @@ class _stateTabButtonState extends State<stateTabButton> {
             );
           },
           child: Text(widget.tabName,
-          style: TextStyle(fontSize: 15.0),)
+            style: TextStyle(fontSize: 15.0),)
       ),
     );
   }

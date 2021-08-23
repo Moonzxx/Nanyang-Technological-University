@@ -1,3 +1,5 @@
+// @dart=2.10
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,6 +9,9 @@ import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'screens/loginpage.dart';
 import 'screens/homepage.dart';
 import 'screens/homepagetester.dart';
+import 'utils/auth_helper.dart';
+import 'screens/admins/homepage.dart';
+import 'widgets/choosing_avatar.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,7 +42,7 @@ class MyApp extends StatelessWidget {
 }
 
 class LandingPage extends StatelessWidget{
-
+  String userUID;
   final Future<FirebaseApp> _initialisation = Firebase.initializeApp();
 
   @override
@@ -60,20 +65,52 @@ class LandingPage extends StatelessWidget{
         if(snapshot.connectionState == ConnectionState.done) {
           // Streambuilder can get live state of the user
           //Can check from Firebase if user has logged in or not using Streambuilder
-          return StreamBuilder(
+          return StreamBuilder<User>(
             stream: FirebaseAuth.instance.authStateChanges(),
             builder: (context, snapshot) {
               // Checking if connection state is active
               if( snapshot.connectionState == ConnectionState.active){
-                // Get user from forebase package
-                Object? user = snapshot.data;
+                // Get user from firebase package
+                if(snapshot.hasData && snapshot.data != null){
+                  // saving thr latest data of the user
+                  UserHelper.saveUser(snapshot.data);     // This is the user
+                  return StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection("users").doc(snapshot.data.uid).snapshots() ,
+                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
+                      if(snapshot.hasData && snapshot.data != null) {
+                        final user = snapshot.data;
+                       // final user = userDoc.data();
+                        if(user['role'] == 'admin'){
+
+
+                          return AdminHomePage();
+                        }
+                        else{
+                          final User newUser = FirebaseAuth.instance.currentUser;
+                          final uid = newUser.uid.toString(); // May want to check if it is really String
+                          if(user['profile_creation'] == false){
+                           // Profile creation here???Get the uid from here??
+                            return ChooseAvatar(accountUID: uid);
+                          }
+                            return HomePage();
+                          }
+                      }
+                      else{
+                        return Material(child: Center(child: CircularProgressIndicator(),),);
+                      }
+                    },
+                  );
+                  // Now checking of uer status (Student or admin)
+                }
+                return LoginPage();
 
                 //Checking if input isnull
+                /*
                 if(user == null) {
                   return LoginPage();
                 } else {
                   return HomePage();
-                }
+                } */
               }
               // If nothinghaoppend
               return Scaffold(

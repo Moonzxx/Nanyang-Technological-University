@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'homepagetester.dart';
+import 'feed/homepagetester2.dart';
+import 'feed/homepagetester3.dart';
 
 class HomePage extends StatefulWidget {
 
@@ -31,7 +33,24 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => HomePageTester()),);
               },
               child: Text("HomePage Tester")
+            ),ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePageTester2()),);
+                },
+                child: Text("HomePage Tester 2")
             ),
+      // Testing HomePage with navigation system
+      ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HomePageTester3()),);
+        },
+        child: Text("HomePage Tester 3")
+        ),
+
           ],
         ),
       ),
