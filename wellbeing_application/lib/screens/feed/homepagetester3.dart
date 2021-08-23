@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/navigation_drawer.dart';
 import 'feed_page.dart';
-//import 'set_mood_page.dart';
+import 'set_mood_page.dart';
 
 class HomePageTester3 extends StatelessWidget {
   const HomePageTester3({Key? key}) : super(key: key);
@@ -27,9 +27,9 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     // Add in widgets here
     //PlaceholderWidget(Colors.lightBlueAccent),
-    PlaceholderWidget(Colors.blue),
-    PlaceholderWidget(Colors.deepOrange),
     FeedPage(),
+    PlaceholderWidget(Colors.deepOrange),
+    MoodPage(),
     //MoodPage(),
    // PlaceholderWidget(Colors.green)
   ];

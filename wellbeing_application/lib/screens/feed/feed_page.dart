@@ -10,6 +10,11 @@ import 'package:flutter/material.dart';
 import 'example_data.dart';
 import 'dart:math';
 
+
+/*
+Need ot get images and title, then link to the pages
+ */
+
 class FeedPage extends StatefulWidget {
   const FeedPage({Key? key}) : super(key: key);
 
