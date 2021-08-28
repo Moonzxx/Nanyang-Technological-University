@@ -24,6 +24,8 @@ import 'create_profile.dart';
 // Image picker to get images from gallery, can be used in profile page
 
 
+// Whne it goes back, it still shows the lcoal selected file
+
 class ChooseAvatar extends StatefulWidget {
   final String accountUID;
   ChooseAvatar({Key key, this.accountUID}) : super(key: key);
@@ -36,30 +38,21 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
   //Underscore means private
   int MAX_SIZE = 7*1024*1024;
   Uint8List imageFile;
+  Uint8List bytes;
   File _image;
+  File _chosenImage;
+  String chosenImageName;
   UploadTask _task;
   int selectedCard = -1;
   int testing;
 
   @override
   Widget build(BuildContext context) {
+
+    // If user were to backtrack, the application will reset the photo in cache.
+    _image = null;
+    bytes = null;
     final fileName = _image != null ? basename(_image.path) : 'No File Selected';
-
-    Future uploadFile() async {
-      if (_image == null) return;
-
-      final fileName = basename(_image.path);
-      final destination = 'files/$fileName';
-      // Previous destination can be changed accordingly
-
-      _task = FirebaseApi.uploadFile(destination, _image);
-      setState(() {
-        if(_task == null) return;
-
-        _task.then((res) => print("Download Complete!"));
-      });
-
-    }
 
 
     Future selectFile() async {
@@ -69,8 +62,17 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
       if(result == null) return;
       final path = result.files.single.path;
 
-      setState(() {
+      setState(() async {
         _image = File(path);
+        chosenImageName = basename(_image.path);
+        await _image.readAsBytes().then((value) {
+          bytes = Uint8List.fromList(value);
+
+
+          print('Reading of bytes ic completed');
+        }).catchError((onError){
+          print('Exception Error while reading audio from path: ' + onError.toString());
+        });
       });
     }
 
@@ -201,19 +203,38 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
     Widget buildNextButton() => TextButton(
       style: flatButtonStyle,
       onPressed:() {
-        Reference photosReference = FirebaseStorage.instance.ref().child("profilepics");
-        photosReference.child("default_${selectedCard}.jpg").getData(MAX_SIZE).then((data) {
-          setState(() {
-            imageFile = data;
-            testing = selectedCard;
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID)
-              ),
-            );
+        if( bytes != null)
+          {
+            setState(() {
+              imageFile = bytes;
+              testing = selectedCard;
+              Navigator.of(context).pop();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID)
+                ),
+              );
+            });
+          }
+        else{
+          Reference photosReference = FirebaseStorage.instance.ref().child("profilepics");
+          photosReference.child("default_${selectedCard}.jpg").getData(MAX_SIZE).then((data) {
+            setState(() {
+              imageFile = data;
+              testing = selectedCard;
+              print("Profile UID Pt 3: ${widget.accountUID}");
+              Navigator.of(context).pop();
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID)
+                ),
+              );
+            });
           });
-        });
+        }
+
 
       },
       child: Text('Next Step'),
@@ -271,7 +292,18 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
                 ),
               ),
               const SizedBox(height:20),
-              Text(testing.toString()),
+              ElevatedButton(onPressed: selectFile, child: Text("Add"),
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blueAccent,
+                onPrimary: Colors.black,
+                shadowColor: Colors.white,
+                elevation: 5,
+                side: BorderSide(color: Colors.red, width:2),
+                textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+              ),
+              ),
+              Text(fileName),
+              _task != null ? buildUploadStatus(_task) : Container(),
               buildNextButton(),
             ],
           ),

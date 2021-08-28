@@ -460,7 +460,7 @@ class _LoginPageState extends State<LoginPage> {
 // Form validation name (If needed)
 // for regex testing: try https://regexr.com/
 String validateName(String value){
-  RegExp nameregex = new RegExp(r'[a-zA-z]');
+  RegExp nameregex = new RegExp(r'[a-zA-Z]');
   if (!nameregex.hasMatch(value)){
     return 'Name must contain only alphabets';
   }
@@ -471,7 +471,7 @@ String validateName(String value){
 
 // Form validating email
 String validateEmail(String value){
-  RegExp emailregex = new RegExp(r'[a-zA-z0-9]@e.ntu.edu.sg$');
+  RegExp emailregex = new RegExp(r'[a-zA-Z0-9]@e.ntu.edu.sg$');
   if (!emailregex.hasMatch(value)){
     return 'Email must end with @e.ntu.edu.sg';
   }
@@ -481,7 +481,7 @@ String validateEmail(String value){
 }
 // Form validating password
 String validatePassword(String value){
-  RegExp passwordregex = new RegExp(r'[a-zA-z0-9]');
+  RegExp passwordregex = new RegExp(r'[a-zA-Z0-9]');
   if (!passwordregex.hasMatch(value)){
     return 'Password can only be alphanumeric';
   }

@@ -6,12 +6,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:keyboard_visibility/keyboard_visibility.dart';
+import 'package:wellbeing_application/screens/feed/homepagetester3.dart';
 import 'screens/loginpage.dart';
 import 'screens/homepage.dart';
 import 'screens/homepagetester.dart';
 import 'utils/auth_helper.dart';
 import 'screens/admins/homepage.dart';
 import 'widgets/choosing_avatar.dart';
+import 'dart:async';
 
 void main() {
   runApp(MyApp());
@@ -43,6 +45,7 @@ class MyApp extends StatelessWidget {
 
 class LandingPage extends StatelessWidget{
   String userUID;
+  String UID;
   final Future<FirebaseApp> _initialisation = Firebase.initializeApp();
 
   @override
@@ -67,39 +70,50 @@ class LandingPage extends StatelessWidget{
           //Can check from Firebase if user has logged in or not using Streambuilder
           return StreamBuilder<User>(
             stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
+            builder: (context, snapshot)  {
               // Checking if connection state is active
               if( snapshot.connectionState == ConnectionState.active){
                 // Get user from firebase package
                 if(snapshot.hasData && snapshot.data != null){
-                  // saving thr latest data of the user
-                  UserHelper.saveUser(snapshot.data);     // This is the user
-                  return StreamBuilder(
-                    stream: FirebaseFirestore.instance.collection("users").doc(snapshot.data.uid).snapshots() ,
-                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
-                      if(snapshot.hasData && snapshot.data != null) {
-                        final user = snapshot.data;
-                       // final user = userDoc.data();
-                        if(user['role'] == 'admin'){
+                  // saving thr latest data of the user; If user found
+                  final user = snapshot.data;
+                  UserHelper.saveUser(user);     // This is the user
+                  UID = snapshot.data.uid.toString();
+                  // phone ifnormation saved, check profile creation, else homepage
 
 
-                          return AdminHomePage();
+                    return StreamBuilder(
+                      stream: FirebaseFirestore.instance.collection("users").doc(UID).snapshots() ,
+                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
+                        if(snapshot.hasData && snapshot.data != null) {
+
+                          final user = snapshot.data;
+                          if(user['profile_creation'] == false){
+                            return ChooseAvatar(accountUID: UID);
+                          }
+                          else{
+                            //porfile creation true
+                            if(user['role'] == 'admin'){
+                              return AdminHomePage();
+                            }
+                            else{
+                              return HomePage();
+                            }
+                          }
+
+                          return LoginPage();
+
+                          // final user = userDoc.data();
+
                         }
                         else{
-                          final User newUser = FirebaseAuth.instance.currentUser;
-                          final uid = newUser.uid.toString(); // May want to check if it is really String
-                          if(user['profile_creation'] == false){
-                           // Profile creation here???Get the uid from here??
-                            return ChooseAvatar(accountUID: uid);
-                          }
-                            return HomePage();
-                          }
-                      }
-                      else{
-                        return Material(child: Center(child: CircularProgressIndicator(),),);
-                      }
-                    },
-                  );
+                          // just waiinting
+                          return Material(child: Center(child: CircularProgressIndicator(),),);
+                        }
+                      },
+                    );
+
+
                   // Now checking of uer status (Student or admin)
                 }
                 return LoginPage();
