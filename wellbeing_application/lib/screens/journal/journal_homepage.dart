@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../widgets/navigation_drawer.dart';
-import 'feed_page.dart';
-import 'set_mood_page.dart';
+import 'journal_diary.dart';
 import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
+import 'journal_habits.dart';
 
-class HomePageTester3 extends StatelessWidget {
-  const HomePageTester3({Key? key}) : super(key: key);
+class JournalHomePage extends StatelessWidget {
+  const JournalHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-     title: 'Feed',
-     home: Home(),
+      title: 'Journal',
+      home: Home(),
     );
   }
 }
@@ -24,15 +24,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
   int _currentIndex = 0;
+  // Insert pages here
   final List<Widget> _children = [
-    // Add in widgets here
-    //PlaceholderWidget(Colors.lightBlueAccent),
-    FeedPage(),
-    PlaceholderWidget(Colors.deepOrange),
-    MoodPage(),
-    //MoodPage(),
-   // PlaceholderWidget(Colors.green)
+    PlaceholderWidget(Colors.pinkAccent),
+    Calender(),
+    PlaceholderWidget(Colors.indigo),
+    Habits()
   ];
 
 
@@ -40,34 +39,38 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //drawer: NavDrawer(),
-
+      drawer: NavigationWidget(),
       appBar: AppBar(
-        title : Text('Feed'),
-        leading: NavigationWidget(),
+        title: Text('Journal'),
+
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
+        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.black,
         onTap: onTabTapped,
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: "Home"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: "Messages"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
             label: "Profile"
           ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Calendar"
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Daily Tasks"
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Analysis"
+          )
         ],
       ),
     );
   }
-
 
   void onTabTapped(int index){
     setState(() {
@@ -92,5 +95,4 @@ class PlaceholderWidget extends StatelessWidget {
     );
   }
 }
-
 

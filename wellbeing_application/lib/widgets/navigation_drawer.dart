@@ -5,6 +5,8 @@ import '../screens/profile/profile.dart';
 import '../screens/feed/homepagetester2.dart';
 import '../widgets/choosing_avatar.dart';
 import '../screens/forum/forum_homepage.dart';
+import '../screens/journal/guides/guide_pages.dart';
+import '../screens/journal/guides/first_guide.dart';
 
 /*
 Navigation Drawer:
@@ -71,7 +73,13 @@ class NavDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.input),
             title: Text('Journal'),
-            onTap: () => {},
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.push(
+                context,
+                //MaterialPageRoute(builder: (context) => ProfilePage()),);
+                MaterialPageRoute(builder: (context) => Pages()),);
+            },
           ),
           ListTile(
             leading: Icon(Icons.notifications_none_rounded),      // or notifcations_rounded

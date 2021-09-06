@@ -5,6 +5,10 @@ import 'package:wellbeing_application/screens/loginpage.dart';
 import 'homepagetester.dart';
 import 'feed/homepagetester2.dart';
 import 'feed/homepagetester3.dart';
+import '../widgets/navigation_drawer_zoom/navigation_start.dart';
+import '../widgets/bottom_navigation_home.dart';
+import '../screens/feed/journal_overview.dart';
+
 
 class HomePage extends StatefulWidget {
   final String accountUID;
@@ -36,14 +40,14 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePageTester()),);
+                      MaterialPageRoute(builder: (context) => JournalOverview()),);
                 },
                 child: Text("HomePage Tester")
               ),ElevatedButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomePageTester2()),);
+                      MaterialPageRoute(builder: (context) => NavHomePage()),);
                   },
                   child: Text("HomePage Tester 2")
               ),
@@ -52,10 +56,11 @@ class _HomePageState extends State<HomePage> {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomePageTester3()),);
+              MaterialPageRoute(builder: (context) => NavigationHomePage()),);
           },
           child: Text("HomePage Tester 3")
           ),
+
 
             ],
           ),

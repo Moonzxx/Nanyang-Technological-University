@@ -39,6 +39,11 @@ dependencies:
   file_picker: ^4.0.0
   # Due to AndroidX incompatibility, have to use this version
   flutter_colorpicker: ^0.4.0
+  liquid_swipe: ^1.4.3
+  charts_flutter: ^0.11.0
+  flutter_zoom_drawer: ^2.1.1
+  percent_indicator: ^3.0.1
+  table_calendar: ^3.0.2
 
 dev_dependencies:
   flutter_test:
@@ -62,6 +67,7 @@ flutter:
     - assets/images/image_03.jpg
     - assets/images/image_04.jpg
     - assets/images/preview.png
+    - assets/images/delivery_man.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

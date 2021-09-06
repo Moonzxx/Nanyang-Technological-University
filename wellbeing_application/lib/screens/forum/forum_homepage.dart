@@ -203,8 +203,7 @@ class CategoryIcon extends StatelessWidget {
 }
 
 
-// Create a class that iterates all the stuff and into th categpry Icon
-
+// Create a class that iterates all the stuff and into the category Icon
 
 class ForumCategoryBoard extends StatefulWidget {
   int _index;

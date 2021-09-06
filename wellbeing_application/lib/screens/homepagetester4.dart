@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import '../../widgets/navigation_drawer.dart';
-import 'feed_page.dart';
-import 'set_mood_page.dart';
-import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
 
-class HomePageTester3 extends StatelessWidget {
-  const HomePageTester3({Key? key}) : super(key: key);
+class HomePageTester4 extends StatelessWidget {
+  const HomePageTester4({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-     title: 'Feed',
-     home: Home(),
+      title: 'Feed',
+      home: Home(),
     );
   }
 }
@@ -28,11 +25,9 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     // Add in widgets here
     //PlaceholderWidget(Colors.lightBlueAccent),
-    FeedPage(),
     PlaceholderWidget(Colors.deepOrange),
-    MoodPage(),
     //MoodPage(),
-   // PlaceholderWidget(Colors.green)
+    // PlaceholderWidget(Colors.green)
   ];
 
 
@@ -40,11 +35,9 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //drawer: NavDrawer(),
-
+      drawer: NavDrawer(),
       appBar: AppBar(
         title : Text('Feed'),
-        leading: NavigationWidget(),
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -52,16 +45,16 @@ class _HomeState extends State<Home> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home"
+              icon: Icon(Icons.home),
+              label: "Home"
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: "Messages"
+              icon: Icon(Icons.mail),
+              label: "Messages"
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile"
+              icon: Icon(Icons.person),
+              label: "Profile"
           ),
         ],
       ),
