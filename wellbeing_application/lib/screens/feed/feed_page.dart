@@ -9,6 +9,7 @@ Display lastest update <--  Shall update once data has been finalised
 import 'package:flutter/material.dart';
 import 'example_data.dart';
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 /*
@@ -42,6 +43,7 @@ class _FeedPageState extends State<FeedPage> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+
             // Padding Widget: For the word Trending
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0),
@@ -58,6 +60,18 @@ class _FeedPageState extends State<FeedPage> {
                 ],
               ),
             ),
+        ElevatedButton.icon(
+          onPressed: () async {
+            await FirebaseAuth.instance.signOut();
+          },
+          label: Text("Log Out"),
+          icon: Icon(Icons.logout_rounded),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+              padding: MaterialStateProperty.all(EdgeInsets.all(16)),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))
+          ),
+        ),
             Stack(
               children: <Widget>[
                 CardScrollWidget(currentPage),

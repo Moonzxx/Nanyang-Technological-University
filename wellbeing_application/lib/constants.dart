@@ -25,7 +25,10 @@ const kNotificationTitle = "Notifications";
 const kbackgroundColor = Color(0xFF202020);
 const kPrimaryColor = Color(0xFFFFBD73);
 
-
+class Constants{
+  static String myName = "";
+  static String myUID = "";
+}
 
 
 // Forms

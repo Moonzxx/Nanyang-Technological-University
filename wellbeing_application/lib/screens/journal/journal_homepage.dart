@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../../widgets/navigation_drawer.dart';
 import 'journal_diary.dart';
 import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
-import 'journal_habits.dart';
+import 'habits/journal_habitsCatList.dart';
+import 'routine/journal_daily.dart';
 
 class JournalHomePage extends StatelessWidget {
   const JournalHomePage({Key? key}) : super(key: key);
@@ -31,18 +32,29 @@ class _HomeState extends State<Home> {
     PlaceholderWidget(Colors.pinkAccent),
     Calender(),
     PlaceholderWidget(Colors.indigo),
-    Habits()
+    DailyGoalsCheck(),
+    Habits(),
   ];
+
+
+  /*
+  List of pages and their purposes:
+
+  Routines: Daily habits will be placed here
+  Habits: Displaying all the habits and adding of habits (Users are able to create their own categories)
+  Journal: Display all Journal entries
+  Calendar: Tracking of mood, journal entries and routines completion for that day
+  Analysis: Shows the analysis of the current user
+   */
 
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: NavigationWidget(),
       appBar: AppBar(
         title: Text('Journal'),
-
+        leading: NavigationWidget(),
       ),
       body: _children[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -53,11 +65,15 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: "Profile"
+            label: "Overview"
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: "Calendar"
+              label: "Journal"
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Calendar"   // tracker
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -65,7 +81,7 @@ class _HomeState extends State<Home> {
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: "Analysis"
+              label: "Habits"
           )
         ],
       ),
@@ -92,6 +108,11 @@ class PlaceholderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: color,
+      child: Column(
+        children: [
+
+        ],
+      ),
     );
   }
 }

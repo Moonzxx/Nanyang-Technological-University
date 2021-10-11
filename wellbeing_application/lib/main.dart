@@ -14,6 +14,8 @@ import 'utils/auth_helper.dart';
 import 'screens/admins/homepage.dart';
 import 'widgets/choosing_avatar.dart';
 import 'dart:async';
+import 'widgets/navigation_drawer_zoom/navigation_start.dart';
+import 'utils/helperfunctions.dart';
 
 void main() {
   runApp(MyApp());
@@ -47,6 +49,7 @@ class LandingPage extends StatelessWidget{
   String userUID;
   String UID;
   final Future<FirebaseApp> _initialisation = Firebase.initializeApp();
+
 
   @override
   Widget build(BuildContext context) {
@@ -87,17 +90,37 @@ class LandingPage extends StatelessWidget{
                       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
                         if(snapshot.hasData && snapshot.data != null) {
 
+                          // Creating a new profile
+
                           final user = snapshot.data;
                           if(user['profile_creation'] == false){
                             return ChooseAvatar(accountUID: UID);
                           }
                           else{
-                            //porfile creation true
+
+                            // Navigating to Admin Page
                             if(user['role'] == 'admin'){
+                              HelperFunctions.saveUserLoggedInSharedPreference(true);
+                              HelperFunctions.saveUserUIDSharedPreference(UID);
+                              HelperFunctions.saveUserNameSharedPreference(user['username'].toString());
+                              HelperFunctions.saveUserEmailSharedPreference(user['email'].toString());
+                              HelperFunctions.saveUserAvatarSharedPreference(user['url-avatar'].toString());
                               return AdminHomePage();
                             }
                             else{
-                              return HomePage();
+
+                              // Navigating to student page
+                              var clientinfo = new Map();
+                              clientinfo['UID'] = UID;
+                              clientinfo['email'] =  user['email'].toString();
+                              clientinfo['username']   = user['username'].toString();
+                              clientinfo['avatarURL'] = user['url-avatar'].toString();
+                              HelperFunctions.saveUserLoggedInSharedPreference(true);
+                              HelperFunctions.saveUserUIDSharedPreference(UID);
+                              HelperFunctions.saveUserNameSharedPreference(user['username'].toString());
+                              HelperFunctions.saveUserEmailSharedPreference(user['email'].toString());
+                              HelperFunctions.saveUserAvatarSharedPreference(user['url-avatar'].toString());
+                              return NavigationHomePage(userUID: UID, userDetails: clientinfo);
                             }
                           }
 

@@ -44,6 +44,9 @@ dependencies:
   flutter_zoom_drawer: ^2.1.1
   percent_indicator: ^3.0.1
   table_calendar: ^3.0.2
+  shared_preferences: ^0.5.7
+  day_picker: ^2.0.0
+  date_format: ^2.0.4
 
 dev_dependencies:
   flutter_test:

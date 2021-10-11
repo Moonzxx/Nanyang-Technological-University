@@ -13,6 +13,8 @@ import 'package:wellbeing_application/utils/firebase_api.dart';
 import '../constants.dart';
 import 'package:path/path.dart' as path;
 import '../widgets/custom_snackbar.dart';
+import '../utils/firebase_api.dart';
+import '../utils/helperfunctions.dart';
 
 class CreateProfile extends StatefulWidget {
   final Uint8List chosenProfilePic;
@@ -25,6 +27,7 @@ class CreateProfile extends StatefulWidget {
 }
 
 class _CreateProfileState extends State<CreateProfile> {
+  FirebaseApi databaseMethods = new FirebaseApi();
   final _formKey2 = GlobalKey<FormState>();
   String id;
   UploadTask _task;
@@ -34,6 +37,46 @@ class _CreateProfileState extends State<CreateProfile> {
   String _firstName = "";
   String _lastName = "";
   String _username = "";
+
+  Future<void> initiliaseDefaultDatabase(String id) async{
+
+    Map<String, String> beAwareCatInfo = {
+      "name" : "Be Aware",
+      "short_description": "short desc aware",
+      "description" : "desc aware"
+    };
+
+    Map<String, String> beActiveCatInfo = {
+      "name" : "Be Active",
+      "short_description": "short desc active",
+      "description" : "desc active"
+    };
+
+    Map<String, String> connectCatInfo = {
+      "name" : "Connect",
+      "short_description": "short desc connect",
+      "description" : "desc connect"
+    };
+
+    Map<String, String> helpOthersCatInfo = {
+      "name" : "Help Others",
+      "short_description": "short desc help",
+      "description" : "desc help"
+    };
+
+    Map<String, String> KeepLearningCatInfo = {
+      "name" : "Keep Learning",
+      "short_description": "short desc learning",
+      "description" : "desc Learning"
+    };
+
+    databaseMethods.createDefaultHabitCategories(id, "Be Aware", beAwareCatInfo);
+    databaseMethods.createDefaultHabitCategories(id, "Be Active", beActiveCatInfo);
+    databaseMethods.createDefaultHabitCategories(id, "Connect", connectCatInfo);
+    databaseMethods.createDefaultHabitCategories(id, "Help Others", helpOthersCatInfo);
+    databaseMethods.createDefaultHabitCategories(id, "Keep Learning", KeepLearningCatInfo);
+
+  }
 
 
   Future<void> updateUserDetails() async{
@@ -58,8 +101,6 @@ class _CreateProfileState extends State<CreateProfile> {
     //    "url-avatar": urlDownload
     //  };
 
-
-
       //await userRef.set(userData);
       await userRef.update({
       "first_name": this._firstName,
@@ -68,6 +109,16 @@ class _CreateProfileState extends State<CreateProfile> {
       "url-avatar": urlDownload,
         "profile_creation" :  true
       });
+
+      HelperFunctions.saveUserLoggedInSharedPreference(true);
+      HelperFunctions.saveUserUIDSharedPreference(uid);
+      HelperFunctions.saveUserAvatarSharedPreference(urlDownload);
+      HelperFunctions.saveUserNameSharedPreference(this._username);
+
+
+
+      // Once account has been created, set up default stuff
+      initiliaseDefaultDatabase(uid);
 
       CustomSnackBar.buildErrorSnackbar(context, "hi");
       final snackBar = SnackBar(

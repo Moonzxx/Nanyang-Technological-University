@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:package_info/package_info.dart';
+import '../utils/helperfunctions.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -102,6 +103,7 @@ class _LoginPageState extends State<LoginPage> {
     try{
       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
       print("User: $userCredential");
+      HelperFunctions.saveUserEmailSharedPreference(_email);
     } on FirebaseAuthException catch(e){
       print("Error: $e");
     } catch (e) {
