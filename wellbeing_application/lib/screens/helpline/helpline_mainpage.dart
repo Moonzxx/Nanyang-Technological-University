@@ -1,68 +1,70 @@
 import 'package:flutter/material.dart';
-import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
-import '../chat/chat_friendspage.dart';
+import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_widget.dart';
+import 'helpline_outside.dart';
+import 'helpline_school.dart';
 
-class ChatMainPage extends StatelessWidget {
-  const ChatMainPage({Key? key}) : super(key: key);
+
+class HelplineMainPage extends StatelessWidget {
+  const HelplineMainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Chats',
-      home: ChatHome(),
+      title: 'Helplines',
+      home : HelplineHome(),
     );
   }
 }
 
-class ChatHome extends StatefulWidget {
-  const ChatHome({Key? key}) : super(key: key);
+class HelplineHome extends StatefulWidget {
+  const HelplineHome({Key? key}) : super(key: key);
 
   @override
-  _ChatHomeState createState() => _ChatHomeState();
+  _HelplineHomeState createState() => _HelplineHomeState();
 }
 
-class _ChatHomeState extends State<ChatHome> {
+class _HelplineHomeState extends State<HelplineHome> {
 
   int _currentIndex = 0;
   final List<Widget> _children = [
-    ChatFriendsPage(),
-    PlaceholderWidget(Colors.greenAccent)
+    SchoolHelplinePage(),
+    ExternalHelplinePage()
   ];
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chatroom'),
+        title: Text('Helpline'),
         leading: NavigationWidget(),
       ),
-    body: _children[_currentIndex],
-    bottomNavigationBar: BottomNavigationBar(
-      onTap: onTabTapped,
-      currentIndex: _currentIndex,
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Friends'   // Can try to see their colour
+            label: 'School'
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Messages"
+              icon: Icon(Icons.home),
+              label: 'External'
           )
         ],
-    ),
+      ),
     );
   }
-
-
+  
+  
   void onTabTapped(int index){
     setState(() {
       _currentIndex = index;
     });
   }
 }
-
 
 
 class PlaceholderWidget extends StatelessWidget {
@@ -76,5 +78,6 @@ class PlaceholderWidget extends StatelessWidget {
     );
   }
 }
+
 
 

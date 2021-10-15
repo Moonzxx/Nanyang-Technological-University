@@ -19,6 +19,9 @@ import 'package:firebase_storage/firebase_storage.dart';
 import '../../models/user.dart';
 import '../../constants.dart';
 import '../../utils/helperfunctions.dart';
+import '../../screens/tips/tips_mainpage.dart';
+import '../../screens/helpline/helpline_mainpage.dart';
+import '../../screens/admins/admin_mainpage.dart';
 
 
 class NavigationHomePage extends StatefulWidget {
@@ -41,6 +44,7 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
   getUserInfo() async {
     Constants.myName = await HelperFunctions.getUserNameInSharedPreference();
     Constants.myUID = await HelperFunctions.getUserUIDInSharedPreference();
+    Constants.myAvatar = await HelperFunctions.getUserAvatarInSharedPreference();
   }
 
   Widget getScreen() {
@@ -52,7 +56,7 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
         return ProfilePage();
         break;
       case NavigationItems.tips:
-        return DisplaTipCategories();
+        return TipsMainPage();
         break;
       case NavigationItems.forums:
         return ForumMainPage();
@@ -65,6 +69,12 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
         break;
       case NavigationItems.chats:
         return ChatMainPage();
+        break;
+      case NavigationItems.helpline:
+        return HelplineMainPage();
+        break;
+      case NavigationItems.admin:
+        return AdminMainPage();
         break;
 
     }

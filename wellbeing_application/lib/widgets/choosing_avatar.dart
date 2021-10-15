@@ -166,6 +166,7 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
               onTap: (){
                 setState(() {
                   selectedCard = index;
+                  print(index);
                 });
               },
               child: Stack(
@@ -242,72 +243,79 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
 
 
 
-
     /*
     Original start of the code*/
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: kChoosingAvatarTitle,
       home: Scaffold(
         appBar: AppBar(
           title: Text(kChoosingAvatarTitle),
+          centerTitle: true,
         ),
-        body: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Align(
-                alignment: Alignment.center,
-                heightFactor: 2.7,
-                child: Container(
-                  width: 100.0,
-                  height:100.0,
-                  decoration: BoxDecoration(
-                    color: Colors.lightBlue,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.black, style: BorderStyle.solid, width: 10.0)
-                  ),
-                  child:
-                    Icon(
-                      Icons.account_circle, size: 15.0
+        body: Padding(
+          padding: const EdgeInsets.only(top: 140.0),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Text("You can selected from either of this siz default avatars or choose to use your own picture.", textAlign: TextAlign.center,),
+                /*
+                Align(
+                  alignment: Alignment.center,
+                  heightFactor: 2.7,
+                  child: Container(
+                    width: 100.0,
+                    height:100.0,
+                    decoration: BoxDecoration(
+                      color: Colors.lightBlue,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black, style: BorderStyle.solid, width: 1.0)
                     ),
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height /3,
-                width: MediaQuery.of(context).size.width * 0.95,
-                color: Colors.transparent,
-                child: Container(
-                  padding: EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(color: Colors.blueGrey,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40.0),
-                      topRight: Radius.circular(40.0),
-                    ),
-                  ),
-                  child: Center(
-                    child: makeImageGrid(),
+                    child:
+                      Icon(
+                        Icons.account_circle, size: 15.0
+                      ),
                   ),
                 ),
-              ),
-              const SizedBox(height:20),
-              ElevatedButton(onPressed: selectFile, child: Text("Add"),
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blueAccent,
-                onPrimary: Colors.black,
-                shadowColor: Colors.white,
-                elevation: 5,
-                side: BorderSide(color: Colors.red, width:2),
-                textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
-              ),
-              ),
-              Text(fileName),
-              _task != null ? buildUploadStatus(_task) : Container(),
-              buildNextButton(),
-            ],
-          ),
+                 */
+                Container(
+                  height: MediaQuery.of(context).size.height /3,
+                  width: MediaQuery.of(context).size.width * 0.95,
+                  color: Colors.transparent,
+                  child: Container(
+                    padding: EdgeInsets.all(16.0),
+                    decoration: BoxDecoration(color: Colors.blueGrey,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(40.0),
+                        topRight: Radius.circular(40.0),
+                      ),
+                    ),
+                    child: Center(
+                      child: makeImageGrid(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height:20),
+                ElevatedButton(onPressed: selectFile, child: Text("Add"),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blueAccent,
+                  onPrimary: Colors.black,
+                  shadowColor: Colors.white,
+                  elevation: 5,
+                  side: BorderSide(color: Colors.red, width:2),
+                  textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                ),
+                ),
+                Text(fileName),
+                _task != null ? buildUploadStatus(_task) : Container(),
+                buildNextButton(),
+              ],
+            ),
 
+          ),
         ),
       ),
     );

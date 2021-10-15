@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 /*
 Best to use constants to be consistent in the application's pages.
  */
@@ -28,6 +29,8 @@ const kPrimaryColor = Color(0xFFFFBD73);
 class Constants{
   static String myName = "";
   static String myUID = "";
+  static String myAvatar = "";
+  static String myThemeColour = "";
 }
 
 

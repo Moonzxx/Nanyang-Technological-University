@@ -67,7 +67,7 @@ class NavDrawer extends StatelessWidget {
               Navigator.push(
                 context,
                 //MaterialPageRoute(builder: (context) => ProfilePage()),);
-                MaterialPageRoute(builder: (context) => ForumPage()),);
+                MaterialPageRoute(builder: (context) => ForumHomePage()),);
             },
           ),
           ListTile(

@@ -262,43 +262,50 @@ class _CreateProfileState extends State<CreateProfile> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(kCreateProfileTitle),
+          centerTitle: true,
         ),
         body: SingleChildScrollView(
           child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
+            child: Padding(
+              padding: const EdgeInsets.only(top: 120.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
 
-                Container(
-                  height: 150,
-                  width: 150,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle
+                  Container(
+                    height: 150,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle
+                    ),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100.0),
+                        child: Image.memory(widget.chosenProfilePic,fit: BoxFit.fill)
+                    ),
                   ),
-                  child: ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: Image.memory(widget.chosenProfilePic,fit: BoxFit.fill)
+                  SizedBox(height: 50),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Form(
+                      key: _formKey2,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          buildFirstName(),
+                          const SizedBox(height: 16),
+                          buildLastName(),
+                          const SizedBox(height: 16),
+                          buildUserName(),
+                          const SizedBox(height: 16),
+                          buildSubmitButton(),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                SizedBox(height: 16),
-                Form(
-                  key: _formKey2,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      buildFirstName(),
-                      const SizedBox(height: 16),
-                      buildLastName(),
-                      const SizedBox(height: 16),
-                      buildUserName(),
-                      const SizedBox(height: 16),
-                      buildSubmitButton(),
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         )

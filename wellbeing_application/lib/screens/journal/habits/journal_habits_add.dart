@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:day_picker/day_picker.dart';
 import 'package:wellbeing_application/constants.dart';
 import '../../../utils/firebase_api.dart';
+import 'package:date_format/date_format.dart';
 
 
 class AddNewHabit extends StatefulWidget {
@@ -23,6 +24,8 @@ class _AddNewHabitState extends State<AddNewHabit> {
   bool btn1 = false;
   bool btn2 = false;
   final _habitFormKey = GlobalKey<FormState>();
+  int hour;
+  int minute;
 
   int selectedDropDownMenu = 1;
   List<int> frequency = [1,2,3,4,5,6,7,8,9];
@@ -71,6 +74,8 @@ class _AddNewHabitState extends State<AddNewHabit> {
     if (picked != null)
       setState(() {
         selectedTime = picked;
+        hour = selectedTime.hour;
+        minute = selectedTime.minute;
         _hour = selectedTime.hour.toString();
         _minute = selectedTime.minute.toString();
         _time = _hour + ' : ' + _minute;
@@ -115,7 +120,7 @@ class _AddNewHabitState extends State<AddNewHabit> {
                   decoration: inputDecoration("Description"),
                   controller: descController
                 ),
-                Row(
+                /* Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Habit Frequency:'),
@@ -142,7 +147,7 @@ class _AddNewHabitState extends State<AddNewHabit> {
                       );
                     }).toList()),
                   ],
-                ),
+                ), */
                 Text("Day Selection"),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -169,7 +174,7 @@ class _AddNewHabitState extends State<AddNewHabit> {
                   ),
                 ),
                 SizedBox(height:10),
-                Row(
+                /* Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text('Time of the day :'),
@@ -197,7 +202,7 @@ class _AddNewHabitState extends State<AddNewHabit> {
                         }).toList()
                     ),
                   ],
-                ),
+                ),*/
                 InkWell(
                   onTap: (){
                     _selectTime(context);
@@ -238,14 +243,31 @@ class _AddNewHabitState extends State<AddNewHabit> {
                       height: 50.0,
                       child: ElevatedButton(
                           onPressed: () {
+                            String partOfDay = "";
+                            if(hour < 12){
+                              partOfDay = "Morning";
+                            }
+                            else if( 12 >= hour && hour < 17){
+                              partOfDay = "Afternoon";
+                            }
+                            else if( hour < 20){
+                              partOfDay = "Evening";
+                            }
+                            else{
+                              partOfDay = "Night";
+                            }
+
                             Map<String, dynamic> createHabitInfoMap = {
                               "name" : nameController.text,
                               "description": descController.text,
                               "days" : finalDays,
-                              "partOfDay" : selectedRoutineDropDownMenu,
+                              "partOfDay" : partOfDay,
                               "activated": true,
-                              "time_hour" : _hour,
-                              "time_minute" : _minute
+                              "time_hour" : hour,
+                              "time_minute" : minute,
+                              "categoryName" : widget.categoryName,
+                              "completed": [""],
+                              "notCompleted" : [""]
                             };
                             databaseMethods.setUsersHabitsfromCategory(Constants.myUID, widget.categoryName, nameController.text, createHabitInfoMap);
                             Navigator.pop(context);

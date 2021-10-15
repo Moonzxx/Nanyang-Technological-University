@@ -4,6 +4,7 @@ import 'journal_diary.dart';
 import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
 import 'habits/journal_habitsCatList.dart';
 import 'routine/journal_daily.dart';
+import 'diary/journal_diary.dart';
 
 class JournalHomePage extends StatelessWidget {
   const JournalHomePage({Key? key}) : super(key: key);
@@ -31,7 +32,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _children = [
     PlaceholderWidget(Colors.pinkAccent),
     Calender(),
-    PlaceholderWidget(Colors.indigo),
+    DiaryEntryList(),
     DailyGoalsCheck(),
     Habits(),
   ];

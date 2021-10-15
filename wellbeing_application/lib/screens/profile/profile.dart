@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_widget.dart';
 import '../settings/settings.dart';
+import '../../constants.dart';
 
 
 
@@ -29,11 +31,12 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
         appBar: AppBar(
           title: Text("Profile"),
+          leading: NavigationWidget(),
           actions: <Widget>[
             Padding(padding: EdgeInsets.only(right: 20.0),
             child: GestureDetector(
               onTap:() {
-                showDialog<String>(
+                /*showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: Text('Testing'),
@@ -49,7 +52,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                );
+                );*/
+                Navigator.push(context, MaterialPageRoute(builder: (context) => SettingsPage()));
 
               },
               child: Icon(
@@ -73,6 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: 100.0,
                     height:100.0,
                     decoration: BoxDecoration(
+                      image: DecorationImage(image: NetworkImage(Constants.myAvatar), fit: BoxFit.fill),
                       color: Colors.lightBlue,
                       shape: BoxShape.circle,
                       border: Border.all(color: Colors.black, style: BorderStyle.solid, width : 1.0),
@@ -112,23 +117,17 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: BorderStyle.solid),
                   borderRadius: BorderRadius.circular(15.0),
               ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Testing one"),
+                  Text("Testing 2"),
+                  Text("Testing thre")
+                ],
+              )
+              ,
             ),
               SizedBox(height: 20.0,),
-
-              Container(
-                height: MediaQuery.of(context).size.height / 30,
-                width: MediaQuery.of(context).size.width * 0.75,
-                child: TextButton(
-                style: TextButton.styleFrom(
-                    primary: Colors.white,
-                  backgroundColor: Colors.redAccent,
-                    ),
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                    },
-                    child: Text("Log Out")
-                ),
-              ),
 
             /* FloatingActionButton(
               backgroundColor: Colors.red,

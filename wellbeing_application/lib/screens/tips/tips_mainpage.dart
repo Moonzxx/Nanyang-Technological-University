@@ -1,57 +1,66 @@
 import 'package:flutter/material.dart';
 import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
 import '../chat/chat_friendspage.dart';
+import 'tips_tipshomepage.dart';
+import 'tips_toolshomepage.dart';
 
-class ChatMainPage extends StatelessWidget {
-  const ChatMainPage({Key? key}) : super(key: key);
+class TipsMainPage extends StatelessWidget {
+  const TipsMainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Chats',
-      home: ChatHome(),
+      title: 'Tips',
+      home: TipsHome(),
     );
   }
 }
 
-class ChatHome extends StatefulWidget {
-  const ChatHome({Key? key}) : super(key: key);
+class TipsHome extends StatefulWidget {
+  const TipsHome({Key? key}) : super(key: key);
+
+
 
   @override
-  _ChatHomeState createState() => _ChatHomeState();
+  _TipsHomeState createState() => _TipsHomeState();
 }
 
-class _ChatHomeState extends State<ChatHome> {
+class _TipsHomeState extends State<TipsHome> {
 
   int _currentIndex = 0;
-  final List<Widget> _children = [
-    ChatFriendsPage(),
-    PlaceholderWidget(Colors.greenAccent)
+  final List<Widget> _children =[
+    TipsHomePage(),
+    ToolsHomePage(),
+    PlaceholderWidget(Colors.blue),
   ];
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chatroom'),
+        title: Text("Tips"),
         leading: NavigationWidget(),
       ),
-    body: _children[_currentIndex],
-    bottomNavigationBar: BottomNavigationBar(
-      onTap: onTabTapped,
-      currentIndex: _currentIndex,
+      body: _children[_currentIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Friends'   // Can try to see their colour
+            label: 'Tips'
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: "Messages"
-          )
+            label: "Tools"
+          ),BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Bookmark"
+          ),
         ],
-    ),
+      ),
     );
   }
 
@@ -62,8 +71,6 @@ class _ChatHomeState extends State<ChatHome> {
     });
   }
 }
-
-
 
 class PlaceholderWidget extends StatelessWidget {
   final Color color;

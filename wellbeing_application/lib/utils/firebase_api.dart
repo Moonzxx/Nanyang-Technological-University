@@ -84,16 +84,136 @@ class FirebaseApi{
     FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(cat).collection("routines").doc(habit).set(habitInfoMap).catchError((e){print(e.toString());});
   }
 
+  getUsersNumCategories(String userID) async{
+    return await FirebaseFirestore.instance.collection("habits").where("uid", isEqualTo: userID).get();
+  }
+
   getUsersHabitsfromCategory(String userID, String category) async{
     return await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(category).collection("routines").snapshots();
   }
 
   // returns all activated routines from user
   getUsersHabitRoutinefromCategory(String userID, String category, String day) async{
-    return await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(category).collection("routines")
-        .where("days", arrayContains: day)
-        .where("activated", isEqualTo: true).snapshots();
+    return await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc("Connect").collection("routines")
+        .where("days", arrayContains: "Tue").where("activated", isEqualTo: true).get();
   }
+
+  getUserRoutineInformation(String userID, String category, String day) async{
+    return await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(category).collection("routines")
+        .where("days", arrayContains: day).where("activated", isEqualTo: true).get();
+  }
+
+  getUserRoutineCompletionTileCheck(String userID, String category, String rName, String currentDate) async{
+    return await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(category).collection("routines")
+        .where("name", isEqualTo: rName).where("completed", arrayContains: currentDate).get();
+  }
+
+  UpdateUserRoutineCompletionTileChecked(String userID, String category, String subCat,  updatedDate) async{
+    await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(category)
+        .collection("routines").doc(subCat).update({"completed" : FieldValue.arrayUnion([updatedDate])});
+    await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(category)
+        .collection("routines").doc(subCat).update({"notCompleted" : FieldValue.arrayRemove([updatedDate])});
+  }
+
+  UpdateUserRoutineCompletionTileUnchecked(String userID, String category, String subCat,  updatedDate) async{
+    await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(category)
+        .collection("routines").doc(subCat).update({"completed" : FieldValue.arrayRemove([updatedDate])});
+    await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(category)
+        .collection("routines").doc(subCat).update({"notCompleted" : FieldValue.arrayUnion([updatedDate])});
+  }
+
+
+  /*
+
+          FORUM SYSTEM MANAGEMENT
+
+   */
+
+  setNewForumPost(String category, String docName, newPostMap){
+    FirebaseFirestore.instance.collection("forums").doc("categories").collection(category).doc(docName).set(newPostMap).catchError((e){print(e.toString());});
+  }
+
+  getCategoryForumPosts(String category) async{
+    return await FirebaseFirestore.instance.collection("forums").doc("categories").collection(category).snapshots();
+  }
+
+  getDiscussionPost(String category, String postTitle) async{
+    return await FirebaseFirestore.instance.collection("forums").doc("categories").collection(category).where("name", isEqualTo: postTitle).snapshots();
+  }
+
+  getRepliesPost(String category, String title) async{
+    return await FirebaseFirestore.instance.collection("forums").doc("categories").collection("Finance").doc("saving money").collection("replies").snapshots();
+  }
+
+
+  /*
+
+        TIPS SYSTEM MANAGEMENT
+
+
+   */
+  // can check with user habit routine
+
+  getTipsCategories() async{
+    return await FirebaseFirestore.instance.collection("tips").doc("Tips").collection("categories").snapshots();
+  }
+
+  getToolsCategories() async{
+    return await FirebaseFirestore.instance.collection("tips").doc("Tools").collection("categories").snapshots();
+  }
+
+  // Imrpoved version
+  getTTCategories(String cat) async{
+    return await FirebaseFirestore.instance.collection("tips").doc(cat).collection("categories").snapshots();
+  }
+  
+  getTTCatPosts(String mainCat, String subCat) async{
+    return await FirebaseFirestore.instance.collection("tips").doc(mainCat).collection("categories").doc(subCat).collection("posts").snapshots();
+  }
+  
+
+
+
+  /*
+        HELPLINE SYSYEM MANAGEMENT
+  */
+
+
+  getCounsellorList() async{
+    return await FirebaseFirestore.instance.collection("helplines").doc("school").collection("counsellors").snapshots();
+  }
+
+  getAroundSG() async{
+    return await FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").snapshots();
+  }
+
+
+
+
+  /*
+
+      DIARY ENTRY MANAGEMENT
+
+   */
+
+  getUserDiaryEntries(String userID) async{
+    return await FirebaseFirestore.instance.collection("diary").doc(userID).collection("diaryEntries").snapshots();
+  }
+
+
+
+  /*
+
+        Admin Function Management
+
+
+   */
+
+    createUser(String userID){
+      // FOr this, try creating an account and see what the account has to know what needs to be initiliased and set
+    }
+
+
 
 
 }

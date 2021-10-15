@@ -1,42 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_widget.dart';
-import 'forum_homepage.dart';
+import 'admin_assignment.dart';
+import 'admin_homepage.dart';
 
-
-class ForumMainPage extends StatelessWidget {
-  const ForumMainPage({Key? key}) : super(key: key);
+class AdminMainPage extends StatelessWidget {
+  const AdminMainPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Forum',
-      home: ForumHome(),
+      title: 'Admin Page',
+      home: AdminHome(),
     );
   }
 }
 
 
-class ForumHome extends StatefulWidget {
-  const ForumHome({Key? key}) : super(key: key);
+class AdminHome extends StatefulWidget {
+  const AdminHome({Key? key}) : super(key: key);
 
   @override
-  _ForumHomeState createState() => _ForumHomeState();
+  _AdminHomeState createState() => _AdminHomeState();
 }
 
-class _ForumHomeState extends State<ForumHome> {
+class _AdminHomeState extends State<AdminHome> {
+
   int _currentIndex = 0;
   final List<Widget> _children = [
-    ForumHomePage(),
-    PlaceholderWidget(Colors.yellowAccent)
+    AdminHomePage(),
+    PlaceholderWidget(Colors.pinkAccent)
   ];
-  
-  
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Forum'),
+        title: Text('Admin Page'),
         leading: NavigationWidget(),
       ),
       body: _children[_currentIndex],
@@ -45,25 +47,25 @@ class _ForumHomeState extends State<ForumHome> {
         currentIndex: _currentIndex,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Forums"
+              icon: Icon(Icons.home),
+              label: 'Admin'   // Can try to see their colour
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Saved"
+              icon: Icon(Icons.home),
+              label: "Assignment"
           )
         ],
       ),
     );
   }
-  
+
   void onTabTapped(int index){
     setState(() {
       _currentIndex = index;
     });
   }
-  
 }
+
 
 
 class PlaceholderWidget extends StatelessWidget {
@@ -77,5 +79,4 @@ class PlaceholderWidget extends StatelessWidget {
     );
   }
 }
-
 
