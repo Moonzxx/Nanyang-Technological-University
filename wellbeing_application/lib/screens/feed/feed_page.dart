@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'example_data.dart';
 import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:charts_flutter/flutter.dart' as charts;
 
 
 /*
@@ -28,6 +30,11 @@ var widgetAspectRatio = cardAspectRatio * 1.2;
 
 class _FeedPageState extends State<FeedPage> {
   var currentPage = images.length - 1.0;
+  List eg = [[0.7, Colors.blue, "Be Active"],
+    [0.7, Colors.green, "Be Aware"],
+    [0.25, Colors.pinkAccent, "Connect"],
+    [0.35, Colors.deepPurpleAccent, "Keep Learning"],
+    [0.8, Colors.yellow, "Help Others"]];
 
   @override
   Widget build(BuildContext context) {
@@ -39,57 +46,37 @@ class _FeedPageState extends State<FeedPage> {
       });
     });
 
-    return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
 
-            // Padding Widget: For the word Trending
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text("Trending",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 46.0,
-                    //fontFamily
-                    letterSpacing: 1.0
-                  ),)
-                ],
-              ),
-            ),
-        ElevatedButton.icon(
-          onPressed: () async {
-            await FirebaseAuth.instance.signOut();
-          },
-          label: Text("Log Out"),
-          icon: Icon(Icons.logout_rounded),
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-              padding: MaterialStateProperty.all(EdgeInsets.all(16)),
-              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))
-          ),
+
+
+    getGridView(){
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 150,
+            childAspectRatio: 1,
+            crossAxisSpacing: 60,
+            mainAxisSpacing: 60
         ),
-            Stack(
-              children: <Widget>[
-                CardScrollWidget(currentPage),
-                Positioned.fill(
-                  child: PageView.builder(
-                    itemCount: images.length,
-                    controller: controller,
-                    reverse: true,
-                    itemBuilder: (context, index){
-                      return Container();
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ],
+        itemCount: 5,
+        itemBuilder: (BuildContext ctx, index){
+          return roundstats(percentage: eg[index][0], color: eg[index][1], cat: eg[index][2]);
+        },
+         );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blue[700],
+        title: Text("Wellbeing", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              //top: Radius.circular(30),
+                bottom: Radius.circular(30)
+            )
         ),
       ),
+      body: getGridView()
     );
   }
 }
@@ -196,6 +183,38 @@ class CardScrollWidget extends StatelessWidget {
           children: cardList,
         );
       }),
+    );
+  }
+}
+
+
+class roundstats extends StatelessWidget {
+  final double percentage;
+  final String cat;
+  final Color color;
+  roundstats({ required this.percentage, required this.color, required this.cat});
+
+  @override
+  Widget build(BuildContext context) {
+    return CircularPercentIndicator(
+      radius: 120.0,
+      lineWidth: 13.0,
+      animation: true,
+      percent: this.percentage, // Have ot be double
+      center: Text(
+        "${this.percentage*100}%",
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 20.0
+        ),
+      ),
+      footer: Text(
+        cat,
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 17.0
+        ),
+      ),
+      circularStrokeCap: CircularStrokeCap.round,
+      progressColor: color,
     );
   }
 }

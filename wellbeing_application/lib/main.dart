@@ -85,14 +85,17 @@ class LandingPage extends StatelessWidget{
                   // phone ifnormation saved, check profile creation, else homepage
 
 
-                    return StreamBuilder(
-                      stream: FirebaseFirestore.instance.collection("users").doc(UID).snapshots() ,
-                      builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
-                        if(snapshot.hasData && snapshot.data != null) {
+                  return StreamBuilder(
+                    stream: FirebaseFirestore.instance.collection("users").doc(UID).snapshots() ,
+                    builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
+                      if(snapshot.hasData && snapshot.data != null) {
 
-                          // Creating a new profile
+                        // Creating a new profile
 
-                          final user = snapshot.data;
+                        final user = snapshot.data;
+                        final userr = FirebaseAuth.instance.currentUser;
+
+                       // if(userr.emailVerified == true){
                           if(user['profile_creation'] == false){
                             return ChooseAvatar(accountUID: UID);
                           }
@@ -124,17 +127,21 @@ class LandingPage extends StatelessWidget{
                             }
                           }
 
-                          return LoginPage();
 
-                          // final user = userDoc.data();
 
-                        }
-                        else{
-                          // just waiinting
-                          return Material(child: Center(child: CircularProgressIndicator(),),);
-                        }
-                      },
-                    );
+
+
+                        return LoginPage();
+
+                        // final user = userDoc.data();
+
+                      }
+                      else{
+                        // just waiinting
+                        return Material(child: Center(child: CircularProgressIndicator(),),);
+                      }
+                    },
+                  );
 
 
                   // Now checking of uer status (Student or admin)
@@ -172,7 +179,3 @@ class LandingPage extends StatelessWidget{
   }
 
 }
-
-
-
-

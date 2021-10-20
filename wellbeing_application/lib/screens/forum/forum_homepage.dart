@@ -121,7 +121,7 @@ class _ForumHomePageState extends State<ForumHomePage> {
             },
             // Pass list of cats too
             child: CategoryIcon(
-                Icons.security_rounded, ForumCategoriesNum[index], true) //ForumCategoryBoard(index+1), //ForumCategoryMap[ForumCategoriesNum[index]][0]
+                Icons.star_rounded, ForumCategoriesNum[index], true) //ForumCategoryBoard(index+1), //ForumCategoryMap[ForumCategoriesNum[index]][0]
           //child:,
         );
       },
@@ -170,15 +170,15 @@ class _ForumHomePageState extends State<ForumHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            //top: Radius.circular(30),
-            bottom: Radius.circular(30)
-          )
-        ),
-        title: Text(kTipsCategoriesTitle),
+        backgroundColor: Colors.blue[700],
+        title: Text(kTipsCategoriesTitle, style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
-        titleTextStyle: TextStyle(fontWeight: FontWeight.bold, ),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              //top: Radius.circular(30),
+                bottom: Radius.circular(30)
+            )
+        ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 10),
@@ -191,6 +191,7 @@ class _ForumHomePageState extends State<ForumHomePage> {
           )
         ],
       ),
+
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -200,15 +201,14 @@ class _ForumHomePageState extends State<ForumHomePage> {
             // Like an empty box
             //Container(
             Container(
-              height: MediaQuery.of(context).size.height /3,
+              height: MediaQuery.of(context).size.height /4,
               width: MediaQuery.of(context).size.width * 0.95,
               color: Colors.transparent,
               child: Container(
                 padding: EdgeInsets.all(16.0),
                 decoration: BoxDecoration(color: Colors.blueGrey,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40.0),
-                    topRight: Radius.circular(40.0),
+                  borderRadius: BorderRadius.circular(
+                    40.0
                   ),
                 ),
                 child: Center(
@@ -218,10 +218,11 @@ class _ForumHomePageState extends State<ForumHomePage> {
             ),
              // child: ForumCategories()
             //),
-            ElevatedButton(onPressed: getForumInfo, child: Text("Testing")),
+            //ElevatedButton(onPressed: getForumInfo, child: Text("Testing")),
             SizedBox(height: 15),
-            Text("Latest Post"), // This will be from all posts
+            //Text("Latest Post"), // This will be from all posts
             //ForumCategories()
+
           ],
         ),
       ),

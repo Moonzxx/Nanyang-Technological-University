@@ -5,6 +5,7 @@ import 'package:day_picker/day_picker.dart';
 import 'package:wellbeing_application/constants.dart';
 import '../../../utils/firebase_api.dart';
 import 'package:date_format/date_format.dart';
+import '../../../widgets/custom_snackbar.dart';
 
 
 class AddNewHabit extends StatefulWidget {
@@ -85,8 +86,19 @@ class _AddNewHabitState extends State<AddNewHabit> {
 
   String validateStrings(String value){
 
-    RegExp nameregex = new RegExp(r'^[a-zA-Z]*$');
+    RegExp nameregex = new RegExp(r'^[a-zA-Z0-9_-]*$');
     if (!nameregex.hasMatch(value)){
+      return 'Name must contain only alphabets';
+    }
+    else{
+      return null;
+    }
+  }
+
+  String validateDesc(String value){
+
+    RegExp nameDesc = new RegExp(r'^[a-zA-Z0-9 ]*$');
+    if (!nameDesc.hasMatch(value)){
       return 'Name must contain only alphabets';
     }
     else{
@@ -116,7 +128,7 @@ class _AddNewHabitState extends State<AddNewHabit> {
                 ),
                 SizedBox(height: 10),
                 TextFormField(
-                  validator: validateStrings,
+                  validator: validateDesc,
                   decoration: inputDecoration("Description"),
                   controller: descController
                 ),
@@ -271,6 +283,8 @@ class _AddNewHabitState extends State<AddNewHabit> {
                             };
                             databaseMethods.setUsersHabitsfromCategory(Constants.myUID, widget.categoryName, nameController.text, createHabitInfoMap);
                             Navigator.pop(context);
+
+                            CustomSnackBar.buildPositiveSnackbar(context, "Journal Entry Uploaded!");
                           },
                           child: const Text('Create')
                       ),

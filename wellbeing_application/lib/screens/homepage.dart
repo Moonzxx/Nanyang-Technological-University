@@ -6,7 +6,7 @@ import 'homepagetester.dart';
 import 'feed/homepagetester2.dart';
 import 'feed/homepagetester3.dart';
 import '../widgets/navigation_drawer_zoom/navigation_start.dart';
-import '../widgets/bottom_navigation_home.dart';
+//import '../widgets/bottom_navigation_home.dart';
 import '../screens/feed/journal_overview.dart';
 
 
@@ -44,11 +44,11 @@ class _HomePageState extends State<HomePage> {
                 },
                 child: Text("HomePage Tester")
               ),ElevatedButton(
-                  onPressed: () {
+                  /*onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => NavHomePage()),);
-                  },
+                  },*/
                   child: Text("HomePage Tester 2")
               ),
         // Testing HomePage with navigation system

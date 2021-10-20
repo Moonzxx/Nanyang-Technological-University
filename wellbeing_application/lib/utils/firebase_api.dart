@@ -33,6 +33,10 @@ class FirebaseApi{
 
    */
 
+  getUserbyUID(String UID) async{
+    return await FirebaseFirestore.instance.collection("users").doc(UID).snapshots();
+  }
+
   // field of the collection from any document
   getUserbyUsername(String username) async{
     return await FirebaseFirestore.instance.collection('users').where("username", isEqualTo: username).get();

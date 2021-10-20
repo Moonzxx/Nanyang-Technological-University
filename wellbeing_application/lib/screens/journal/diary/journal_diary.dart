@@ -3,6 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import '../../../constants.dart';
+import 'journal_viewDiaryEntry.dart';
+import 'journal_addDiaryEntry.dart';
 
 class DiaryEntryList extends StatefulWidget {
   const DiaryEntryList({Key key}) : super(key: key);
@@ -41,8 +43,13 @@ class _DiaryEntryListState extends State<DiaryEntryList> {
         return ListView.builder(
           itemCount: (snapshot.data as QuerySnapshot).docs.length,
           itemBuilder: (context,index){
-            return diaryTiles(
-                entryDate: (snapshot.data as QuerySnapshot).docs[index]["date"]
+            return GestureDetector(
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewDiaryEntry()));
+              },
+              child: diaryTiles(
+                  entryDate: (snapshot.data as QuerySnapshot).docs[index]["date"]
+              ),
             );
           },
         );
@@ -56,14 +63,26 @@ class _DiaryEntryListState extends State<DiaryEntryList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Diary Entries"),
+        backgroundColor: Colors.blue[700],
+        title: Text("Diary", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              //top: Radius.circular(30),
+                bottom: Radius.circular(30)
+            )
+        ),
       ),
       body: getDiaryEntries(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){}, //make sure of bool to make it null,
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50.0),
+        child: FloatingActionButton(
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => AddDiaryEntry()));
+          }, //make sure of bool to make it null,
+          child: Icon(Icons.add),
+          backgroundColor: Colors.blue,
+        ),
       ),
     );
   }

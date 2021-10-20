@@ -44,7 +44,7 @@ class CustomSnackBar{
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
-        backgroundColor: Colors.greenAccent,
+        backgroundColor: Colors.green,
       ),
     );
   }

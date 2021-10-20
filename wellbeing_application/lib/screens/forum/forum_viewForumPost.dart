@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 
+
 class ViewForumPost extends StatefulWidget {
   final String fTitle;
   final String fDescription;
@@ -62,25 +63,45 @@ class _ViewForumPostState extends State<ViewForumPost> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Dicussion Post"),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
+        appBar: AppBar(
+          backgroundColor: Colors.blue[700],
+          title: Text("In need of a study buddy", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                //top: Radius.circular(30),
+                  bottom: Radius.circular(30)
+              )
+          ),
+          actions: [IconButton(onPressed: (){}, icon: Icon(Icons.bookmark_rounded ))],
+        ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.reply_rounded),
+          onPressed: (){
+            // Navigator.push(context, MaterialPageRoute(builder: (context){
+            // return SearchScreen();
+            //}));
+          },
+        ),
+
+     /* body: SingleChildScrollView(
         physics: ScrollPhysics(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text("Forum title here"),
+            Container(
+
+            ),
+            /* Text("Forum title here"),
             SizedBox(height: 10,),
             DisplayForumPost(userName: widget.fUser, userContent: widget.fDescription),
             SizedBox(height: 30),
-            displayReplyPosts(),
+            displayReplyPosts(),*/
 
           ],
         )
-      ),
+      ),*/
     );
   }
 }

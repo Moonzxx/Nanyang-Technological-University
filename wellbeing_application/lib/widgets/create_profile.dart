@@ -15,6 +15,7 @@ import 'package:path/path.dart' as path;
 import '../widgets/custom_snackbar.dart';
 import '../utils/firebase_api.dart';
 import '../utils/helperfunctions.dart';
+import '../widgets/navigation_drawer_zoom/navigation_start.dart';
 
 class CreateProfile extends StatefulWidget {
   final Uint8List chosenProfilePic;
@@ -106,15 +107,19 @@ class _CreateProfileState extends State<CreateProfile> {
       "first_name": this._firstName,
       "last_name": this._lastName,
       "username" : this._username,
-      "url-avatar": urlDownload,
-        "profile_creation" :  true
+      "url-avatar": urlDownload, "profile_creation" :  true
       });
-
+      final email = await HelperFunctions.sharedPreferenceUserEmailKey;
       HelperFunctions.saveUserLoggedInSharedPreference(true);
       HelperFunctions.saveUserUIDSharedPreference(uid);
       HelperFunctions.saveUserAvatarSharedPreference(urlDownload);
       HelperFunctions.saveUserNameSharedPreference(this._username);
 
+      var clientinfo = new Map();
+      clientinfo['UID'] = uid;
+      clientinfo['email'] =  email;
+      clientinfo['username']   = this._username;
+      clientinfo['avatarURL'] = urlDownload;
 
 
       // Once account has been created, set up default stuff
@@ -142,7 +147,7 @@ class _CreateProfileState extends State<CreateProfile> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => HomePage(accountUID: widget.accountUID)
+            builder: (context) => NavigationHomePage(userUID: widget.accountUID, userDetails: clientinfo)
         ),
       );
     } );
@@ -233,11 +238,6 @@ class _CreateProfileState extends State<CreateProfile> {
       if(isValid){
         _formKey2.currentState.save();
 
-
-
-
-
-
         updateUserDetails();
         //  Once information is saved, put the information into Users "Firstname", "lastname", "Username"
         // Find collection via UID?
@@ -312,6 +312,24 @@ class _CreateProfileState extends State<CreateProfile> {
       ),
     );
   }
+}
+
+InputDecoration inputDecoration(String labelText){
+  return InputDecoration(
+    icon: Icon(Icons.person),
+    focusColor: Colors.black,
+    labelStyle: TextStyle(color: Colors.black),
+    labelText: labelText,
+    fillColor: Colors.white,
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25.0),
+      borderSide: BorderSide(color: Colors.black),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(25.0),
+      borderSide: BorderSide(color: Colors.grey, width: 2.0),
+    ),
+  );
 }
 
 //Dont need any confirmation page??? Need to ask

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:package_info/package_info.dart';
 import '../utils/helperfunctions.dart';
+import '../utils/auth_VerifyEmail.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -101,7 +102,9 @@ class _LoginPageState extends State<LoginPage> {
   // Firebase methods
   Future<void> _createUser() async {
     try{
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password);
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password); //.then((_){
+      //  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyEmail()));
+     // });
       print("User: $userCredential");
       HelperFunctions.saveUserEmailSharedPreference(_email);
     } on FirebaseAuthException catch(e){
@@ -209,7 +212,7 @@ class _LoginPageState extends State<LoginPage> {
                             top: _headingTop
                         ),
                         child: Text(
-                          "Journaling",
+                          "uJournal",
                           style: TextStyle(
                               fontFamily: "Nunito",
                               color: _headingColor,
@@ -223,7 +226,7 @@ class _LoginPageState extends State<LoginPage> {
                             horizontal: 20
                         ),
                         child: Text(
-                          "Insert Description Here",
+                          "An application aimed at improving your wellbeing, both mentally and physically",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: _headingColor,

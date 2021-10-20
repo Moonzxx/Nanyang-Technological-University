@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
-import 'journal_habits_model.dart';
 import '../../../constants.dart';
 import 'journal_habitsList.dart';
+import 'journal_cat_add.dart';
 
 class Habits extends StatefulWidget {
   const Habits({Key key}) : super(key: key);
@@ -18,6 +18,7 @@ class _HabitsState extends State<Habits> {
 
   FirebaseApi databaseMethods = new FirebaseApi();
   Stream userHabitCatList;
+  List<Color> colors = [Colors.blue, Colors.green, Colors.pinkAccent,Colors.deepPurpleAccent, Colors.yellow, Colors.blueGrey];
 
 
 
@@ -39,7 +40,8 @@ class _HabitsState extends State<Habits> {
          itemCount: (snapshot.data as QuerySnapshot).docs.length ,
           itemBuilder: (context, index){
            return HabitCatTile(habitName: (snapshot.data as QuerySnapshot).docs[index]["name"],
-               shortDescp: (snapshot.data as QuerySnapshot).docs[index]["short_description"]);
+               shortDescp: (snapshot.data as QuerySnapshot).docs[index]["short_description"],
+           colors: colors[index],);
           },
         ) : Container();
       },
@@ -50,15 +52,29 @@ class _HabitsState extends State<Habits> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Habits'),
+      appBar: AppBar(
+        backgroundColor: Colors.blue[700],
+        title: Text("Habits", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              //top: Radius.circular(30),
+                bottom: Radius.circular(30)
+            )
         ),
+      ),
         // include action to delete and edit(?) category
         body: HabitCatList(),
-      floatingActionButton: ElevatedButton.icon(
-          onPressed: (){},
-          icon: Icon(Icons.add),
-          label: Text("Add a new cateogry")),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50.0),
+        child: ElevatedButton.icon(
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => JournalCatAdd()
+                  ));
+            },
+            icon: Icon(Icons.add),
+            label: Text("Add a new cateogry")),
+      ),
     );
   }
 }
@@ -66,7 +82,8 @@ class _HabitsState extends State<Habits> {
 class HabitCatTile extends StatelessWidget {
   final String habitName;
   final String shortDescp;
-  HabitCatTile({ this.habitName,  this.shortDescp});
+  final Color colors;
+  HabitCatTile({ this.habitName,  this.shortDescp, this.colors});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +92,7 @@ class HabitCatTile extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => HabitsList(categoryName: this.habitName)));
       },
       child: Card(
-        color: Colors.redAccent,
+        color: this.colors,
         child: ListTile(
           title: Text(this.habitName),
           subtitle: Text(this.shortDescp),

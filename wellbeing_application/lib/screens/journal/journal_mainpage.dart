@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../widgets/navigation_drawer.dart';
-import 'journal_diary.dart';
+import 'journal_calendar.dart';
 import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
 import 'habits/journal_habitsCatList.dart';
 import 'routine/journal_daily.dart';
 import 'diary/journal_diary.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class JournalHomePage extends StatelessWidget {
   const JournalHomePage({Key? key}) : super(key: key);
@@ -12,6 +13,7 @@ class JournalHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Journal',
       home: Home(),
     );
@@ -27,14 +29,21 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  int _currentIndex = 0;
+  int index = 0;
   // Insert pages here
-  final List<Widget> _children = [
-    PlaceholderWidget(Colors.pinkAccent),
-    Calender(),
-    DiaryEntryList(),
+
+  final items = <Widget>[
+    Icon(Icons.check_circle, size:25),
+    Icon(Icons.list, size :25),
+    Icon(Icons.book_rounded, size :25),
+    Icon(Icons.calendar_today_rounded, size:25)
+  ];
+
+  final List<Widget> screens = [
     DailyGoalsCheck(),
     Habits(),
+    DiaryEntryList(),
+    Calender(),
   ];
 
 
@@ -53,47 +62,34 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
         title: Text('Journal'),
         leading: NavigationWidget(),
       ),
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.black,
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Overview"
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Journal"
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Calendar"   // tracker
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Daily Tasks"
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Habits"
-          )
-        ],
+      body: screens[index],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          iconTheme: IconThemeData( color: Colors.white),
+        ),
+        child: CurvedNavigationBar(
+            color: Colors.blue,
+            buttonBackgroundColor: Colors.blue,
+            backgroundColor: Colors.transparent,
+            height: 55, // height of bottom navigationbar
+            index: index,
+            items: items,      // This initialises the bar
+            onTap: (index) {
+              setState(() {
+                this.index = index;
+              });
+            }
+        ),
       ),
     );
   }
 
-  void onTabTapped(int index){
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+
 }
 
 

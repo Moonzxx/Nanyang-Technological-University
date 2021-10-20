@@ -51,7 +51,7 @@ class UserHelper {
       "created_at": user.metadata.creationTime.millisecondsSinceEpoch,
       "role": "user",
       "build_number": buildNumber,
-      "profile_creation": false   // Boolean or number
+      "profile_creation": false,// Boolean or number
     };
 
     // CHeck if the user exists

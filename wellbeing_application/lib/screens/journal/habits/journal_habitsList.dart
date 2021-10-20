@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:wellbeing_application/screens/journal/habits/journal_habit_description.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
-import 'journal_habits_model.dart';
 import '../../../constants.dart';
 import 'journal_habits_add.dart';
 
@@ -94,7 +93,7 @@ class HabitTile extends StatelessWidget {
                 Hactivation: this.habitActivation, Hdays: this.habitdays)));
       },
       child: Card(
-        color: Colors.greenAccent,
+        color: Colors.pink,
         child: ListTile(
             title: Text(this.habitName),
             trailing: Icon(Icons.arrow_forward_rounded)

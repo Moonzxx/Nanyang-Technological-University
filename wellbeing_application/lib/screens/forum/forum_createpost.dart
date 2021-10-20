@@ -1,4 +1,5 @@
 // @dart=2.10
+import '../../widgets/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import '../../constants.dart';
@@ -91,6 +92,7 @@ class _CreateForumPostState extends State<CreateForumPost> {
                 ),
                 SizedBox(height: 10),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text("Post Anonymously? "),
                     SizedBox(width: 10),
@@ -137,6 +139,8 @@ class _CreateForumPostState extends State<CreateForumPost> {
 
                           databaseMethods.setNewForumPost(selectedDropDownMenu, fTitleController.text, CreateForumPostInfoMap);
                           Navigator.pop(context);
+                          CustomSnackBar.buildPositiveSnackbar(context, "Post Uploaded");
+
                         },
                         child: Text('Create Post'),
                       ),

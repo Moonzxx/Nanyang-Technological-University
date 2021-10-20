@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class SchoolHelplinePage extends StatefulWidget {
-  const SchoolHelplinePage({Key? key}) : super(key: key);
+class UserForumPosts extends StatefulWidget {
+  const UserForumPosts({Key? key}) : super(key: key);
 
   @override
-  _SchoolHelplinePageState createState() => _SchoolHelplinePageState();
+  _UserForumPostsState createState() => _UserForumPostsState();
 }
 
-class _SchoolHelplinePageState extends State<SchoolHelplinePage> {
+class _UserForumPostsState extends State<UserForumPosts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[700],
-        title: Text("School Helpline", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        title: Text("My Post", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -21,7 +21,9 @@ class _SchoolHelplinePageState extends State<SchoolHelplinePage> {
                 bottom: Radius.circular(30)
             )
         ),
+        actions: [IconButton(onPressed: (){}, icon: Icon(Icons.delete ))],
       ),
+
     );
   }
 }

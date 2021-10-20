@@ -106,7 +106,10 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
                               ),
                               borderRadius: BorderRadius.circular(40),
                             ),
-                            child: Icon(Icons.ac_unit)      // change to a send image
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: Icon(Icons.send_rounded, color: Colors.blue),
+                            )      // change to a send image
                         ),
                       ),
                     ],

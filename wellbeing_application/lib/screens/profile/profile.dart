@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
           ],
         ),
-        body: Column(
+        /* body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
           //mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -138,6 +138,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ), */
           ],
         )
+
+         */
 
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_widget.dart';
 import 'admin_assignment.dart';
 import 'admin_homepage.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class AdminMainPage extends StatelessWidget {
   const AdminMainPage({Key? key}) : super(key: key);
@@ -10,7 +11,7 @@ class AdminMainPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Admin Page',
+      title: 'Admin',
       home: AdminHome(),
     );
   }
@@ -26,8 +27,14 @@ class AdminHome extends StatefulWidget {
 
 class _AdminHomeState extends State<AdminHome> {
 
-  int _currentIndex = 0;
-  final List<Widget> _children = [
+  int index = 0;
+
+  final items = <Widget>[
+    Icon(Icons.admin_panel_settings_rounded, size:25),
+    Icon(Icons.mood_rounded, size :25)
+  ];
+
+  final List<Widget> screens = [
     AdminHomePage(),
     PlaceholderWidget(Colors.pinkAccent)
   ];
@@ -37,33 +44,34 @@ class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       appBar: AppBar(
-        title: Text('Admin Page'),
+        title: Text('Admin'),
         leading: NavigationWidget(),
       ),
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Admin'   // Can try to see their colour
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Assignment"
-          )
-        ],
+      body: screens[index],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          iconTheme: IconThemeData( color: Colors.white),
+        ),
+        child: CurvedNavigationBar(
+            color: Colors.blue,
+            buttonBackgroundColor: Colors.blue,
+            backgroundColor: Colors.transparent,
+            height: 55, // height of bottom navigationbar
+            index: index,
+            items: items,      // This initialises the bar
+            onTap: (index) {
+              setState(() {
+                this.index = index;
+              });
+            }
+        ),
       ),
     );
   }
 
-  void onTabTapped(int index){
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+
 }
 
 

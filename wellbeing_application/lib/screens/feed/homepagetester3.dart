@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import '../../widgets/navigation_drawer.dart';
 import 'feed_page.dart';
 import 'set_mood_page.dart';
 import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
+import '../../screens/journal/round_overview_stats.dart';
 
 class HomePageTester3 extends StatelessWidget {
   const HomePageTester3({Key? key}) : super(key: key);
@@ -25,12 +27,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0;
-  final List<Widget> _children = [
+  int index = 0;
+
+  final items = <Widget>[
+    Icon(Icons.feed, size:25),
+    Icon(Icons.mood_rounded, size :25)
+  ];
+
+  final List<Widget> screens = [
     // Add in widgets here
     //PlaceholderWidget(Colors.lightBlueAccent),
     FeedPage(),
-    PlaceholderWidget(Colors.deepOrange),
     MoodPage(),
     //MoodPage(),
    // PlaceholderWidget(Colors.green)
@@ -41,40 +48,35 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       //drawer: NavDrawer(),
-
       appBar: AppBar(
         title : Text('Feed'),
         leading: NavigationWidget(),
       ),
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail),
-            label: "Messages"
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: "Profile"
-          ),
-        ],
+      body: screens[index],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          iconTheme: IconThemeData( color: Colors.white),
+        ),
+        child: CurvedNavigationBar(
+            color: Colors.blue,
+            buttonBackgroundColor: Colors.blue,
+            backgroundColor: Colors.transparent,
+            height: 55, // height of bottom navigationbar
+            index: index,
+            items: items,      // This initialises the bar
+            onTap: (index) {
+              setState(() {
+                this.index = index;
+              });
+            }
+        ),
       ),
     );
   }
 
 
-  void onTabTapped(int index){
-    setState(() {
-      _currentIndex = index;
-    });
-  }
 }
 
 

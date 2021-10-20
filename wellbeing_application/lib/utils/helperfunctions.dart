@@ -7,9 +7,11 @@ class HelperFunctions{
   static String sharedPreferenceUserEmailKey = "USEREMAILKEY";    // Currently logged in user email
   static String sharedPreferenceUserAvatar = "USERAVATARKEY";
   static String sharedPreferenceUserUID = "USERUIDKEY";
+  static String sharedPreferenceUserVerified = "USERVERIFIEDKEY";
 
 
   // Saving data to SharedPreference
+
   static Future<bool> saveUserLoggedInSharedPreference(
       bool isUserLoggedIn) async{
     SharedPreferences prefs = await SharedPreferences.getInstance();

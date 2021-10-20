@@ -20,10 +20,17 @@ class _CalenderState extends State<Calender> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Calendar"),
+        backgroundColor: Colors.blue[700],
+        title: Text("Calendar", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              //top: Radius.circular(30),
+                bottom: Radius.circular(30)
+            )
+        ),
       ),
-      body: TableCalendar(
+       body: TableCalendar(
         focusedDay: selectedDay,
         firstDay: DateTime(2010),
         lastDay: DateTime(2035),
@@ -76,7 +83,7 @@ class _CalenderState extends State<Calender> {
             color: Colors.white,
           ),
         ),
-      ),
+      ), 
     );
   }
 }

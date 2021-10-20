@@ -41,7 +41,7 @@ class _ForumCategoryPostListState extends State<ForumCategoryPostList> {
           itemCount: (snapshot.data as QuerySnapshot).docs.length,
             itemBuilder: (context, index){
                 return ForumTile(forumTitle: (snapshot.data as QuerySnapshot).docs[index]["name"],
-                forumDescription: (snapshot.data as QuerySnapshot).docs[index]["description"],
+                forumDescription: (snapshot.data as QuerySnapshot).docs[index]["content"],
                 forumUser: (snapshot.data as QuerySnapshot).docs[index]["username"],
                 fCategory: widget.selectedCategory);
             }) :  Container();
@@ -76,7 +76,7 @@ class ForumTile extends StatelessWidget {
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => ViewForumPost(fTitle: this.forumTitle, fDescription: this.forumDescription, fUser: this.forumUser , fCategory: this.fCategory ,)));
       },
-      child: Card(
+       child: Card(
         shadowColor: Colors.black,
         elevation: 5.0,
         margin: EdgeInsets.all(10),

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
-class SchoolHelplinePage extends StatefulWidget {
-  const SchoolHelplinePage({Key? key}) : super(key: key);
+class UserBookmarked extends StatefulWidget {
+  const UserBookmarked({Key? key}) : super(key: key);
 
   @override
-  _SchoolHelplinePageState createState() => _SchoolHelplinePageState();
+  _UserBookmarkedState createState() => _UserBookmarkedState();
 }
 
-class _SchoolHelplinePageState extends State<SchoolHelplinePage> {
+class _UserBookmarkedState extends State<UserBookmarked> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue[700],
-        title: Text("School Helpline", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        title: Text("Bookmarked", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(

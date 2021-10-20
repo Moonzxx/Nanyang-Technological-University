@@ -44,11 +44,18 @@ class _ExternalHelplinePageState extends State<ExternalHelplinePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("External"),
-        centerTitle: true,
-      ),
-      body: getCounsellorsAroundSg()
+        appBar: AppBar(
+          backgroundColor: Colors.blue[700],
+          title: Text("Around SG", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                //top: Radius.circular(30),
+                  bottom: Radius.circular(30)
+              )
+          ),
+        ),
+      //body: getCounsellorsAroundSg()
     );
   }
 }

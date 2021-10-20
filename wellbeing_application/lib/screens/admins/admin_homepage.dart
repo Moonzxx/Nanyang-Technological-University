@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'admin_viewcats.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({Key? key}) : super(key: key);
@@ -8,7 +9,8 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
-  List<String> mainCollections = ["users","forums","tips","tools"];
+  List<String> mainCollections = ["USERS","FORUMS","TIPS","TOOLS"];
+  String cat= "";
 
   int selectedCard = -1;
 
@@ -32,11 +34,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
             return GestureDetector(
               onTap: (){
                 //make use of index
+                setState(() {
+                  cat = mainCollections[index];
+                });
+                Navigator.push(context, MaterialPageRoute(builder: (context) => AdminViewCat(category: cat)));
               },
               child: Container(
                 alignment: Alignment.center,
-                child: Text(mainCollections[index]),
-                decoration : BoxDecoration(color: Colors.lightBlueAccent, borderRadius: BorderRadius.circular(15)),
+                child: Text(mainCollections[index],style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
+                decoration : BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(15)),
               ),
             );
           }),
@@ -46,10 +52,17 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Admin Homepage'),
-        centerTitle: true,
-      ),
+        appBar: AppBar(
+          backgroundColor: Colors.blue[700],
+          title: Text("Tips/Tools", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                //top: Radius.circular(30),
+                  bottom: Radius.circular(30)
+              )
+          ),
+        ),
       body:  adminGridOptions()
 
     );

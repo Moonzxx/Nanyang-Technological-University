@@ -56,15 +56,28 @@ class _ChatFriendsPageState extends State<ChatFriendsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-     body: chatRoomList(),
-     floatingActionButton: FloatingActionButton(
-       child: Icon(Icons.search),
-       onPressed: (){
-         Navigator.push(context, MaterialPageRoute(builder: (context){
-           return SearchScreen();
-         }));
-       },
+      appBar: AppBar(
+        backgroundColor: Colors.blue[700],
+        title: Text("Chats", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              //top: Radius.circular(30),
+                bottom: Radius.circular(30)
+            )
+        ),
+      ),
+     //body: chatRoomList(),
+     floatingActionButton: Padding(
+       padding: const EdgeInsets.only( bottom: 50.0),
+       child: FloatingActionButton(
+         child: Icon(Icons.search),
+         onPressed: (){
+           Navigator.push(context, MaterialPageRoute(builder: (context){
+             return SearchScreen();
+           }));
+         },
+       ),
      ),
     );
   }

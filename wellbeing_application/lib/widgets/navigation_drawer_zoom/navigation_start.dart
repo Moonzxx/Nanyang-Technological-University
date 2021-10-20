@@ -1,7 +1,7 @@
 // @dart=2.10
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:wellbeing_application/screens/journal/journal_homepage.dart';
+import 'package:wellbeing_application/screens/journal/journal_mainpage.dart';
 import 'navigation_page.dart';
 import '../../screens/feed/homepagetester3.dart';
 import '../../screens/feed/homepagetester2.dart';
@@ -9,7 +9,7 @@ import 'navigation_item.dart';
 
 
 import '../../screens/feed/feed_page.dart';
-import '../../screens/journal/journal_homepage.dart';
+import '../../screens/journal/journal_mainpage.dart';
 import '../../screens/profile/profile.dart';
 import '../../screens/Display_tips_category.dart';
 import '../../screens/forum/forum_mainpage.dart';
@@ -22,6 +22,8 @@ import '../../utils/helperfunctions.dart';
 import '../../screens/tips/tips_mainpage.dart';
 import '../../screens/helpline/helpline_mainpage.dart';
 import '../../screens/admins/admin_mainpage.dart';
+import '../../screens/feed/feed_mainpagetest.dart';
+import '../../screens/notifications/notification_alerts.dart';
 
 
 class NavigationHomePage extends StatefulWidget {
@@ -50,6 +52,7 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
   Widget getScreen() {
     switch (currentItem){
       case NavigationItems.feed:
+        //return HomePageTester3();
         return HomePageTester3();
         break;
       case NavigationItems.profile:
@@ -65,7 +68,7 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
         return JournalHomePage();
         break;
       case NavigationItems.notifications:
-        return HomePageTester3();
+        return UserNotifcations();
         break;
       case NavigationItems.chats:
         return ChatMainPage();

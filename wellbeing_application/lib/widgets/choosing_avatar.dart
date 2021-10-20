@@ -45,13 +45,18 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
   UploadTask _task;
   int selectedCard = -1;
   int testing;
+  Uint8List diplay;
+  bool choseDef = false;
+  bool choseSelf = false;
+  bool atLeastChosen = false;
+
 
   @override
   Widget build(BuildContext context) {
 
     // If user were to backtrack, the application will reset the photo in cache.
     _image = null;
-    bytes = null;
+    bytes;
     final fileName = _image != null ? basename(_image.path) : 'No File Selected';
 
 
@@ -66,7 +71,13 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
         _image = File(path);
         chosenImageName = basename(_image.path);
         await _image.readAsBytes().then((value) {
-          bytes = Uint8List.fromList(value);
+         // bytes = Uint8List.fromList(value);
+          setState(() {
+            bytes = Uint8List.fromList(value);
+            choseSelf = true;
+            choseDef = false;
+            atLeastChosen = true;
+          });
 
 
           print('Reading of bytes ic completed');
@@ -95,6 +106,11 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
       },
     );
 
+
+    @override
+    void initState(){
+      super.initState();
+    }
 
     /* Future uploadFile(BuildContext context) async{
       String fileName = basename(_image.path);
@@ -150,6 +166,8 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
     */
 
 
+
+
     Widget makeImageGrid(){
       // Need to find a way tos ave images that have already retrieved
       return GridView.builder(
@@ -166,6 +184,11 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
               onTap: (){
                 setState(() {
                   selectedCard = index;
+                  setState(() {
+                    choseDef = true;
+                    choseSelf = false;
+                    atLeastChosen = true;
+                  });
                   print(index);
                 });
               },
@@ -201,10 +224,50 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
       ),
     );
 
-    Widget buildNextButton() => TextButton(
+
+    // button clickable after
+    Widget buildNextButton() => ElevatedButton(onPressed: atLeastChosen ? (){
+      if( bytes != null && choseSelf == true)
+      {
+        setState(() {
+          imageFile = bytes;
+          testing = selectedCard;
+          Navigator.of(context).pop();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID)
+            ),
+          );
+        });
+      }
+      else{
+        Reference photosReference = FirebaseStorage.instance.ref().child("profilepics");
+        photosReference.child("default_${selectedCard}.jpg").getData(MAX_SIZE).then((data) {
+          setState(() {
+            imageFile = data;
+            testing = selectedCard;
+            print("Profile UID Pt 3: ${widget.accountUID}");
+            Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID)
+              ),
+            );
+          });
+        });
+      }
+
+
+    } : null,
+        style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 20)),
+        child: Text('Next Step'));
+
+    /* TextButton(
       style: flatButtonStyle,
       onPressed:() {
-        if( bytes != null)
+        if( bytes != null && choseSelf == true)
           {
             setState(() {
               imageFile = bytes;
@@ -241,6 +304,7 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
       child: Text('Next Step'),
     );
 
+*/
 
 
     /*
@@ -261,7 +325,7 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Text("You can selected from either of this siz default avatars or choose to use your own picture.", textAlign: TextAlign.center,),
+                //Text("You can selected from either of this siz default avatars or choose to use your own picture.", textAlign: TextAlign.center,),
                 /*
                 Align(
                   alignment: Alignment.center,
@@ -288,9 +352,7 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
                   child: Container(
                     padding: EdgeInsets.all(16.0),
                     decoration: BoxDecoration(color: Colors.blueGrey,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40.0),
-                        topRight: Radius.circular(40.0),
+                      borderRadius: BorderRadius.circular(40
                       ),
                     ),
                     child: Center(
@@ -299,18 +361,35 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
                   ),
                 ),
                 const SizedBox(height:20),
-                ElevatedButton(onPressed: selectFile, child: Text("Add"),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.blueAccent,
-                  onPrimary: Colors.black,
-                  shadowColor: Colors.white,
-                  elevation: 5,
-                  side: BorderSide(color: Colors.red, width:2),
-                  textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: selectFile,
+                      child: CircleAvatar(
+                        radius: 70,
+                        backgroundImage: (bytes != null) ? Image.memory(bytes,fit: BoxFit.fill).image : Image.asset("assets/images/HealthyLifestylePoster.png").image,
+                        backgroundColor: Colors.white,
+
+                      ),
+                    ),
+                    SizedBox(width: 15),
+                    ElevatedButton(onPressed: selectFile, child: Text("Add"),
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.blueAccent,
+                          onPrimary: Colors.black,
+                          shadowColor: Colors.white,
+                          elevation: 5,
+                          side: BorderSide(color: Colors.red, width:2),
+                          textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                      ),
+                    ),
+                  ],
                 ),
-                ),
-                Text(fileName),
+
                 _task != null ? buildUploadStatus(_task) : Container(),
+                SizedBox(height: 30),
                 buildNextButton(),
               ],
             ),

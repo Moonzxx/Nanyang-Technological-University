@@ -30,6 +30,7 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
   List afternoonRoutine = [];
   List eveningRoutine = [];
   List nightRoutine = [];
+  List<double> cat = [1,1,1,0,0,1,0,1,0,0,1];
 
   List<String> categories;
 
@@ -263,61 +264,79 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
       });
   }
 
+  double calculateWellB(){
+    double wb = 0.0;
+    double alpha = 0.4;
+
+    for(var i =0; i < cat.length; i++){
+      if(i == 0){
+        wb = cat[i];
+      }else{
+        wb = wb + (0.4 *(cat[i-1] - wb));
+      }
+    }
+      return wb;
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text("Daily Goals"),
-        actionsIconTheme: IconThemeData(
-          size: 30.0,
-          color: Colors.black,
-          opacity: 10.0
+        backgroundColor: Colors.blue[700],
+        title: Text("Daily Goals", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        centerTitle: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              //top: Radius.circular(30),
+                bottom: Radius.circular(30)
+            )
         ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 20.0),
 
-              child: GestureDetector(
-                onTap: (){
-                  selectDate(context);
-                },
-                child: Icon(
+            child: GestureDetector(
+              onTap: (){
+                selectDate(context);
+              },
+              child: Icon(
                   Icons.calendar_today_rounded,
                   size: 26.0
-                ),
               ),
+            ),
           )
         ],
       ),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Container(
+
+      body:  Container(
           height: 300,
           width: MediaQuery.of(context).size.width,
-          child: getRoutines(afternoonRoutine),
-        ),/* Column(
+          child: getRoutines(morningRoutine),
+        ),  /* Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             routineHeaders(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height/12,
                 Colors.lightBlue, "Morning", Colors.white, 40.0),
-
+            getRoutines(morningRoutine),
             SizedBox(height: 15),
             routineHeaders(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height/12,
                 Colors.orangeAccent, "Afternoon", Colors.white, 40.0),
-
+            getRoutines(afternoonRoutine),
             SizedBox(height: 15),
             routineHeaders(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height/12,
                 Colors.deepOrangeAccent, "Evening", Colors.white, 40.0),
-
+            getRoutines(eveningRoutine),
             SizedBox(height: 15),
             routineHeaders(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height/12,
                 Colors.blueGrey, "Night", Colors.white, 40.0),
+            getRoutines(nightRoutine),
 
           ],
-          */
-        ),
+
+        ),*/
+
       );
 
   }

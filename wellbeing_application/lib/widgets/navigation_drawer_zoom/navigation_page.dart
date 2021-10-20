@@ -21,17 +21,19 @@ class NavigationItems {
 
 
   static const all = <NavigationItem>[
-    feed,
     profile,
+    feed,
     tips,
-    forums,
     journal,
+    forums,
     notifications,
     chats,
     helpline,
     admin
   ];
 }
+
+
 
 class NavigationPage extends StatelessWidget {
   const NavigationPage({Key? key, required this.currentItem, required this.onSelectedItem, required this.user}) : super(key: key);
@@ -98,43 +100,28 @@ class NavigationPage extends StatelessWidget {
                   ...NavigationItems.all.map(buildNavigationItem).toList(),
                   Spacer(flex: 2),
                   SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Container(
-                        child:ElevatedButton.icon(
-                          onPressed: () async {
-                            await FirebaseAuth.instance.signOut();
-                          },
-                          label: Text("Log Out"),
-                          icon: Icon(Icons.logout_rounded),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-                              padding: MaterialStateProperty.all(EdgeInsets.all(16)),
-                              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))
-                          ),
+                  Container(
+                    child:Padding(
+                      padding: const EdgeInsets.only(left: 100),
+                      child: ElevatedButton.icon(
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                        },
+                        label: Text("Log Out"),
+                        icon: Icon(Icons.logout_rounded),
+                        style: ButtonStyle(
+
+                            backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+                            padding: MaterialStateProperty.all(EdgeInsets.all(16)),
+                            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))
                         ),
                       ),
-                      SizedBox(width:20),
-                      Container(
-                        child:ElevatedButton.icon(
-                          onPressed: () async {
-                            //print("This is ${user['username']} profile");
-                            // Use this button for admins to transition to admin Page
-                            // Or make this button available only for admin
-                          },
-                          label: Text("Settings"),
-                          icon: Icon(Icons.settings),
-                          style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(Colors.grey.shade50),
-                              padding: MaterialStateProperty.all(EdgeInsets.all(16)),
-                              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)))
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                  )
+
                 ]
             ),
+
           ),
         ),
       ),

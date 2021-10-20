@@ -14,7 +14,7 @@ class _SettingsPageState extends State<SettingsPage> {
         appBar: AppBar(
             title: Text("Settings")
         ),
-        body: SingleChildScrollView(
+        /* body: SingleChildScrollView(
           child: Align(
             alignment: Alignment.center,
             child: Column(
@@ -32,6 +32,8 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
         )
+
+         */
     );;
   }
 }

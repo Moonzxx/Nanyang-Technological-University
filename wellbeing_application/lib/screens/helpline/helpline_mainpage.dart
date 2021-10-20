@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_widget.dart';
 import 'helpline_outside.dart';
 import 'helpline_school.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 
 class HelplineMainPage extends StatelessWidget {
@@ -26,8 +27,14 @@ class HelplineHome extends StatefulWidget {
 
 class _HelplineHomeState extends State<HelplineHome> {
 
-  int _currentIndex = 0;
-  final List<Widget> _children = [
+  int index = 0;
+
+  final items = <Widget>[
+    Icon(Icons.school_rounded, size:25),
+    Icon(Icons.flag_rounded, size :25)
+  ];
+
+  final List<Widget> screens = [
     SchoolHelplinePage(),
     ExternalHelplinePage()
   ];
@@ -40,30 +47,29 @@ class _HelplineHomeState extends State<HelplineHome> {
         title: Text('Helpline'),
         leading: NavigationWidget(),
       ),
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'School'
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'External'
-          )
-        ],
+      body: screens[index],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          iconTheme: IconThemeData( color: Colors.white),
+        ),
+        child: CurvedNavigationBar(
+            color: Colors.blue,
+            buttonBackgroundColor: Colors.blue,
+            backgroundColor: Colors.transparent,
+            height: 55, // height of bottom navigationbar
+            index: index,
+            items: items,      // This initialises the bar
+            onTap: (index) {
+              setState(() {
+                this.index = index;
+              });
+            }
+        ),
       ),
     );
   }
   
-  
-  void onTabTapped(int index){
-    setState(() {
-      _currentIndex = index;
-    });
-  }
+
 }
 
 
