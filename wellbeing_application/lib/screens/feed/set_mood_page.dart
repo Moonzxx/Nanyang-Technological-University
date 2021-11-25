@@ -1,3 +1,5 @@
+// @dart=2.10
+
 /*
 
 Set Mood Page
@@ -8,21 +10,35 @@ Set Mood Page
 
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:wellbeing_application/utils/firebase_api.dart';
+import '../../constants.dart';
+import '../../widgets/custom_snackbar.dart';
 
 class MoodPage extends StatefulWidget {
-  const MoodPage({Key? key}) : super(key: key);
+  const MoodPage({Key key}) : super(key: key);
 
   @override
   _MoodPageState createState() => _MoodPageState();
 }
 
 class _MoodPageState extends State<MoodPage> {
-  Color color = Colors.greenAccent;
+  FirebaseApi databaseMethods = new FirebaseApi();
+  Color color;
+
+  @override
+  void initState(){
+    setState(() {
+      color = Color(Constants.myMoodColour).withOpacity(1);
+    });
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
+        backgroundColor:  Color(Constants.myThemeColour + 25).withOpacity(1),
         title: Text("Select Mood", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
@@ -55,73 +71,7 @@ class _MoodPageState extends State<MoodPage> {
                   "Pick Color",
                   style: TextStyle(fontSize:24)
                 ),
-                onPressed: () => showDialog(context: context,
-                    builder: (BuildContext context){
-                      return AlertDialog(
-                        title: Text("dfsdf"),
-                        content: Text("adsads"),
-                      );
-                    })
-
-                /* showDialog(
-                  context: context,
-                  builder: (BuildContext context){
-                    return Dialog(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)
-                      ),
-                      child: Container(
-                        height: 200,
-                        child: Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              TextField(
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  hintText: 'What do you want to remember'
-                                ),
-                              ),
-                              SizedBox(height: 20),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  SizedBox(
-                                    width: 100,
-                                    child: ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all(Colors.red)
-                                      ),
-                                      onPressed: (){},
-                                      child: Text("Delelt",style: TextStyle(color: Colors.white),
-                                      ),
-
-                                    ),
-                                  ),
-                                  SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 100,
-                                    child: ElevatedButton(
-                                      onPressed: (){},
-                                      child: Text("Okayy",style: TextStyle(color: Colors.white),
-                                      ),
-
-                                    ),
-
-                                  )
-                                ],
-                              ),
-
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  }
-                ) */ //pickColor(context),
+                onPressed: () => pickColor(context),
               ),
             ],
           ),
@@ -131,6 +81,7 @@ class _MoodPageState extends State<MoodPage> {
   }
 
   // Can be changed into a block picker as well
+  // Function to choose a colour
   Widget buildColorPicker() => ColorPicker(
     pickerColor: color,
     enableAlpha: false, // Hides the advance option to not change the colour's opacity
@@ -142,7 +93,7 @@ class _MoodPageState extends State<MoodPage> {
     context: context,
     builder: (context) => AlertDialog(
       contentPadding: EdgeInsets.all(10),
-      title: Text('Pick your colour'),
+      title: Text('Pick your Mood Colour'),
       content: Column(
         children: <Widget>[
           buildColorPicker(),
@@ -151,7 +102,15 @@ class _MoodPageState extends State<MoodPage> {
               "SELECT",
               style: TextStyle(fontSize: 20),
             ),
-            onPressed: () => Navigator.of(context).pop(),
+              onPressed: (){
+                databaseMethods.setUserMoodColour(Constants.myUID, this.color.value).then((val){
+                  setState(() {
+                    Constants.myMoodColour = this.color.value;
+                  });
+                });
+                Navigator.of(context).pop();
+                CustomSnackBar.buildPositiveSnackbar(context, "Mood Colour Updated!");
+              }
           ),
         ],
       ),

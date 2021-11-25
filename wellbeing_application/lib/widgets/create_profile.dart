@@ -17,6 +17,9 @@ import '../utils/firebase_api.dart';
 import '../utils/helperfunctions.dart';
 import '../widgets/navigation_drawer_zoom/navigation_start.dart';
 
+
+// Creation of user profile with basic user information
+
 class CreateProfile extends StatefulWidget {
   final Uint8List chosenProfilePic;
   final String accountUID;
@@ -39,6 +42,7 @@ class _CreateProfileState extends State<CreateProfile> {
   String _lastName = "";
   String _username = "";
 
+  // Default information to ne initiliased in the databsed once the user is successfully created
   Future<void> initiliaseDefaultDatabase(String id) async{
 
     Map<String, String> beAwareCatInfo = {
@@ -76,10 +80,9 @@ class _CreateProfileState extends State<CreateProfile> {
     databaseMethods.createDefaultHabitCategories(id, "Connect", connectCatInfo);
     databaseMethods.createDefaultHabitCategories(id, "Help Others", helpOthersCatInfo);
     databaseMethods.createDefaultHabitCategories(id, "Keep Learning", KeepLearningCatInfo);
-
   }
 
-
+  // Updating user details into the database after user has confirmed their information
   Future<void> updateUserDetails() async{
     final uid = widget.accountUID;
     final destination = 'profilepics/userProfilePictures/$uid';
@@ -107,14 +110,20 @@ class _CreateProfileState extends State<CreateProfile> {
       "first_name": this._firstName,
       "last_name": this._lastName,
       "username" : this._username,
-      "url-avatar": urlDownload, "profile_creation" :  true
+      "url-avatar": urlDownload,
+        "colour": 4282435440,
+        "mood_colour": 4282435440,
+        "profile_creation" :  true
       });
+
+      // Saving information into HelperFunction to keep tabs on user
       final email = await HelperFunctions.sharedPreferenceUserEmailKey;
       HelperFunctions.saveUserLoggedInSharedPreference(true);
       HelperFunctions.saveUserUIDSharedPreference(uid);
       HelperFunctions.saveUserAvatarSharedPreference(urlDownload);
       HelperFunctions.saveUserNameSharedPreference(this._username);
 
+      // Please check if this information is still needed!
       var clientinfo = new Map();
       clientinfo['UID'] = uid;
       clientinfo['email'] =  email;
@@ -153,6 +162,7 @@ class _CreateProfileState extends State<CreateProfile> {
     } );
   }
 
+  // Name Validation: Check if name only contains alphabets
   String validateName(String value){
 
     RegExp nameregex = new RegExp(r'^[a-zA-Z]*$');
@@ -164,6 +174,7 @@ class _CreateProfileState extends State<CreateProfile> {
     }
   }
 
+  // Username Validation: Check if username is only alphanumeric (without any special characters)
   String validateUsername(String value){
     RegExp nameregex = new RegExp(r'[a-zA-z0-9]');
     if (!nameregex.hasMatch(value)){
@@ -175,18 +186,13 @@ class _CreateProfileState extends State<CreateProfile> {
   }
 
 
+  // TextFormField for First Name input
   Widget buildFirstName() => TextFormField(
     controller: firstNameController,
-    decoration: InputDecoration(
-      icon: Icon(Icons.person),
-      hintText: 'Your First Name',
-      labelText: 'First Name *',
-      border: OutlineInputBorder(),
+    decoration: inputDecoration("First Name"
     ),
-    maxLength: 30,
-    validator: (value) {
-      validateName(value);
-    },
+    maxLength: 20,
+    validator: validateName,
     onSaved: (value){
       setState(() {
         _firstName = value;
@@ -194,17 +200,17 @@ class _CreateProfileState extends State<CreateProfile> {
     },
   );
 
+  // TextFormField for Last Name input
   Widget buildLastName() => TextFormField(
-    decoration: InputDecoration(
+    decoration: inputDecoration("Last Name"),
+    /* InputDecoration(
       icon: Icon(Icons.person),
       hintText: 'Your Last Name',
       labelText: 'Last Name *',
       border: OutlineInputBorder(),
-    ),
-    maxLength: 30,
-    validator: (value) {
-      validateName(value);
-    },
+    ),*/
+    maxLength: 20,
+    validator: validateName,
     onSaved: (value ){
       setState(() {
         _lastName = value;
@@ -212,17 +218,16 @@ class _CreateProfileState extends State<CreateProfile> {
     },
   );
 
+  // TextFormField for Username Input
   Widget buildUserName() => TextFormField(
-    decoration: InputDecoration(
+    decoration: inputDecoration("Usename"),/* nputDecoration(
       icon: Icon(Icons.person),
       hintText: 'It can be anything',
       labelText: 'Username *',
       border: OutlineInputBorder(),
-    ),
+    ), */
     maxLength: 30,
-    validator: (value) {
-      validateUsername(value);
-    },
+    validator: validateUsername,
     onSaved: (value) {
       setState(() {
         _username = value;
@@ -230,38 +235,28 @@ class _CreateProfileState extends State<CreateProfile> {
     },
   );
 
-  Widget buildSubmitButton() => TextButton(
-    style: flatButtonStyle,
-    onPressed:() {
-      final isValid = _formKey2.currentState.validate();
 
-      if(isValid){
-        _formKey2.currentState.save();
+  // Submit button to finalise profile creation
+  Widget buildSubmitButton() => ElevatedButton(onPressed: (){
+    final isValid = _formKey2.currentState.validate();
 
-        updateUserDetails();
-        //  Once information is saved, put the information into Users "Firstname", "lastname", "Username"
-        // Find collection via UID?
-      }
-    },
-    child: Text('Submit'),
-  );
-
-  final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-    primary: Colors.lightBlue,
-    padding: EdgeInsets.symmetric(horizontal: 16.0),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-    ),
-  );
+    if(isValid){
+      _formKey2.currentState.save();
+      updateUserDetails();
+    }
+  },
+      style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 20), primary: Colors.green , elevation: 5, ),
+      child: Text('Next Step'));
 
 
+  // Profile Creation Main Page
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: kCreateProfileTitle,
       home: Scaffold(
         appBar: AppBar(
-          title: Text(kCreateProfileTitle),
+          title: Text(kCreateProfileTitle, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, fontSize: 25),),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -314,173 +309,5 @@ class _CreateProfileState extends State<CreateProfile> {
   }
 }
 
-InputDecoration inputDecoration(String labelText){
-  return InputDecoration(
-    icon: Icon(Icons.person),
-    focusColor: Colors.black,
-    labelStyle: TextStyle(color: Colors.black),
-    labelText: labelText,
-    fillColor: Colors.white,
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25.0),
-      borderSide: BorderSide(color: Colors.black),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25.0),
-      borderSide: BorderSide(color: Colors.grey, width: 2.0),
-    ),
-  );
-}
-
-//Dont need any confirmation page??? Need to ask
-// Reorganise code please
-/*
-class RegistrationForm extends StatefulWidget {
-   String accountID;
-  RegistrationForm(String accountUID, {this.accountID});
-
-
-  @override
-  _RegistrationFormState createState() => _RegistrationFormState(this.accountID);
-}
-
-class _RegistrationFormState extends State<RegistrationForm> {
-
-  final _formKey = GlobalKey<FormState>();
-  String id;
-  String _firstName = "";
-  String _lastName = "";
-  String _username = "";
-
-  _RegistrationFormState(String accountID){
-    this.id = accountID;
-  }
-
-  Future<void> updateUserDetails() async{
-    FirebaseFirestore _db = FirebaseFirestore.instance;
-    final userRef = _db.collection("users").doc(this.id);
-    userRef.get().then((value) async {
-      Map<String, dynamic> userData = {
-        "first_name": this._firstName,
-        "last_name": this._lastName,
-        "username" : this._username
-      };
-
-
-
-      await userRef.set(userData);
-      await userRef.update({
-        "profile_creation" :  true
-      });
-    } );
-  }
-
-
-  Widget buildFirstName() => TextFormField(
-    decoration: InputDecoration(
-      icon: Icon(Icons.person),
-      hintText: 'Your First Name',
-      labelText: 'First Name *',
-      border: OutlineInputBorder(),
-    ),
-    maxLength: 30,
-    validator: (value) {
-      validateName(value);
-    },
-    onSaved: (value){
-      setState(() {
-        _firstName = value;
-      });
-    },
-  );
-
-  Widget buildLastName() => TextFormField(
-    decoration: InputDecoration(
-        icon: Icon(Icons.person),
-        hintText: 'Your Last Name',
-        labelText: 'Last Name *',
-      border: OutlineInputBorder(),
-    ),
-    maxLength: 30,
-    validator: (value) {
-      validateName(value);
-    },
-    onSaved: (value ){
-      setState(() {
-        _lastName = value;
-      });
-    },
-  );
-
-
-  Widget buildUserName() => TextFormField(
-    decoration: InputDecoration(
-      icon: Icon(Icons.person),
-      hintText: 'It can be anything',
-      labelText: 'Username *',
-      border: OutlineInputBorder(),
-    ),
-    maxLength: 30,
-    validator: (value) {
-        validateUsername(value);
-    },
-    onSaved: (value) {
-      setState(() {
-        _username = value;
-      });
-    },
-  );
-
-  Widget buildSubmitButton() => TextButton(
-    style: flatButtonStyle,
-    onPressed:() {
-      final isValid = _formKey.currentState.validate();
-
-      if(isValid){
-        _formKey.currentState.save();
-        updateUserDetails();
-        //  Once information is saved, put the information into Users "Firstname", "lastname", "Username"
-        // Find collection via UID?
-      }
-    },
-    child: Text('Submit'),
-  );
-
-  final ButtonStyle flatButtonStyle = TextButton.styleFrom(
-    primary: Colors.lightBlue,
-    padding: EdgeInsets.symmetric(horizontal: 16.0),
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.all(Radius.circular(2.0)),
-    ),
-  );
-
-
-
-  // Creation
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: ListView(
-        padding: EdgeInsets.all(16),
-        children: <Widget>[
-          buildFirstName(),
-          const SizedBox(height: 16),
-          buildLastName(),
-          const SizedBox(height: 16),
-          buildUserName(),
-          const SizedBox(height: 16),
-          buildSubmitButton(),
-        ],
-      ),
-    );
-  }
-}
-
-*/
-
-
-// Validation
 
 

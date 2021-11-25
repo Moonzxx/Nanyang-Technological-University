@@ -3,6 +3,7 @@ import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_
 import 'helpline_outside.dart';
 import 'helpline_school.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import '../../constants.dart';
 
 
 class HelplineMainPage extends StatelessWidget {
@@ -44,6 +45,7 @@ class _HelplineHomeState extends State<HelplineHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+          backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
         title: Text('Helpline'),
         leading: NavigationWidget(),
       ),

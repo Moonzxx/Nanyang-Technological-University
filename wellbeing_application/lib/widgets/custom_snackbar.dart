@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 
 class CustomSnackBar{
+
+  // Feedback for errors
   static buildErrorSnackbar(BuildContext context, String message){
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -28,13 +30,14 @@ class CustomSnackBar{
   }
 
 
+  // Feedback for successful attempts
   static buildPositiveSnackbar(BuildContext context, String message){
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(message, style: TextStyle(fontSize: 10, color: Colors.black),),
         action: SnackBarAction(
-          label: "Cancel",
-          textColor: Colors.white,
+          label: "Close",
+          textColor: Colors.red,
           onPressed: (){
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
           },// Try to make this into an Icon

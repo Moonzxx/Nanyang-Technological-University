@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
+import '../../constants.dart';
 
 class ExternalHelplinePage extends StatefulWidget {
   const ExternalHelplinePage({Key key}) : super(key: key);
@@ -20,6 +21,7 @@ class _ExternalHelplinePageState extends State<ExternalHelplinePage> {
     databaseMethods.getAroundSG().then((val){
       setState(() {
         cAroundSG = val;
+        print(Colors.blue[700].value);
       });
     });
     super.initState();
@@ -45,7 +47,7 @@ class _ExternalHelplinePageState extends State<ExternalHelplinePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue[700],
+          backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
           title: Text("Around SG", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
           centerTitle: true,
           shape: RoundedRectangleBorder(
@@ -55,7 +57,7 @@ class _ExternalHelplinePageState extends State<ExternalHelplinePage> {
               )
           ),
         ),
-      //body: getCounsellorsAroundSg()
+      body: getCounsellorsAroundSg()
     );
   }
 }

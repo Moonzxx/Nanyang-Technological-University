@@ -20,6 +20,8 @@ class _PostListsState extends State<PostLists> {
 
   @override
   void initState(){
+    print(widget.mCategory);
+    print(widget.sCategory);
     databaseMethods.getTTCatPosts(widget.mCategory, widget.sCategory).then((val){
       setState(() {
         ttPostStream = val;
@@ -61,6 +63,8 @@ class PostTiles extends StatelessWidget {
   final String postTitle;
   PostTiles({ this.mCat, this.sCat, this.postTitle});
 
+  // Should short description be added??
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -70,7 +74,7 @@ class PostTiles extends StatelessWidget {
             postTitleName: this.postTitle)));
       },
       child: Container(
-        height: MediaQuery.of(context).size.height/8,
+        height: MediaQuery.of(context).size.height/11,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
@@ -78,7 +82,9 @@ class PostTiles extends StatelessWidget {
         child: Card(
           elevation: 5,
           child: ListTile(
-              title: Text(this.postTitle)
+              title: Text(this.postTitle),
+            trailing: Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue),
+
           ),
         ),
       ),

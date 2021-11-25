@@ -6,6 +6,7 @@ import 'habits/journal_habitsCatList.dart';
 import 'routine/journal_daily.dart';
 import 'diary/journal_diary.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import '../../constants.dart';
 
 class JournalHomePage extends StatelessWidget {
   const JournalHomePage({Key? key}) : super(key: key);
@@ -64,6 +65,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
+        backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
         title: Text('Journal'),
         leading: NavigationWidget(),
       ),

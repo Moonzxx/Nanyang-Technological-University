@@ -5,6 +5,7 @@ import 'tips_tipshomepage.dart';
 import 'tips_toolshomepage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'tiptools_bookmarked.dart';
+import '../../constants.dart';
 
 class TipsMainPage extends StatelessWidget {
   const TipsMainPage({Key? key}) : super(key: key);
@@ -50,6 +51,7 @@ class _TipsHomeState extends State<TipsHome> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
+        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
         title: Text("Tips"),
         leading: NavigationWidget(),
       ),
@@ -74,10 +76,12 @@ class _TipsHomeState extends State<TipsHome> {
       ),
     );
   }
-
-
-
 }
+
+
+
+
+
 
 class PlaceholderWidget extends StatelessWidget {
   final Color color;

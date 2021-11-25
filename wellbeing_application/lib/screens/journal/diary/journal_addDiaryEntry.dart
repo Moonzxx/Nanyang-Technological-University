@@ -1,8 +1,9 @@
+// @dart=2.10
 import 'package:flutter/material.dart';
 import '../../../widgets/custom_snackbar.dart';
 
 class AddDiaryEntry extends StatefulWidget {
-  const AddDiaryEntry({Key? key}) : super(key: key);
+  const AddDiaryEntry({Key key}) : super(key: key);
 
   @override
   _AddDiaryEntryState createState() => _AddDiaryEntryState();
@@ -15,6 +16,9 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
   final _addDiaryFormKey = GlobalKey<FormState>();
   TextEditingController moodController = new TextEditingController();
   TextEditingController thoughtsController = new TextEditingController();
+
+  String selectedMoodDropDownMenu = "Happy";
+  List<String> mood = ["Happy", "Sad", "Disgusted", "Night"];
 
   @override
   Widget build(BuildContext context) {
@@ -31,23 +35,25 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(height: 200),
+                // Add mood here
                 SizedBox(
                   height: 200,
                   child: TextFormField(
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
                     decoration: inputDecoration("Thoughts"),
                     controller: thoughtsController,
                   ),
                 ),
 
 
-                /* Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Habit Frequency:'),
+                    Text('Mood:'),
                     SizedBox(width: 15,),
                     DropdownButton(
-                      value: selectedDropDownMenu,
+                      value: selectedMoodDropDownMenu,
                         icon: const Icon(Icons.arrow_downward),
                         iconSize: 20,
                         elevation: 16,
@@ -55,20 +61,20 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
                         underline: Container(
                           height: 2,
                         color: Colors.black),
-                        onChanged: (int newValue){
+                        onChanged: (String newValue){
                         setState(() {
-                          selectedDropDownMenu = newValue;
+                          selectedMoodDropDownMenu = newValue;
                         });
                         },
-                        items:  frequency
-                        .map<DropdownMenuItem<int>>((int value) {
-                      return DropdownMenuItem<int>(
+                        items:  mood
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
                         value: value,
                         child: Text(value.toString()),
                       );
                     }).toList()),
                   ],
-                ), */
+                ),
 
                 Padding(
                   padding: EdgeInsets.only(bottom: 20.0),
@@ -81,6 +87,9 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
                           onPressed: () {
                            // Navigator.push(context, MaterialPageRoute(builder: (context) =>
                            // ));
+
+                            // Once button is pressed, Diary entry will be created
+
                           },
                           child: const Text('Next Step')
                       ),
@@ -100,6 +109,7 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
 
 InputDecoration inputDecoration(String labelText){
   return InputDecoration(
+
     focusColor: Colors.black,
     labelStyle: TextStyle(color: Colors.black),
     labelText: labelText,

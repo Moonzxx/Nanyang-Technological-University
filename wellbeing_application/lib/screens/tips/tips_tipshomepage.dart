@@ -18,7 +18,7 @@ class TipsHomePage extends StatefulWidget {
 class _TipsHomePageState extends State<TipsHomePage> {
   FirebaseApi databaseMethods = new FirebaseApi();
   Stream tipsCategories;
-  String mainCategory = "Tip";
+  String mainCategory = "Tips";
 
   @override
   void initState(){
@@ -30,6 +30,7 @@ class _TipsHomePageState extends State<TipsHomePage> {
       super.initState();
   }
 
+  // Retrieves and display the list of tips
   Widget TipsCatist(){
     return StreamBuilder(
       stream: tipsCategories,
@@ -45,6 +46,7 @@ class _TipsHomePageState extends State<TipsHomePage> {
 
   }
 
+  // Tips Main Page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,13 +62,13 @@ class _TipsHomePageState extends State<TipsHomePage> {
           ),
           actions: [IconButton(onPressed: (){}, icon: Icon(Icons.search_rounded, ))],
         ),
-     // body: TipsCatist()
+      body: TipsCatist()
     );
   }
 }
 
 
-
+// Design of tiles for the tips
 class TipsTiles extends StatelessWidget {
   final String subCateogry;
   final String mainCategory;
@@ -74,23 +76,52 @@ class TipsTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => PostLists(mCategory: this.mainCategory, sCategory: this.subCateogry,)));
-      },
-      child: Container(
-        height: MediaQuery.of(context).size.height/8,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Card(
-          elevation: 5,
-          child: ListTile(
-            title: Text(this.subCateogry)
+    return Column(
+      children: [
+        SizedBox(height: 20),
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PostLists(mCategory: this.mainCategory, sCategory: this.subCateogry,)));
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height/8,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: Colors.black,
+                width: 2
+              )
+            ),
+
+              child:  Row(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height/8,
+                    //color: Colors.red,
+                    width: 70,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(18),
+                        bottomLeft:  Radius.circular(18)),
+                      color: Colors.red
+                    ),
+                    child: Icon(Icons.cake_rounded, color: Colors.white,),
+                  ),
+                  SizedBox(width: 30),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(this.subCateogry, style: TextStyle(fontSize: 50)),
+                  ),
+                ],
+              ),
+              //child: ListTile(
+              //  title: Text(this.subCateogry, style: TextStyle(fontSize: 30))
+             // ),
+
           ),
         ),
-      ),
+      ],
     );
   }
 }

@@ -17,6 +17,8 @@ import 'dart:async';
 import 'widgets/navigation_drawer_zoom/navigation_start.dart';
 import 'utils/helperfunctions.dart';
 
+
+// To start the wellbeing app
 void main() {
   runApp(MyApp());
 }
@@ -45,6 +47,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// To initialise the application
 class LandingPage extends StatelessWidget{
   String userUID;
   String UID;
@@ -53,8 +56,6 @@ class LandingPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    // To initialise the application
-    // Future is initialisation
     return FutureBuilder(
       future: _initialisation,
       builder: (context, snapshot) {
@@ -90,7 +91,7 @@ class LandingPage extends StatelessWidget{
                     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
                       if(snapshot.hasData && snapshot.data != null) {
 
-                        // Creating a new profile
+                        // Creation of new profile
 
                         final user = snapshot.data;
                         final userr = FirebaseAuth.instance.currentUser;

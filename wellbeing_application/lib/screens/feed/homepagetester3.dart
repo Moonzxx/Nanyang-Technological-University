@@ -5,6 +5,10 @@ import 'feed_page.dart';
 import 'set_mood_page.dart';
 import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
 import '../../screens/journal/round_overview_stats.dart';
+import '../../constants.dart';
+
+
+// Helps to verify the user's authenticity before allowing them to create a profile
 
 class HomePageTester3 extends StatelessWidget {
   const HomePageTester3({Key? key}) : super(key: key);
@@ -26,6 +30,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
+// Main Homepage for Feed
 class _HomeState extends State<Home> {
   int index = 0;
 
@@ -52,6 +57,7 @@ class _HomeState extends State<Home> {
       //drawer: NavDrawer(),
       appBar: AppBar(
         title : Text('Feed'),
+        backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
         leading: NavigationWidget(),
       ),
       body: screens[index],
@@ -60,8 +66,8 @@ class _HomeState extends State<Home> {
           iconTheme: IconThemeData( color: Colors.white),
         ),
         child: CurvedNavigationBar(
-            color: Colors.blue,
-            buttonBackgroundColor: Colors.blue,
+            color: Color(Constants.myThemeColour ).withOpacity(1),
+            buttonBackgroundColor:  Color(Constants.myThemeColour ).withOpacity(1),
             backgroundColor: Colors.transparent,
             height: 55, // height of bottom navigationbar
             index: index,
@@ -80,14 +86,12 @@ class _HomeState extends State<Home> {
 }
 
 
+// Can be used as a Placeholder for a while
 class PlaceholderWidget extends StatelessWidget {
   final Color color;
 
   PlaceholderWidget(this.color);
 
-
-  // try to make this page scrollable
-  // Be able to add the pages here
   @override
   Widget build(BuildContext context) {
     return Container(

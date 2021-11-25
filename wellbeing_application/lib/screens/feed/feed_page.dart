@@ -12,7 +12,7 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-
+import '../../constants.dart';
 
 /*
 Need ot get images and title, then link to the pages
@@ -43,6 +43,7 @@ class _FeedPageState extends State<FeedPage> {
     controller.addListener(() {
       setState(() {
         currentPage = controller.page!;
+        print(Colors.blue[700]);
       });
     });
 
@@ -66,7 +67,7 @@ class _FeedPageState extends State<FeedPage> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
+        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
         title: Text("Wellbeing", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(

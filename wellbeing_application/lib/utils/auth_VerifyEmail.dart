@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:wellbeing_application/screens/loginpage.dart';
 import '../widgets/choosing_avatar.dart';
 
+// Verify the user to check their authenticity before allow the ser to create their user profile
+
 class VerifyEmail extends StatefulWidget {
   final String uid;
   VerifyEmail({this.uid});
@@ -35,12 +37,14 @@ class _VerifyEmailState extends State<VerifyEmail> {
     super.initState();
   }
 
+  // To dispose the timer once verification has been completed / timed out
   @override
   void dispose(){
     timer.cancel();
     super.dispose();
   }
 
+  // Verify Email Main Page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +66,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
   }
 
 
+  // Checking if email has been verified
   Future<void> checkEmailVerified() async{
     user = auth.currentUser;
 

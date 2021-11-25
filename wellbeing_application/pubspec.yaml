@@ -88,6 +88,12 @@ flutter:
     - family: Nunito
       fonts:
         - asset: assets/fonts/Nunito-Bold.ttf
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+    - family: StudentsTeacher
+      fonts:
+        - asset: assets/fonts/TheStudentsTeacher-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

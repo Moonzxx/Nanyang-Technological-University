@@ -1,11 +1,5 @@
 // @dart=2.10
 
-/*
- Choosing Avatar:
- Can stay anonymous, try issuing 3 icons, together with adding media gallery and a default.
- Can tryto make it collapsible
-
- */
 import 'dart:typed_data';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -21,10 +15,7 @@ import 'DataHolder.dart';
 import '../constants.dart';
 import 'create_profile.dart';
 
-// Image picker to get images from gallery, can be used in profile page
-
-
-// Whne it goes back, it still shows the lcoal selected file
+// A page that allows the user to choose thei avatar
 
 class ChooseAvatar extends StatefulWidget {
   final String accountUID;
@@ -59,7 +50,7 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
     bytes;
     final fileName = _image != null ? basename(_image.path) : 'No File Selected';
 
-
+    // User selection
     Future selectFile() async {
       // Only allow to select one file
       final result = await FilePicker.platform.pickFiles(allowMultiple:  false);
@@ -71,11 +62,12 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
         _image = File(path);
         chosenImageName = basename(_image.path);
         await _image.readAsBytes().then((value) {
-         // bytes = Uint8List.fromList(value);
+          //bytes = Uint8List.fromList(value);
           setState(() {
             bytes = Uint8List.fromList(value);
             choseSelf = true;
             choseDef = false;
+            selectedCard = -1;
             atLeastChosen = true;
           });
 
@@ -87,87 +79,13 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
       });
     }
 
-    // TO show the percentage in real-time
-    Widget buildUploadStatus(UploadTask task) => StreamBuilder<TaskSnapshot>(
-      stream: task.snapshotEvents,
-      builder: (context,snapshot) {
-        if (snapshot.hasData) {
-          final snap = snapshot.data;
-          final progress = snap.bytesTransferred / snap.totalBytes;
-          final percentage = (progress * 100).toStringAsFixed(2);
-
-          return Text('%percentage %',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),);
-        }
-        else
-        {
-          return Container();
-        }
-      },
-    );
-
-
     @override
     void initState(){
       super.initState();
     }
 
-    /* Future uploadFile(BuildContext context) async{
-      String fileName = basename(_image.path);
-      Reference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
-      UploadTask uploadTask = firebaseStorageRef.putFile(_image);
-      uploadTask.then((res) => setState(() {
-        print("Profile Picture uploaded");
-        final message = "Profile Picture has been updated";
-        final snackBar = SnackBar(
-          content: Text(
-            message,
-            style: TextStyle(fontSize: 20),
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-      }));
-    } */
-
-    /*
-
-    Widget makeImageGrid(){
-      // Need to find a way tos ave images that have already retrieved
-      return GridView.builder(
-        itemCount: 6,
-          gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:  3),
-          itemBuilder: (context, index){
-            //return ImageGridItem(index+1);
-            return GestureDetector(
-              onTap: (){
-                setState(() {
-                  selectedCard = index;
-                });
-              },
-              child: Card(
-                color: selectedCard == index ? Colors.blue : Colors.amber,
-                child: Stack(
-                  children: [
-                    Container(
-                      height: 100,
-                      width: 100,
-                      child: ImageGridItem(index),
-                    ),
-                  ],
-                ),
-
-              ),
-            ); // Tryiong to add the plus button for own image
-
-          });
-    }
-    */
-
-
-
-
+    // Makes the grid of choices for the anonymous avatars
     Widget makeImageGrid(){
       // Need to find a way tos ave images that have already retrieved
       return GridView.builder(
@@ -225,7 +143,8 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
     );
 
 
-    // button clickable after
+    // Button is only clickable after an avatar is chosen
+    // User will proceed to the next step
     Widget buildNextButton() => ElevatedButton(onPressed: atLeastChosen ? (){
       if( bytes != null && choseSelf == true)
       {
@@ -261,61 +180,17 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
 
 
     } : null,
-        style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 20)),
+        style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 20), primary: Colors.green , elevation: 5, ),
         child: Text('Next Step'));
 
-    /* TextButton(
-      style: flatButtonStyle,
-      onPressed:() {
-        if( bytes != null && choseSelf == true)
-          {
-            setState(() {
-              imageFile = bytes;
-              testing = selectedCard;
-              Navigator.of(context).pop();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID)
-                ),
-              );
-            });
-          }
-        else{
-          Reference photosReference = FirebaseStorage.instance.ref().child("profilepics");
-          photosReference.child("default_${selectedCard}.jpg").getData(MAX_SIZE).then((data) {
-            setState(() {
-              imageFile = data;
-              testing = selectedCard;
-              print("Profile UID Pt 3: ${widget.accountUID}");
-              Navigator.of(context).pop();
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID)
-                ),
-              );
-            });
-          });
-        }
 
-
-      },
-      child: Text('Next Step'),
-    );
-
-*/
-
-
-    /*
-    Original start of the code*/
-
+    // The Avatar Page Main Function
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: kChoosingAvatarTitle,
       home: Scaffold(
         appBar: AppBar(
-          title: Text(kChoosingAvatarTitle),
+          title: Text(kChoosingAvatarTitle, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, fontSize: 25),),
           centerTitle: true,
         ),
         body: Padding(
@@ -325,26 +200,7 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                //Text("You can selected from either of this siz default avatars or choose to use your own picture.", textAlign: TextAlign.center,),
-                /*
-                Align(
-                  alignment: Alignment.center,
-                  heightFactor: 2.7,
-                  child: Container(
-                    width: 100.0,
-                    height:100.0,
-                    decoration: BoxDecoration(
-                      color: Colors.lightBlue,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black, style: BorderStyle.solid, width: 1.0)
-                    ),
-                    child:
-                      Icon(
-                        Icons.account_circle, size: 15.0
-                      ),
-                  ),
-                ),
-                 */
+                Text("You can either select from the default:", style: TextStyle(fontFamily: systemFontFamily, fontWeight: FontWeight.bold, fontSize: 25),),
                 Container(
                   height: MediaQuery.of(context).size.height /3,
                   width: MediaQuery.of(context).size.width * 0.95,
@@ -361,6 +217,7 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
                   ),
                 ),
                 const SizedBox(height:20),
+                Text("Or you can choose from your gallery:", style: TextStyle(fontFamily: systemFontFamily, fontWeight: FontWeight.bold, fontSize: 25),),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -388,7 +245,6 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
                   ],
                 ),
 
-                _task != null ? buildUploadStatus(_task) : Container(),
                 SizedBox(height: 30),
                 buildNextButton(),
               ],
@@ -401,10 +257,10 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
   }
 }
 
-// Need to call MakeImageGrid() to call for pictures in database
 
 
 
+// Creation of each grid in the MakeImageGrid()
 class ImageGridItem extends StatefulWidget {
   int _index;
 
@@ -420,13 +276,13 @@ class _ImageGridItemState extends State<ImageGridItem> {
   Uint8List imageFile;
   Reference photosReference = FirebaseStorage.instance.ref().child("profilepics");
 
+  // Retrieving images
   getImage(){
     if(!requestedIndexes.contains(widget._index)){
       int MAX_SIZE = 7*1024*1024;
       photosReference.child("default_${widget._index}.jpg").getData(MAX_SIZE).then((data){
         this.setState(() {
           imageFile = data;
-          // Create class for iamge file to be given function?
         });
         // Checking if the item is absent. If it is, then add the image to the file.
         imageData.putIfAbsent(widget._index, (){
@@ -465,10 +321,6 @@ class _ImageGridItemState extends State<ImageGridItem> {
     }
   }
 
-  // itembuilder is like a forloop
-
-
-
   @override
   Widget build(BuildContext context){
     return GridTile(
@@ -476,6 +328,7 @@ class _ImageGridItemState extends State<ImageGridItem> {
       );
 
   }
+
   /*
   @override
   Widget build(BuildContext context) {

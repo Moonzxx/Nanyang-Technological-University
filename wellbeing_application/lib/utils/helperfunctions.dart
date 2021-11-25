@@ -1,6 +1,9 @@
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+// Helps to keep track of the user information in the app
+
 class HelperFunctions{
   static String sharedPreferenceUserLoggedInKey = "ISLOGGEDIN";   // Check is user is logged in
   static String sharedPreferenceUserNameKey = "USERNAMEKEY";      // Currently logged in username

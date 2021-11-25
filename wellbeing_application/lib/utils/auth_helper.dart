@@ -10,7 +10,6 @@ import 'package:package_info/package_info.dart';
 /*
 Auth Helper:
 To help save information on the users created or logged in
-
  */
 
 class AuthHelper {
@@ -36,6 +35,7 @@ class AuthHelper {
 
 }
 
+
 class UserHelper {
   // istantiate firestore
   static FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -52,6 +52,8 @@ class UserHelper {
       "role": "user",
       "build_number": buildNumber,
       "profile_creation": false,// Boolean or number
+      "colour" : 4282435440,
+      "mood_colour" : 4282435440
     };
 
     // CHeck if the user exists

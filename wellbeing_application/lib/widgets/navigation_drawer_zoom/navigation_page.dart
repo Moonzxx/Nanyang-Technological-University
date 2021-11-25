@@ -87,7 +87,7 @@ class NavigationPage extends StatelessWidget {
                         decoration: BoxDecoration(image: DecorationImage(image: NetworkImage(Constants.myAvatar), fit: BoxFit.fill),
                             color: Colors.lightBlue,
                             shape: BoxShape.circle,
-                            border: Border.all(color: Colors.black, style: BorderStyle.solid, width : 1.0)),
+                            border: Border.all(color: Color(Constants.myMoodColour).withOpacity(1), style: BorderStyle.solid, width : 1.0)),
 
                       ),/*ClipRRect(
                           borderRadius: BorderRadius.circular(100.0),

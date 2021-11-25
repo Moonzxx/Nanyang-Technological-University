@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:wellbeing_application/screens/journal/journal_mainpage.dart';
+import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'navigation_page.dart';
 import '../../screens/feed/homepagetester3.dart';
 import '../../screens/feed/homepagetester2.dart';
@@ -36,6 +37,8 @@ class NavigationHomePage extends StatefulWidget {
 
 class _NavigationHomePageState extends State<NavigationHomePage> {
   NavigationItem currentItem = NavigationItems.feed;
+  FirebaseApi databaseMethods = new FirebaseApi();
+  DocumentSnapshot userInformation;
 
   @override
   void initState(){
@@ -47,6 +50,14 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
     Constants.myName = await HelperFunctions.getUserNameInSharedPreference();
     Constants.myUID = await HelperFunctions.getUserUIDInSharedPreference();
     Constants.myAvatar = await HelperFunctions.getUserAvatarInSharedPreference();
+    databaseMethods.getUserInformation(Constants.myUID).then((val){
+      setState(() {
+        userInformation = val;
+        Constants.myThemeColour = userInformation["colour"];
+        Constants.myMoodColour = userInformation["mood_colour"];
+      });
+    });
+
   }
 
   Widget getScreen() {

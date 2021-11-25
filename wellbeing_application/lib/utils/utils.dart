@@ -2,6 +2,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Utilities that will be used here (Just in case)
+
 class Utils{
   static StreamTransformer transformer<T>(
       T Function(Map<String, dynamic> json) fromJson) =>

@@ -48,7 +48,6 @@ class _TextFeedPageState extends State<TextFeedPage> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-
         title: Text("Testing"),
       ),
       body: screens[index],

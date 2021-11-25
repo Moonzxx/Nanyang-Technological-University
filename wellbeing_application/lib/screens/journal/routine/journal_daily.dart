@@ -284,7 +284,7 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
+        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
         title: Text("Daily Goals", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(

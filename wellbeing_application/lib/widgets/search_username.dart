@@ -5,6 +5,9 @@ import '../utils/firebase_api.dart';
 import '../constants.dart';
 import '../screens/chat/chat_conversation_screen.dart';
 
+
+// Screen to search for usernames in the database
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key key}) : super(key: key);
 
@@ -12,7 +15,7 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-//Icon(Icons.ac_unit), //Chnage to image asset
+//Icon(Icons.ac_unit), //Chnage to image asset or another icon
 
 class _SearchScreenState extends State<SearchScreen> {
 
@@ -20,6 +23,7 @@ class _SearchScreenState extends State<SearchScreen> {
   FirebaseApi database = new FirebaseApi();
   QuerySnapshot searchSnapshot = null;
 
+  // When the screen is initiated, the following will be initiated as well
   initiateSearch(){
     database.getUserbyUsername(searchTextEditingController.text) //searchTextEditingController.text
         .then((val){
@@ -32,6 +36,7 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
+  // When message button is clicked, it will open a chatscreen
   createChatroomAndStartConversation({String userName}){
     // Other user, us
     // username 2 is us
@@ -54,6 +59,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  // Tile to present other users
   Widget SearchTile({String userName, String avatarURL}){
     return Column(
       children: <Widget>[
@@ -119,6 +125,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
 
+  // Search Username Main Page
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,7 +181,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 }
 
-// Help to generate chatroomid
+// Method to generate the chat ID
 getChatRoomID(String a, String b){
   if (a.substring(0,1).codeUnitAt(0) > b.substring(0,1).codeUnitAt(0)){
     return "$b\_$a";
