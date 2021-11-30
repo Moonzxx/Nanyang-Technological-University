@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import '../../constants.dart';
+import 'helpline_clinicsInfo.dart';
 
 class ExternalHelplinePage extends StatefulWidget {
   const ExternalHelplinePage({Key key}) : super(key: key);
@@ -70,13 +71,18 @@ class AroundSGTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Card(
-        elevation: 5,
-        color: Color(this.colour).withOpacity(1),
-        child: ListTile(
-          title: Text(this.areaTitle),
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ClinicsInfo(sgContinent: areaTitle,)));
+      },
+      child: Container(
+        child: Card(
+          elevation: 5,
+          color: Color(this.colour).withOpacity(1),
+          child: ListTile(
+            title: Text(this.areaTitle),
 
+          ),
         ),
       ),
     );

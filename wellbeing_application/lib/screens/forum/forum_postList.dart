@@ -43,7 +43,8 @@ class _ForumCategoryPostListState extends State<ForumCategoryPostList> {
                 return ForumTile(forumTitle: (snapshot.data as QuerySnapshot).docs[index]["name"],
                 forumDescription: (snapshot.data as QuerySnapshot).docs[index]["content"],
                 forumUser: (snapshot.data as QuerySnapshot).docs[index]["username"],
-                fCategory: widget.selectedCategory);
+                fCategory: widget.selectedCategory,
+                bookmarked: (snapshot.data as QuerySnapshot).docs[index]["bookmarkedBy"],);
             }) :  Container();
         });
   }
@@ -65,7 +66,8 @@ class ForumTile extends StatelessWidget {
   final String forumDescription;
   final String forumUser;
   final String fCategory;
-  ForumTile({ this.forumTitle, this.forumDescription, this.forumUser, this.fCategory});
+  final List bookmarked;
+  ForumTile({ this.forumTitle, this.forumDescription, this.forumUser, this.fCategory, this.bookmarked});
 
   
   // Create your own customised tile
@@ -74,7 +76,7 @@ class ForumTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => ViewForumPost(fTitle: this.forumTitle, fDescription: this.forumDescription, fUser: this.forumUser , fCategory: this.fCategory ,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ViewForumPost(fTitle: this.forumTitle, fDescription: this.forumDescription, fUser: this.forumUser , fCategory: this.fCategory , fBookmarked: this.bookmarked,)));
       },
        child: Card(
         shadowColor: Colors.black,

@@ -30,6 +30,7 @@ class _DiaryEntryListState extends State<DiaryEntryList> {
         UserDiaryEntries = val;
       });
     });
+    //print(Constants.myUID);
     // or check if current date hs beem retrieved. remember tos etstate
     super.initState();
   }
@@ -45,10 +46,14 @@ class _DiaryEntryListState extends State<DiaryEntryList> {
           itemBuilder: (context,index){
             return GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => ViewDiaryEntry()));
+                // sned over content, mood and name
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    ViewDiaryEntry(diaryName: (snapshot.data as QuerySnapshot).docs[index]["name"],
+                      diaryContent: (snapshot.data as QuerySnapshot).docs[index]["content"] ,
+                      diaryMood: (snapshot.data as QuerySnapshot).docs[index]["mood"],)));
               },
               child: diaryTiles(
-                  entryDate: (snapshot.data as QuerySnapshot).docs[index]["date"]
+                  entryDate: (snapshot.data as QuerySnapshot).docs[index]["name"]
               ),
             );
           },

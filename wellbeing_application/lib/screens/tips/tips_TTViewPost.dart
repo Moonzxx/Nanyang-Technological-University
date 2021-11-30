@@ -21,6 +21,7 @@ class TTViewPost extends StatefulWidget {
 // Maybe can return different scafoold based on boolean to determine if it is under Tips / Tools
 class _TTViewPostState extends State<TTViewPost> {
 
+  String postInformation;
   FirebaseApi databaseMethods = new FirebaseApi();
   bool marked = false;
   QuerySnapshot searchSnapshot = null;
@@ -38,7 +39,17 @@ class _TTViewPostState extends State<TTViewPost> {
       // manages t
       print(searchSnapshot.docs[0]["name"]);
       print(searchSnapshot.docs[0]["bookmarkedBy"][0]);
-      print(searchSnapshot.docs[0]["description"]);
+     // print(searchSnapshot.docs[0]["description"]);
+      postInformation = searchSnapshot.docs[0]["content"];
+
+      for(var a = 0; a < searchSnapshot.docs[0]["bookmarkedBy"].length; a++){
+        if(searchSnapshot.docs[0]["bookmarkedBy"][a] == Constants.myUID){
+          setState(() {
+            marked = true;
+          });
+        }
+      }
+
       if(cat){
         // if tips
         sources = searchSnapshot.docs[0]["sourcesFrom"];
@@ -104,7 +115,6 @@ class _TTViewPostState extends State<TTViewPost> {
                       // remove user from post bookmarklist
                       databaseMethods.updateRemovePostBookmarkInfo(widget.mainCat, widget.subCat, widget.postTitleName, Constants.myUID).then((var num){
                         CustomSnackBar.buildPositiveSnackbar(context, "Post Unbookmarked!");
-
                       });
                     }
                   });
@@ -172,7 +182,7 @@ class _TTViewPostState extends State<TTViewPost> {
           )
 
       ),
-      // Try to scroll the content and see if it works
+      // Page Content Display
       body: SingleChildScrollView(
         child: Container(
             margin: EdgeInsets.all(20),
@@ -182,7 +192,8 @@ class _TTViewPostState extends State<TTViewPost> {
                 border: Border.all(
                     color: Colors.red
                 )
-            )
+            ),
+            child: Text(postInformation),
         ),
       ),
     );

@@ -103,6 +103,11 @@ class FirebaseApi{
   }
 
 
+  updateUserCurrentDayWellbeing( String userID, String currentDate, currentDateInformation) async{
+    await FirebaseFirestore.instance.collection("users").doc(userID).collection("wellbeing").doc(currentDate).set(currentDateInformation).catchError((e){print(e.toString());});
+  }
+
+  //await FirebaseFirestore.instance.collection("users").doc(userID).update({"blocked" : blockedUserInformation});
 
 
 
@@ -152,7 +157,15 @@ class FirebaseApi{
     return await FirebaseFirestore.instance.collection("chatrooms").where("users", arrayContains: userName).snapshots();
   }
 
+  getUserBlockList( String userID) async{
+    return await FirebaseFirestore.instance.collection("users").doc(userID).get();
+  }
 
+  updateUserBlock(String userID, blockedUserInformation) async{
+    await FirebaseFirestore.instance.collection("users").doc(userID).update({"blocked" : blockedUserInformation});
+  }
+
+  
 
   /*
 
@@ -181,6 +194,10 @@ class FirebaseApi{
   // Getting the number of habits from the user
   getUsersNumCategories(String userID) async{
     return await FirebaseFirestore.instance.collection("habits").where("uid", isEqualTo: userID).get();
+  }
+
+  getUserCategories(String userID) async{
+    return await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").get();
   }
 
   getUsersHabitsfromCategory(String userID, String category) async{
@@ -230,37 +247,39 @@ class FirebaseApi{
 
   // Creates a new forum post
   setNewForumPost(String category, String docName, newPostMap){
-    FirebaseFirestore.instance.collection("forums").doc("categories").collection(category).doc(docName).set(newPostMap).catchError((e){print(e.toString());});
+    FirebaseFirestore.instance.collection("forums").doc(category).collection("posts").doc(docName).set(newPostMap).catchError((e){print(e.toString());});
   }
 
   // Get Forum Categories
   getCategoryForumPosts(String category) async{
-    return await FirebaseFirestore.instance.collection("forums").doc("categories").collection(category).snapshots();
+    return await FirebaseFirestore.instance.collection("forums").doc(category).collection("posts").snapshots();
   }
 
-  // Get forum post information
-  getDiscussionPost(String category, String postTitle) async{
-    return await FirebaseFirestore.instance.collection("forums").doc("categories").collection(category).where("name", isEqualTo: postTitle).snapshots();
-  }
 
   // Get forum post replies
+  // need to make changes here
   getRepliesPost(String category, String title) async{
-    return await FirebaseFirestore.instance.collection("forums").doc("categories").collection("Finance").doc("saving money").collection("replies").snapshots();
+    return await FirebaseFirestore.instance.collection("forums").doc(category).collection("posts").doc(title).collection("replies").snapshots();
+  }
+
+  uploadUserReply(String category, String title, replyInformation) async{
+    await FirebaseFirestore.instance.collection("forums").doc(category).collection("posts").doc(title).collection("replies").add(replyInformation).catchError((e){print(e.toString());});
   }
 
   // Update bookmark information (Add User)
   // check if working
-  updateAddForumPostBookmarkInfo(String mainCat, String subCat, String postTitle, String userID) async{
-    await FirebaseFirestore.instance.collection("forums").doc(mainCat).collection("categories").doc(subCat).collection("posts").doc(postTitle)
+  updateAddForumPostBookmarkInfo(String mainCat, String postTitle, String userID) async{
+    await FirebaseFirestore.instance.collection("forums").doc(mainCat).collection("posts").doc(postTitle)
         .update({"bookmarkedBy" : FieldValue.arrayUnion([userID])});
   }
 
   // Update bookmark information (Remove User)
   // Check if working
-  updateRemovForumPostBookmarkInfo(String mainCat, String subCat, String postTitle, String userID) async{
-    await FirebaseFirestore.instance.collection("tips").doc(mainCat).collection("categories").doc(subCat).collection("posts").doc(postTitle)
+  updateRemoveForumPostBookmarkInfo(String mainCat,  String postTitle, String userID) async{
+    await FirebaseFirestore.instance.collection("forums").doc(mainCat).collection("posts").doc(postTitle)
         .update({"bookmarkedBy" : FieldValue.arrayRemove([userID])});
   }
+
 
 
   // Get bookmarked Forum by user
@@ -293,17 +312,17 @@ class FirebaseApi{
   getTTCategories(String cat) async{
     return await FirebaseFirestore.instance.collection("tips").doc(cat).collection("categories").snapshots();
   }
-  
+
+  // Check if this is in use. If not delete.
   getTTCatPosts(String mainCat, String subCat) async{
     return await FirebaseFirestore.instance.collection("tips").doc(mainCat).collection("categories").doc(subCat).collection("posts").snapshots();
   }
 
-  // Get Tips Post information
+  // Get Tips/Tools Post information
   getTipPostInformation(String mainCat, String subCat, String postTitle) async{
     return await FirebaseFirestore.instance.collection("tips").doc(mainCat).collection("categories").doc(subCat).collection("posts").where("name", isEqualTo: postTitle).get();
   }
 
-  // Get Tools Post information
 
   // Update bookmark information (Add User)
   updateAddPostBookmarkInfo(String mainCat, String subCat, String postTitle, String userID) async{
@@ -316,6 +335,23 @@ class FirebaseApi{
     await FirebaseFirestore.instance.collection("tips").doc(mainCat).collection("categories").doc(subCat).collection("posts").doc(postTitle)
         .update({"bookmarkedBy" : FieldValue.arrayRemove([userID])});
   }
+
+  // Display Bookmarked Tip/Tool Posts by user
+  getBookmarkedTipsToolsbyUser(String mainCat) async{
+      // Go through each tips post
+    // Find user id in bookmarked
+    // add inot a list for tips
+  }
+
+  createTipPost( String subCat, String postTitle, tipPostInfo){
+    FirebaseFirestore.instance.collection("tips").doc("Tips").collection("categories").doc(subCat).collection("posts").doc(postTitle).set(tipPostInfo).catchError((e){print(e.toString());});
+  }
+
+
+
+ 
+
+
 
 
 
@@ -332,6 +368,26 @@ class FirebaseApi{
   getAroundSG() async{
     return await FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").snapshots();
   }
+
+  getSGClinicLines(String sgLine) async{
+    return await FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").doc(sgLine).collection("clinics").snapshots();
+  }
+
+  createSGClinic(String sgLine, String clinicName, sgClinicInfo) async{
+    FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").doc(sgLine).collection("clinics").doc(clinicName).set(sgClinicInfo).catchError((e){print(e.toString());});
+  }
+
+  updateSGClinicInfo(String sgLine, String clinicName ,updatedSGClinicInfo) async{
+    return await FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").doc(sgLine).collection("clinics").doc(clinicName).update(updatedSGClinicInfo);
+  }
+
+  deleteSGClinicInfo( String sgLine, String clinicName) async{
+    FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").doc(sgLine).collection("clinics").doc(clinicName).delete();
+  }
+
+
+
+
 
 
 
@@ -354,7 +410,19 @@ class FirebaseApi{
   }
 
 
+  // Check if this is working
+  createUserDiaryEntry(String userID, String currDate, diaryInfo) async{
+    FirebaseFirestore.instance.collection("diary").doc(userID).collection("diaryEntries").doc(currDate).set(diaryInfo).catchError((e){print(e.toString());});
+  }
 
+  updateUserDiaryEntry(String userID, String diaryPost, String mood, String content) async{
+    return await FirebaseFirestore.instance.collection("diary").doc(userID).collection("diaryEntries").doc(diaryPost).update({"mood": mood, "content": content});
+  }
+
+
+  deleteUserDiaryEntry(String userID, String diaryEntry) async{
+    FirebaseFirestore.instance.collection("diary").doc(userID).collection("diaryEntries").doc(diaryEntry).delete();
+  }
 
 
 }

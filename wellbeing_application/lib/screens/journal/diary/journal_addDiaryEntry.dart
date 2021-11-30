@@ -1,5 +1,9 @@
 // @dart=2.10
 import 'package:flutter/material.dart';
+import 'package:wellbeing_application/utils/firebase_api.dart';
+import '../../../widgets/custom_snackbar.dart';
+import 'package:intl/intl.dart';
+import '../../../constants.dart';
 import '../../../widgets/custom_snackbar.dart';
 
 class AddDiaryEntry extends StatefulWidget {
@@ -14,8 +18,11 @@ class AddDiaryEntry extends StatefulWidget {
 class _AddDiaryEntryState extends State<AddDiaryEntry> {
 
   final _addDiaryFormKey = GlobalKey<FormState>();
-  TextEditingController moodController = new TextEditingController();
+  FirebaseApi databaseMethods = new FirebaseApi();
   TextEditingController thoughtsController = new TextEditingController();
+  String diaryContent;
+  String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
 
   String selectedMoodDropDownMenu = "Happy";
   List<String> mood = ["Happy", "Sad", "Disgusted", "Night"];
@@ -36,6 +43,35 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Add mood here
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Mood:'),
+                    SizedBox(width: 15,),
+                    DropdownButton(
+                        value: selectedMoodDropDownMenu,
+                        icon: const Icon(Icons.arrow_downward),
+                        iconSize: 20,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.black),
+                        underline: Container(
+                            height: 2,
+                            color: Colors.black),
+                        onChanged: (String newValue){
+                          setState(() {
+                            selectedMoodDropDownMenu = newValue;
+                          });
+                        },
+                        items:  mood
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value.toString()),
+                          );
+                        }).toList()),
+                  ],
+                ),
+                SizedBox(height: 20),
                 SizedBox(
                   height: 200,
                   child: TextFormField(
@@ -43,38 +79,14 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
                     maxLines: null,
                     decoration: inputDecoration("Thoughts"),
                     controller: thoughtsController,
+                    onSaved: (String val){
+                      diaryContent = val;
+                    },
                   ),
                 ),
 
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Mood:'),
-                    SizedBox(width: 15,),
-                    DropdownButton(
-                      value: selectedMoodDropDownMenu,
-                        icon: const Icon(Icons.arrow_downward),
-                        iconSize: 20,
-                        elevation: 16,
-                        style: const TextStyle(color: Colors.black),
-                        underline: Container(
-                          height: 2,
-                        color: Colors.black),
-                        onChanged: (String newValue){
-                        setState(() {
-                          selectedMoodDropDownMenu = newValue;
-                        });
-                        },
-                        items:  mood
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value.toString()),
-                      );
-                    }).toList()),
-                  ],
-                ),
+
 
                 Padding(
                   padding: EdgeInsets.only(bottom: 20.0),
@@ -85,10 +97,31 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
                       height: 50.0,
                       child: ElevatedButton(
                           onPressed: () {
-                           // Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                           // ));
 
-                            // Once button is pressed, Diary entry will be created
+                            // Check if form is valid first
+                            final isValid = _addDiaryFormKey.currentState.validate();
+                            if(isValid){
+                              _addDiaryFormKey.currentState.save();
+
+                              Map<String, dynamic> diaryEntryInfo = {
+                                "name" : currentDate,
+                                "content": diaryContent,
+                                "mood": selectedMoodDropDownMenu
+                              };
+
+                              databaseMethods.createUserDiaryEntry(Constants.myUID, currentDate, diaryEntryInfo);
+                              Navigator.pop(context);
+                              CustomSnackBar.buildPositiveSnackbar(context, "Entry Successfully Created");
+
+                              // Once button is pressed, Diary entry will be created
+                              // Diary Entry -> Mood, name(date String), content
+                              // Name of document will be string date
+
+
+                            }
+
+
+
 
                           },
                           child: const Text('Next Step')
@@ -107,20 +140,3 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
 }
 
 
-InputDecoration inputDecoration(String labelText){
-  return InputDecoration(
-
-    focusColor: Colors.black,
-    labelStyle: TextStyle(color: Colors.black),
-    labelText: labelText,
-    fillColor: Colors.white,
-    focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25.0),
-      borderSide: BorderSide(color: Colors.black),
-    ),
-    enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(25.0),
-      borderSide: BorderSide(color: Colors.grey, width: 2.0),
-    ),
-  );
-}

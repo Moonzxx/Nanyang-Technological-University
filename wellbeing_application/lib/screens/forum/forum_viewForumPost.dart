@@ -2,6 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
+import 'forum_createReply.dart';
+import '../../constants.dart';
+import '../../widgets/custom_snackbar.dart';
 
 
 class ViewForumPost extends StatefulWidget {
@@ -9,7 +12,8 @@ class ViewForumPost extends StatefulWidget {
   final String fDescription;
   final String fUser;
   final String fCategory;
-  ViewForumPost({ this.fTitle,  this.fDescription,  this.fUser,  this.fCategory});
+  final List fBookmarked;
+  ViewForumPost({ this.fTitle,  this.fDescription,  this.fUser,  this.fCategory, this.fBookmarked});
 
 
   @override
@@ -19,10 +23,18 @@ class ViewForumPost extends StatefulWidget {
 class _ViewForumPostState extends State<ViewForumPost> {
   FirebaseApi databaseMethods = new FirebaseApi();
   Stream replyPosts;
+  bool marked = false;
 
 
   @override
   void initState(){
+    for(var a = 0; a < widget.fBookmarked.length; a++){
+      if(widget.fBookmarked[a] == Constants.myUID){
+        setState(() {
+          marked = true;
+        });
+      }
+    }
     getRepliesPost();
     super.initState();
   }
@@ -39,7 +51,16 @@ class _ViewForumPostState extends State<ViewForumPost> {
     return StreamBuilder(
       stream: replyPosts,
       builder: (context, snapshot){
-        return ReplyPosts();
+        return snapshot.hasData ? ListView.builder(
+          itemCount: (snapshot.data as QuerySnapshot).docs.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index){
+            return ReplyPosts(
+              replyUserName: (snapshot.data as QuerySnapshot).docs[index]['username'],
+              replyUserContent: (snapshot.data as QuerySnapshot).docs[index]['content'],
+            );
+          },
+        ) : Container();
         /* return snapshot.hasData ? Expanded(
           child: SizedBox(
             child: ListView.builder(
@@ -73,14 +94,66 @@ class _ViewForumPostState extends State<ViewForumPost> {
                   bottom: Radius.circular(30)
               )
           ),
-          actions: [IconButton(onPressed: (){}, icon: Icon(Icons.bookmark_rounded ))],
+          actions: [IconButton(onPressed: (){
+            setState(() {
+              marked = !marked;
+              // Both update and remove bookmarks are working
+              if(marked == true){
+                //add user to post bookmark list
+                databaseMethods.updateAddForumPostBookmarkInfo(widget.fCategory, widget.fTitle, Constants.myUID).then((var num){
+                  CustomSnackBar.buildPositiveSnackbar(context, "Post Bookmarked!");
+                });
+              }
+              else{
+                databaseMethods.updateRemoveForumPostBookmarkInfo(widget.fCategory, widget.fTitle, Constants.myUID).then((var num){
+                  CustomSnackBar.buildPositiveSnackbar(context, "Post Unbookmarked!");
+                });
+                // remove user from post bookmarklist
+              }
+            });
+
+          }, icon: Icon(Icons.bookmark, color: (marked) ? Colors.black : Colors.white))],
         ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+                Container(
+                  height: MediaQuery.of(context).size.height/3,
+                  width: MediaQuery.of(context).size.width/4,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: Colors.red // see how is fits
+                    )
+                  ),
+                  child: Padding(
+                    // can refer to show tips view
+                    padding: EdgeInsets.all(15.0),
+                    child: Column(
+                      children: [
+                        Text(widget.fUser),
+                        SizedBox(height: 10),
+                        Text(widget.fDescription)
+                      ],
+                    ),
+                  ),
+                ),
+
+            SizedBox(height: 30),
+            Text("Replies"),
+              displayReplyPosts()
+              //getRepliesPost(),
+
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton(
           child: Icon(Icons.reply_rounded),
           onPressed: (){
-            // Navigator.push(context, MaterialPageRoute(builder: (context){
-            // return SearchScreen();
-            //}));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => createForumReply(
+              replyCat: widget.fCategory,
+              replyForumTitle: widget.fTitle,
+            ) ));
+
           },
         ),
 
@@ -145,16 +218,27 @@ class DisplayForumPost extends StatelessWidget {
 }
 
 class ReplyPosts extends StatelessWidget {
-  const ReplyPosts({Key key}) : super(key: key);
+  final String replyUserName;
+  final String replyUserContent;
+  ReplyPosts({this.replyUserName, this.replyUserContent});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      child: Column(
-        children: [
-          Text("here sis")
-        ],
+      height: MediaQuery.of(context).size.height/7,
+      width: MediaQuery.of(context).size.width/ 1.4,
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Column(
+          children: [
+            // reply to be red if it is the users own post
+            // if users's comment, if anonymous true, name will be anonymous
+            // can reply anonymously??
+            Text(replyUserName),
+            SizedBox(height: 10),
+            Text(replyUserContent)
+          ],
+        ),
       ),
     );
   }

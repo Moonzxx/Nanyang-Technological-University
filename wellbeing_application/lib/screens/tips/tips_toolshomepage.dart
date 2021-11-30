@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
+import 'tips_postlists.dart';
 
 class ToolsHomePage extends StatefulWidget {
   const ToolsHomePage({Key key}) : super(key: key);
@@ -14,6 +15,7 @@ class ToolsHomePage extends StatefulWidget {
 class _ToolsHomePageState extends State<ToolsHomePage> {
   FirebaseApi databaseMethods = new FirebaseApi();
   Stream toolsCategories;
+  String mainCategory = "Tools";
 
   @override
   void initState(){
@@ -32,7 +34,7 @@ class _ToolsHomePageState extends State<ToolsHomePage> {
         return snapshot.hasData ? ListView.builder(
           itemCount: (snapshot.data as QuerySnapshot).docs.length,
           itemBuilder: (context, index){
-            return ToolTiles(title: (snapshot.data as QuerySnapshot).docs[index]["name"]);
+            return ToolsTiles(mainCategory: mainCategory, subCateogry: (snapshot.data as QuerySnapshot).docs[index]["name"]);
           },
         ) : Container();
       },
@@ -56,30 +58,69 @@ class _ToolsHomePageState extends State<ToolsHomePage> {
           ),
           actions: [IconButton(onPressed: (){}, icon: Icon(Icons.search_rounded, ))],
         ),
-      //body: ToolsCatList()
+      body: ToolsCatList()
     );
   }
 }
 
 
-class ToolTiles extends StatelessWidget {
-  final String title;
-  ToolTiles({this.title});
+class ToolsTiles extends StatelessWidget {
+  final String subCateogry;
+  final String mainCategory;
+  ToolsTiles({ this.mainCategory, this.subCateogry});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height/8,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Card(
-        elevation: 5,
-        child: ListTile(
-            title: Text(this.title)
+    return Column(
+      children: [
+        SizedBox(height: 20),
+        GestureDetector(
+          onTap: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PostLists(mCategory: this.mainCategory, sCategory: this.subCateogry,)));
+          },
+          child: Container(
+            height: MediaQuery.of(context).size.height/8,
+            width: MediaQuery.of(context).size.width,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                    color: Colors.black,
+                    width: 2
+                )
+            ),
+
+            child:  Row(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height/8,
+                  //color: Colors.red,
+                  width: 70,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(18),
+                          bottomLeft:  Radius.circular(18)),
+                      color: Colors.red
+                  ),
+                  child: Icon(Icons.cake_rounded, color: Colors.white,),
+                ),
+                SizedBox(width: 30),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(this.subCateogry, style: TextStyle(fontSize: 50), overflow: TextOverflow.ellipsis ,),
+                    ),
+                  ),
+                
+              ],
+            ),
+            //child: ListTile(
+            //  title: Text(this.subCateogry, style: TextStyle(fontSize: 30))
+            // ),
+
+          ),
         ),
-      ),
+      ],
     );
   }
 }
+

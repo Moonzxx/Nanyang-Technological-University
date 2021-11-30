@@ -25,7 +25,6 @@ class ForumHomePage extends StatefulWidget {
 class _ForumHomePageState extends State<ForumHomePage> {
 
   List ForumCategoriesNum;
-  Map ForumCategoryMap = Map<String, List>();
 
   @override
   void initState(){
@@ -49,40 +48,18 @@ class _ForumHomePageState extends State<ForumHomePage> {
     Map categoryMap = Map<String, List>();
     List ola =[];
 
+    QuerySnapshot coll = await FirebaseFirestore.instance.collection("forums").get();
+    List<DocumentSnapshot> collDocs = coll.docs;
+    print(collDocs.length);
 
-    FirebaseFirestore.instance.collection('forums').doc('categories')
-        .get().then((docSnapshot) {
-      print(docSnapshot.data()['categories'].length);
+    for(var i = 0; i < collDocs.length; i++){
+      ola.add(collDocs[i]["name"]);
+    }
 
-      for( var i = 0 ; i < docSnapshot.data()['categories'].length ; i++ ) {
-        List catsInfo = <String>[];
-        catsName = docSnapshot.data()['categories'][i]['category'].toString();
-        ola.add(catsName);
-        catsInfo.add(docSnapshot.data()['categories'][i]['icon'].toString());
-        categoryMap[catsName] = catsInfo;
-        //print(docSnapshot.data()['categories'][i]['icon'].toString());
-      }
-
-      setState(() {
-        ForumCategoriesNum = ola;
-        ForumCategoryMap = categoryMap;
-      });
-
-
-      print("ola is ${ola.length}");
-
-      print(categoryMap.length);
-      print(categoryMap['Finance']);
-
-
-      /* print("Sets" + docSnapshot.data()['categories'].toString());
-         print(docSnapshot.data()['categories'].length);
-         print(docSnapshot.data()['categories'][0]);
-   for( var i = 0 ; i < docSnapshot.data()['categories'].length ; i++ ) {
-       cats.add(docSnapshot.data()['categories'][i].toString());
-       }
-       print(cats); */
+    setState(() {
+      ForumCategoriesNum = ola;
     });
+
   }
 
   // Return top 3 liked post
@@ -96,7 +73,7 @@ class _ForumHomePageState extends State<ForumHomePage> {
   // Creation of Forum Categories Section (Top)
   Widget ForumCategories() {
     return GridView.builder(
-      itemCount: ForumCategoryMap.length, //ForumCategoriesNum[0],
+      itemCount: ForumCategoriesNum.length, //ForumCategoriesNum[0],
       physics: ScrollPhysics(),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 4,
@@ -140,18 +117,7 @@ class _ForumHomePageState extends State<ForumHomePage> {
 // Got the correct results back
 
 
-  // Return the no. of Forum Categories
-  List getForumListLength(){
-    List categoriesInfo;
-    FirebaseFirestore.instance.collection('forums').doc('categories')
-        .get().then((docSnapshot) {
-            categoriesInfo.add(docSnapshot.data()['categories'].length);
-            for( var i = 0 ; i < docSnapshot.data()['categories'].length ; i++ ) {
-              categoriesInfo.add(docSnapshot.data()['categories'][i].toString());
-            }
-        });
-    return categoriesInfo;
-  }
+  // Ret
 
   // Maybe should implement refersh button
 

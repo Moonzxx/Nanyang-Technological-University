@@ -64,6 +64,7 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
             // Make sure the database is constant
             //May not have routine
             var details = new Map();
+            print(UserCatStream.docs[i]["name"]);
             details['name'] = UserCatStream.docs[i]["name"];
             details['description'] = UserCatStream.docs[i]["description"];
             details['time_hour'] = UserCatStream.docs[i]["time_hour"];
@@ -166,18 +167,20 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
 
   Widget getRoutines(List routineList){
     return ListView.builder(
-      itemCount: routineList.length,
-      itemBuilder: (context,index){
-        return RoutineTile(rTitle: routineList[index]['name'],
-        rDescription: routineList[index]['description'],
-        rCategory: routineList[index]['categoryName'],
-        rPartOfDay: routineList[index]['partOfDay'],
-        rHour: routineList[index]['time_hour'],
-        rMinute: routineList[index]['time_minute'],
-        checkCurrDate: routineList[index]['currSeen'],
-        completion: routineList[index]['completion'],
-        check: routineList[index]['check'],);
-      },
+        itemCount: routineList.length,
+        shrinkWrap: true,
+        itemBuilder: (context,index){
+          print(index);
+          return RoutineTile(rTitle: routineList[index]['name'],
+          rDescription: routineList[index]['description'],
+          rCategory: routineList[index]['categoryName'],
+          rPartOfDay: routineList[index]['partOfDay'],
+          rHour: routineList[index]['time_hour'],
+          rMinute: routineList[index]['time_minute'],
+          checkCurrDate: routineList[index]['currSeen'],
+          completion: routineList[index]['completion'],
+          check: routineList[index]['check'],);
+        },
     );
   }
 
@@ -208,15 +211,55 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
     });
   }
 
+  initialiseStart2(String currDay) {
+    RoutineCategories = [];
+    databaseMethods.getUserCategories(Constants.myUID).then((val) async {
+      setState(() async {
+        UserCatList = val;   // usercat lsit
+        List<DocumentSnapshot> collDocs = UserCatList.docs;
+        for(var i = 0; i < collDocs.length; i++){
+          String cat = collDocs[i]["name"];
+          bool checkRoutine = false;
+          // checking if any routines are activated
+          QuerySnapshot routineColl = await FirebaseFirestore.instance.collection("habits").doc(Constants.myUID).collection("categories").doc(cat).collection("routines").get();
+          if(routineColl.docs.length != 0){
+            for(var a = 0; a < routineColl.docs.length; a++){
+              if(routineColl.docs[a]["activated"] == true){
+                RoutineCategories.add(cat);
+                // It is working
+                print("here");
+                print(cat);
+                break;
+              }
+            }
+          }
 
+        }
+        testRoutine(RoutineCategories,RoutineCategories.length, currDay);
+      });
+
+
+    }
+
+    );
+
+
+  }
+
+  // Initialise start with current say
+  // checking for routine for the day
   initialiseStart(String currDay){
     RoutineCategories = [];
     databaseMethods.getUsersNumCategories(Constants.myUID).then((value){
       setState(() {
+         // getting number of categories from user
         UserCatList = value;
+        // for loop user categories
         for(var a = 0; a < UserCatList.docs[0]["userCategories"].length; a++){
+          //
           String cat = UserCatList.docs[0]["userCategories"][a];
           bool checkRoutine = UserCatList.docs[0]["userHabits"][cat][2];
+          // Checking if there is any activated??
           if(checkRoutine == true){
             RoutineCategories.add(cat);
           }
@@ -225,7 +268,7 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
         //print(UserCatList.docs[0]["userHabits"]["Connect"][2]);
         // testRoutine(UserCatList.docs[0]["userCategories"],UserCatList.docs[0]["userCategories"].length, "Tue");
 
-
+        // Dividing all the routines accordingly (?)
         testRoutine(RoutineCategories,RoutineCategories.length, currDay);
       });
 
@@ -237,11 +280,7 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
 
   @override
   void initState(){
-
-    // Checking if routine exist.
-    // If exist, add the cat name into the list
-    // set date and day here
-    initialiseStart(currentDay);
+    initialiseStart2(currentDay);
     super.initState();
   }
 
@@ -264,19 +303,6 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
       });
   }
 
-  double calculateWellB(){
-    double wb = 0.0;
-    double alpha = 0.4;
-
-    for(var i =0; i < cat.length; i++){
-      if(i == 0){
-        wb = cat[i];
-      }else{
-        wb = wb + (0.4 *(cat[i-1] - wb));
-      }
-    }
-      return wb;
-  }
 
 
   @override
@@ -310,11 +336,92 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
         ],
       ),
 
-      body:  Container(
-          height: 300,
-          width: MediaQuery.of(context).size.width,
-          child: getRoutines(morningRoutine),
-        ),  /* Column(
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(height: 20),
+            // To display Morning Title
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height/12,
+            decoration: BoxDecoration(
+                color: Colors.indigo,
+                border: Border.all(color: Colors.black, width: 2)
+            ),
+            child: Align(
+                alignment: Alignment.center,
+                child:
+                Text("Morning",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30.0),)),
+
+          ),
+            getRoutines(morningRoutine),
+            SizedBox(height: 20),
+            // To display Morning Title
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height/12,
+              decoration: BoxDecoration(
+                  color: Colors.indigo,
+                  border: Border.all(color: Colors.black, width: 2)
+              ),
+              child: Align(
+                  alignment: Alignment.center,
+                  child:
+                  Text("Afternoon",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0),)),
+
+            ),
+            getRoutines(afternoonRoutine),
+            SizedBox(height: 20),
+            // To display Morning Title
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height/12,
+              decoration: BoxDecoration(
+                  color: Colors.indigo,
+                  border: Border.all(color: Colors.black, width: 2)
+              ),
+              child: Align(
+                  alignment: Alignment.center,
+                  child:
+                  Text("Evening",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0),)),
+
+            ),
+            getRoutines(eveningRoutine),
+
+            SizedBox(height: 20),
+            // To display Morning Title
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height/12,
+              decoration: BoxDecoration(
+                  color: Colors.indigo,
+                  border: Border.all(color: Colors.black, width: 2)
+              ),
+              child: Align(
+                  alignment: Alignment.center,
+                  child:
+                  Text("Night",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 30.0),)),
+
+            ),
+            getRoutines(nightRoutine),
+
+          ],
+        ),
+      ), /* Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             routineHeaders(MediaQuery.of(context).size.width, MediaQuery.of(context).size.height/12,
@@ -414,16 +521,16 @@ class _RoutineTileState extends State<RoutineTile> {
   @override
   Widget build(BuildContext context) {
     return CheckboxListTile(
-      title: Text(widget.rTitle),
-      value: widget.check,
-      activeColor: Colors.grey,
-      onChanged: (bool newValue){
-        setState(() {
-          widget.check = newValue;
-          setNewCompletionState(widget.check);
-        });
-      },
-        secondary: Icon(Icons.hourglass_empty)
-    );
+        title: Text(widget.rTitle),
+        value: widget.check,
+        activeColor: Colors.grey,
+        onChanged: (bool newValue){
+          setState(() {
+            widget.check = newValue;
+            setNewCompletionState(widget.check);
+          });
+        },
+          secondary: Icon(Icons.hourglass_empty)
+      );
   }
 }

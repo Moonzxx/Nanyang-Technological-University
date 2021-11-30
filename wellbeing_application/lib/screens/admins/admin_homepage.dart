@@ -9,7 +9,7 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
-  List<String> mainCollections = ["USERS","FORUMS","TIPS","TOOLS"];
+  List<String> mainCollections = ["USERS","FORUMS","TIPS","TOOLS", "HELPLINE"];
   String cat= "";
 
   int selectedCard = -1;
@@ -54,7 +54,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue[700],
-          title: Text("Tips/Tools", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          title: Text("Admin Homepage", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
           centerTitle: true,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(

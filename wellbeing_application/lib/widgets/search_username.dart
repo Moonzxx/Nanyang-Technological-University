@@ -22,6 +22,8 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController searchTextEditingController = new TextEditingController();
   FirebaseApi database = new FirebaseApi();
   QuerySnapshot searchSnapshot = null;
+  DocumentSnapshot userblocks = null;
+  List<String> userBlockList = [];  // blockedUserId
 
   // When the screen is initiated, the following will be initiated as well
   initiateSearch(){
@@ -60,7 +62,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   // Tile to present other users
-  Widget SearchTile({String userName, String avatarURL}){
+  Widget SearchTile({String userName, String avatarURL, String otherUserID}){
     return Column(
       children: <Widget>[
         Container(
@@ -92,6 +94,32 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: Text("Message")
                     ),
                   ),
+                  SizedBox(width: 10),
+                  GestureDetector(
+                    onTap: (){
+                      // Function to block someone
+                      //use CustomBox
+                      Map<String, dynamic> updatedBlockList = new Map();
+                      updatedBlockList = userblocks["blocked"];
+                      //need to retrieve current block list first
+                      updatedBlockList[userName] = otherUserID;    // This is a map on its own
+                      print(updatedBlockList);
+                      // Check if it works for multiple blocks
+                      database.updateUserBlock(Constants.myUID, updatedBlockList);
+                      Navigator.pop(context);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SearchScreen()));
+                      // snackbar update green success
+
+                    },
+                    child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.red,
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Text("Block")
+                    ),
+                  ),
                 ]
             )
         ),
@@ -108,12 +136,30 @@ class _SearchScreenState extends State<SearchScreen> {
 
   // If it is null, it will just display a container
   Widget searchList(){
+
     return searchSnapshot != null ? ListView.builder(
       itemCount: searchSnapshot.docs.length,
       shrinkWrap: true,
       itemBuilder: (context, index){
-        return SearchTile(userName: searchSnapshot.docs[index]["username"],
-             avatarURL: searchSnapshot.docs[index]["url-avatar"]);
+        // create a for loop to check user
+        if(userBlockList.length == 0){
+          return SearchTile(userName: searchSnapshot.docs[index]["username"],
+              avatarURL: searchSnapshot.docs[index]["url-avatar"],
+              otherUserID: searchSnapshot.docs[index]["userID"]);
+        }
+
+        for(var i = 0; i < userBlockList.length; i++){
+          if(searchSnapshot.docs[index]["userID"] == userBlockList[i]){
+            return Container(
+                child: Text("Name not found")
+            );
+          } else{
+            return SearchTile(userName: searchSnapshot.docs[index]["username"],
+                avatarURL: searchSnapshot.docs[index]["url-avatar"],
+                otherUserID: searchSnapshot.docs[index]["userID"]);
+          }
+        }
+
       })
         : Container();
   }
@@ -121,6 +167,19 @@ class _SearchScreenState extends State<SearchScreen> {
   // Calls this whenever the screen restarts
   @override
   void initState(){
+    // get block list
+    database.getUserBlockList(Constants.myUID).then((val){
+      setState(() {
+        userblocks = val;
+        userblocks["blocked"].forEach((k,v) {
+          //print('${k}: ${v}');
+          // adding blocked userIDs
+          userBlockList.add(v);
+        });
+      });
+      //print(userblocks["blocked"]);
+
+    });
     super.initState();
   }
 

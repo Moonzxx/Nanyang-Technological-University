@@ -68,7 +68,7 @@ class _TipsHomePageState extends State<TipsHomePage> {
 }
 
 
-// Design of tiles for the tips
+// Design tiles for Tips
 class TipsTiles extends StatelessWidget {
   final String subCateogry;
   final String mainCategory;
@@ -93,7 +93,6 @@ class TipsTiles extends StatelessWidget {
                 width: 2
               )
             ),
-
               child:  Row(
                 children: [
                   Container(
@@ -109,9 +108,11 @@ class TipsTiles extends StatelessWidget {
                     child: Icon(Icons.cake_rounded, color: Colors.white,),
                   ),
                   SizedBox(width: 30),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Text(this.subCateogry, style: TextStyle(fontSize: 50)),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(this.subCateogry, style: TextStyle(fontSize: 50), overflow: TextOverflow.ellipsis),
+                    ),
                   ),
                 ],
               ),

@@ -81,7 +81,7 @@ class _CreateForumPostState extends State<CreateForumPost> {
                             selectedDropDownMenu = newValue;
                           });
                         },
-                        items:  forumPostCategories
+                        items:  forumPostCategories   // check if forum categories are correct, according to Tips/Tools Bookmarked
                             .map<DropdownMenuItem<dynamic>>((dynamic value) {
                           return DropdownMenuItem<dynamic>(
                             value: value,
@@ -134,7 +134,8 @@ class _CreateForumPostState extends State<CreateForumPost> {
                             "name" : fTitleController.text,
                             "content" : fContentController.text,
                             "userID": Constants.myUID,
-                            "username": username
+                            "username": username,
+                            "bookmarkedBy" : []
                           };
 
                           databaseMethods.setNewForumPost(selectedDropDownMenu, fTitleController.text, CreateForumPostInfoMap);
