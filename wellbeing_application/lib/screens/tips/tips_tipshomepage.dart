@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'tips_postlists.dart';
+import '../../constants.dart';
 
 class TipsHomePage extends StatefulWidget {
   const TipsHomePage({Key key}) : super(key: key);
@@ -51,8 +52,8 @@ class _TipsHomePageState extends State<TipsHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue[700],
-          title: Text("Tips", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
+          title: Text("Tips", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
           centerTitle: true,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(

@@ -101,8 +101,8 @@ class _TTBookmarkedState extends State<TTBookmarked> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue[700],
-          title: Text("Bookmarked", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
+          title: Text("Bookmarked", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
           centerTitle: true,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(

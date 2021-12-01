@@ -46,11 +46,14 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Align(
             alignment: Alignment.center,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Padding(padding: EdgeInsets.only(top: 10.0)),
-                Text("User Information", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                Text("User Information",style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
                 settingsButton(btnName: "Update Details", action: "UpdateUser"),
+
+                SizedBox(height: 20),
+                Text("App Settings",style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -177,7 +180,7 @@ class _settingsButtonState extends State<settingsButton> {
       },
           child: Text(widget.btnName),
         style: ElevatedButton.styleFrom(
-          fixedSize: Size(MediaQuery.of(context).size.width/1.5, MediaQuery.of(context).size.width/9),
+          fixedSize: Size(MediaQuery.of(context).size.width/1.2, MediaQuery.of(context).size.width/9),
           primary: Color(Constants.myThemeColour).withOpacity(1)
         )
       ),

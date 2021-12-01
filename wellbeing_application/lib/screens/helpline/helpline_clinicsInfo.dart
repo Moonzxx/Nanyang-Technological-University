@@ -44,7 +44,8 @@ class _ClinicsInfoState extends State<ClinicsInfo> {
               clinicName: (snapshot.data as QuerySnapshot).docs[index]["clinicName"],
                 clinicAddr: (snapshot.data as QuerySnapshot).docs[index]["address"],
                 clinicFee: (snapshot.data as QuerySnapshot).docs[index]["fee"],
-                clinicTel: (snapshot.data as QuerySnapshot).docs[index]["tel"]);
+                clinicTel: (snapshot.data as QuerySnapshot).docs[index]["tel"],
+            sgRegion: widget.sgContinent);
           },
         ) : Container();
       },
@@ -77,7 +78,8 @@ class ClinicTile extends StatelessWidget {
   final String clinicAddr;
   final int clinicTel;
   final int clinicFee;
-  ClinicTile({this.clinicName, this.clinicAddr, this.clinicTel, this.clinicFee});
+  final String sgRegion;
+  ClinicTile({this.clinicName, this.clinicAddr, this.clinicTel, this.clinicFee, this.sgRegion});
 
 
   @override
@@ -85,7 +87,7 @@ class ClinicTile extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            ViewClinicInfo(viewClinicName: clinicName , viewClinicAddr: clinicAddr , viewClinicTel: clinicTel , viewClinicFee: clinicFee,)));
+            ViewClinicInfo(viewClinicName: clinicName , viewClinicAddr: clinicAddr , viewClinicTel: clinicTel , viewClinicFee: clinicFee, viewClinicRegion: this.sgRegion)));
       },
       child: Container(
         height: MediaQuery.of(context).size.height/8,

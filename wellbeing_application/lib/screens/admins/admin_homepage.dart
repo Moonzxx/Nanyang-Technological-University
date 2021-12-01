@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wellbeing_application/constants.dart';
 import 'admin_viewcats.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -53,8 +54,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue[700],
-          title: Text("Admin Homepage", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          backgroundColor:  Color(Constants.myThemeColour + 25).withOpacity(1),
+          title: Text("Admin Homepage", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
           centerTitle: true,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(

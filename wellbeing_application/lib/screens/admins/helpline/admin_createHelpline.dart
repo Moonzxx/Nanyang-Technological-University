@@ -190,7 +190,8 @@ class _createaHelplineInfoState extends State<createaHelplineInfo> {
                                 "clinicName" : savedClinicName,
                                 "address": savedClinicAddr,
                                 "tel": savedClinicTel,
-                                "fee": savedClinicFee
+                                "fee": savedClinicFee,
+                                "rating": 0
                               };
 
                               databaseMethods.createSGClinic(selectedRegionDropDownMenu, savedClinicName , clinicInformation);

@@ -57,8 +57,8 @@ class _ChatFriendsPageState extends State<ChatFriendsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
-        title: Text("Chats", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        backgroundColor:  Color(Constants.myThemeColour + 25).withOpacity(1),
+        title: Text("Chats", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -72,6 +72,7 @@ class _ChatFriendsPageState extends State<ChatFriendsPage> {
        padding: const EdgeInsets.only( bottom: 50.0),
        child: FloatingActionButton(
          child: Icon(Icons.search),
+         backgroundColor: Color(Constants.myThemeColour).withOpacity(1) ,
          onPressed: (){
            Navigator.push(context, MaterialPageRoute(builder: (context){
              return SearchScreen();

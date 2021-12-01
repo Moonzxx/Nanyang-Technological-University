@@ -56,7 +56,7 @@ class _HomeState extends State<Home> {
       extendBody: true,
       //drawer: NavDrawer(),
       appBar: AppBar(
-        title : Text('Feed'),
+        title : Text('Feed', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy),),
         backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
         leading: NavigationWidget(),
       ),

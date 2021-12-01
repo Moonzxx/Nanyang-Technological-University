@@ -16,44 +16,48 @@ class searchSGClinic extends StatefulWidget {
 class _searchSGClinicState extends State<searchSGClinic> {
 
   FirebaseApi databaseMethods = new FirebaseApi();
-  Stream sgRegionClinics;
+  Stream SGContinentClinicList;
 
   String selectedRegionDropDownMenu = "Central";
   List<String> sgRegions = ["Central", "East", "North", "North-East", "West"];
 
   @override
   void initState(){
-    useSearch(selectedRegionDropDownMenu);
     super.initState();
   }
 
-  useSearch(String sgRegion){
-    databaseMethods.getSGClinicLines(sgRegion).then((val){
+  useSearch(String region){
+    databaseMethods.getSGClinicLines(region).then((val){
       setState(() {
-        sgRegionClinics = val;
+        SGContinentClinicList = val;
       });
     });
 
   }
 
-  Widget SGRegionClinicList(){
+  Widget DisplaySGRegionClinicList(){
     return StreamBuilder(
-      stream : sgRegionClinics,
+      stream : SGContinentClinicList,
       builder: (context, snapshot){
-        return (snapshot.hasData) ? ListView.builder(
-          itemCount: (snapshot.data as QuerySnapshot).docs.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index){
-            return SgClinicNameTiles(
-              sgRegionClinicName: (snapshot.data as QuerySnapshot).docs[index]["clinicName"],
-              sgRegionClinicAddr: (snapshot.data as QuerySnapshot).docs[index]["address"],
-              sgRegionClinicTel: (snapshot.data as QuerySnapshot).docs[index]["tel"],
-              sgRegionClinicFee: (snapshot.data as QuerySnapshot).docs[index]["fee"],
-              sgRegionSelected: selectedRegionDropDownMenu,
-            );
-          },
+        return snapshot.hasData ?
+         ListView.builder(
+              itemCount: (snapshot.data as QuerySnapshot).docs.length,
+              shrinkWrap: true,
+              itemBuilder: (context, index){
+                print((snapshot.data as QuerySnapshot).docs[index]["clinicName"]);
+                // it does returns back the correct information
+                return SgClinicNameTiles(
+                  sgRegionClinicName: (snapshot.data as QuerySnapshot).docs[index]["clinicName"],
+                  sgRegionClinicAddr: (snapshot.data as QuerySnapshot).docs[index]["address"],
+                  sgRegionClinicTel: (snapshot.data as QuerySnapshot).docs[index]["tel"],
+                  sgRegionClinicFee: (snapshot.data as QuerySnapshot).docs[index]["fee"],
+                  sgRegionSelected: selectedRegionDropDownMenu,
+                );
+              },
 
-        ) : Container();
+
+          )
+        : Container();
       }
     );
   }
@@ -78,39 +82,42 @@ class _searchSGClinicState extends State<searchSGClinic> {
         }, icon: Icon(Icons.search_rounded, color: Colors.white ))],
       ),
       body: Column(
-        children: [
-          DropdownButton(
-              value: selectedRegionDropDownMenu,
-              icon: const Icon(Icons.arrow_downward),
-              iconSize: 20,
-              elevation: 16,
-              style: const TextStyle(color: Colors.black),
-              underline: Container(
-                  height: 2,
-                  color: Colors.black),
-              onChanged: (String newValue){
-                setState(() {
-                  selectedRegionDropDownMenu = newValue;
-                  useSearch(selectedRegionDropDownMenu);
-                });
-              },
-              items:  sgRegions
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value.toString()),
-                );
-              }).toList()
-          ),
-        SizedBox(height: 20),
-          //Expanded(
-          //  child: SingleChildScrollView(
-            //  child: SGRegionClinicList(),
-           // ),
-         // ),
-          Expanded(child: SGRegionClinicList()),
-        ],
-      )
+            mainAxisSize: MainAxisSize.min,
+          children: [
+            DropdownButton(
+                value: selectedRegionDropDownMenu,
+                icon: const Icon(Icons.arrow_downward),
+                iconSize: 20,
+                elevation: 16,
+                style: const TextStyle(color: Colors.black),
+                underline: Container(
+                    height: 2,
+                    color: Colors.black),
+                onChanged: (String newValue){
+                  setState(() {
+                    selectedRegionDropDownMenu = newValue;
+                    useSearch(selectedRegionDropDownMenu);
+                  });
+                },
+                items:  sgRegions
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value.toString()),
+                  );
+                }).toList()
+            ),
+          SizedBox(height: 20),
+            Container(
+              height: MediaQuery.of(context).size.height/5,
+                width:MediaQuery.of(context).size.width,
+                child: SingleChildScrollView(child: DisplaySGRegionClinicList()))
+
+            //DisplaySGRegionClinicList(),
+
+
+          ],
+        ),
     );
   }
 }
@@ -125,29 +132,38 @@ class SgClinicNameTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.play_arrow_rounded),
-      title: Text(sgRegionClinicName),
-      trailing: Row(
-        children: [
-          IconButton(onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            EditSgClinicInfo(
-              sgClinicName: sgRegionClinicName,
-              sgClinicAddr: sgRegionClinicAddr,
-              sgClinicTel: sgRegionClinicTel,
-              sgClinicFee: sgRegionClinicFee,
-              sgSelectedRegion: sgRegionSelected,
-            )));
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
-          }, icon: Icon(Icons.edit, color: Colors.white )),
-          SizedBox(width: 10),
-          IconButton(onPressed: (){
-              CustomAlertBox.deleteSGClinicInfo(context, "Delete Clinic?", sgRegionSelected, sgRegionClinicName);
-            //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
-          }, icon: Icon(Icons.delete, color: Colors.white ))
+    return Container(
+      height: MediaQuery.of(context).size.height/8,
+      width: MediaQuery.of(context).size.width,
+      child: Card(
+        elevation: 5,
+        child: ListTile(
+          leading: Icon(Icons.play_arrow_rounded),
+          title: Text(sgRegionClinicName),
+          trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                    EditSgClinicInfo(
+                      sgClinicName: sgRegionClinicName,
+                      sgClinicAddr: sgRegionClinicAddr,
+                      sgClinicTel: sgRegionClinicTel,
+                      sgClinicFee: sgRegionClinicFee,
+                      sgSelectedRegion: sgRegionSelected,
+                    )));
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
+              }, icon: Icon(Icons.edit, color: Colors.blueGrey )),
+              SizedBox(width: 2),
+              IconButton(onPressed: (){
+                CustomAlertBox.deleteSGClinicInfo(context, "Delete Clinic?", sgRegionSelected, sgRegionClinicName);
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
+              }, icon: Icon(Icons.delete, color: Colors.blueGrey ))
 
-        ],
+            ],
+          ),
+
+        ),
       ),
     );
   }

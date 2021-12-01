@@ -4,6 +4,7 @@ import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../constants.dart';
+import 'forum_viewForumPost.dart';
 
 class UserForumPosts extends StatefulWidget {
   const UserForumPosts({Key key}) : super(key: key);
@@ -38,6 +39,9 @@ class _UserForumPostsState extends State<UserForumPosts> {
           var userPostMap = new Map();
           userPostMap['postName'] = postDocs[a]['name'];
           userPostMap['category'] = postCategory;
+          userPostMap['content'] = postDocs[a]['content'];
+          userPostMap['user'] = postDocs[a]['username'];
+          userPostMap['bookmarked'] = postDocs[a]['bookmarkedBy'];
           setState(() {
             userPost.add(userPostMap);
           });
@@ -59,7 +63,10 @@ class _UserForumPostsState extends State<UserForumPosts> {
         itemCount: userPost.length,
         itemBuilder: (context, index){
           return userPostTile(postCategory: userPost[index]["category"],
-              postName: userPost[index]["postName"]);
+              postName: userPost[index]["postName"],
+          postUser: userPost[index]["user"],
+          postContent: userPost[index]["content"],
+          postBookmarked: userPost[index]["bookmarked"]);
         });
   }
 
@@ -67,8 +74,8 @@ class _UserForumPostsState extends State<UserForumPosts> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
-        title: Text("My Post", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
+        title: Text("My Post", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -86,13 +93,17 @@ class _UserForumPostsState extends State<UserForumPosts> {
 class userPostTile extends StatelessWidget {
   final String postName;
   final String postCategory;
-  userPostTile({this.postName, this.postCategory});
+  final String postContent;
+  final String postUser;
+  final List postBookmarked;
+  userPostTile({this.postName, this.postCategory, this.postBookmarked, this.postUser, this.postContent});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-      //  Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>
+            ViewForumPost(fTitle: this.postName , fDescription: this.postContent , fUser: this.postUser , fCategory: this.postCategory , fBookmarked: this.postBookmarked )));
       },
       child: Container(
         height: MediaQuery.of(context).size.height/10,

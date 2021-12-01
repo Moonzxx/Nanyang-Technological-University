@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../utils/utils.dart';
@@ -282,6 +283,8 @@ class FirebaseApi{
 
 
 
+
+
   // Get bookmarked Forum by user
 
 
@@ -346,13 +349,26 @@ class FirebaseApi{
   createTipPost( String subCat, String postTitle, tipPostInfo){
     FirebaseFirestore.instance.collection("tips").doc("Tips").collection("categories").doc(subCat).collection("posts").doc(postTitle).set(tipPostInfo).catchError((e){print(e.toString());});
   }
+  createToolPost( String subCat, String postTitle, tipPostInfo){
+    FirebaseFirestore.instance.collection("tips").doc("Tools").collection("categories").doc(subCat).collection("posts").doc(postTitle).set(tipPostInfo).catchError((e){print(e.toString());});
+  }
+
+  deleteTipToolsPost( String mainCat, String subCat, String postTitle) async{
+    FirebaseFirestore.instance.collection("tips").doc(mainCat).collection("categories").doc(subCat).collection("posts").doc(postTitle).delete();
+  }
+
+  updateTipsPostInfo(String subCat, String postTitle, updatedTipsPostInfo) async{
+    return await FirebaseFirestore.instance.collection("tips").doc("Tips").collection("categories").doc(subCat).collection("posts").doc(postTitle).update(updatedTipsPostInfo);
+  }
+
+  updateToolsPostInfo(String subCat, String postTitle, updatedToolsPostInfo) async{
+    return await FirebaseFirestore.instance.collection("tips").doc("Tools").collection("categories").doc(subCat).collection("posts").doc(postTitle).update(updatedToolsPostInfo);
+  }
+
 
 
 
  
-
-
-
 
 
 
@@ -383,6 +399,14 @@ class FirebaseApi{
 
   deleteSGClinicInfo( String sgLine, String clinicName) async{
     FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").doc(sgLine).collection("clinics").doc(clinicName).delete();
+  }
+
+  getClinicRemarks(String sgLine, String clinicName) async{
+    return await FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").doc(sgLine).collection("clinics").doc(clinicName).collection("remarks").snapshots();
+  }
+
+  setUserRemark(String sgLine, String clinicName, userRemark) async{
+    FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").doc(sgLine).collection("clinics").doc(clinicName).collection("remarks").add(userRemark).catchError((e){print(e.toString());});
   }
 
 
@@ -422,6 +446,23 @@ class FirebaseApi{
 
   deleteUserDiaryEntry(String userID, String diaryEntry) async{
     FirebaseFirestore.instance.collection("diary").doc(userID).collection("diaryEntries").doc(diaryEntry).delete();
+  }
+
+
+
+
+  getUserNotification(String userID) async{
+    return await FirebaseFirestore.instance.collection("users").doc(userID).collection("notifications").snapshots();
+  }
+
+  setNotification(String  userID, appNotificationInfo) async{
+    FirebaseFirestore.instance.collection("users").doc(userID).collection("notifications").add(appNotificationInfo).then((val){
+      FirebaseFirestore.instance.collection("users").doc(userID).collection("notifications").doc(val.id).update({"notifID" : val.id});
+    }).catchError((e){print(e.toString());});
+  }
+  
+  deleteUserNotification( String userID, String notificationID) async{
+    FirebaseFirestore.instance.collection("users").doc(userID).collection("notifications").doc(notificationID).delete();
   }
 
 

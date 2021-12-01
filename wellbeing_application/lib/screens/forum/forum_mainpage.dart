@@ -4,6 +4,7 @@ import 'forum_homepage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'forum_bookmarked.dart';
 import 'forum_myPost.dart';
+import '../../constants.dart';
 
 
 class ForumMainPage extends StatelessWidget {
@@ -48,7 +49,8 @@ class _ForumHomeState extends State<ForumHome> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text('Forum'),
+        backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
+        title:  Text('Forum', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),
         leading: NavigationWidget(),
       ),
       body: screens[index],
@@ -57,8 +59,8 @@ class _ForumHomeState extends State<ForumHome> {
           iconTheme: IconThemeData( color: Colors.white),
         ),
         child: CurvedNavigationBar(
-            color: Colors.blue,
-            buttonBackgroundColor: Colors.blue,
+            color: Color(Constants.myThemeColour ).withOpacity(1),
+            buttonBackgroundColor:  Color(Constants.myThemeColour ).withOpacity(1),
             backgroundColor: Colors.transparent,
             height: 55, // height of bottom navigationbar
             index: index,

@@ -3,6 +3,7 @@ import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_
 import 'admin_assignment.dart';
 import 'admin_homepage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import '../../constants.dart';
 
 class AdminMainPage extends StatelessWidget {
   const AdminMainPage({Key? key}) : super(key: key);
@@ -46,7 +47,8 @@ class _AdminHomeState extends State<AdminHome> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text('Admin'),
+        backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
+        title: Text('Admin', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),
         leading: NavigationWidget(),
       ),
       body: screens[index],
@@ -55,8 +57,8 @@ class _AdminHomeState extends State<AdminHome> {
           iconTheme: IconThemeData( color: Colors.white),
         ),
         child: CurvedNavigationBar(
-            color: Colors.blue,
-            buttonBackgroundColor: Colors.blue,
+            color: Color(Constants.myThemeColour ).withOpacity(1),
+            buttonBackgroundColor:  Color(Constants.myThemeColour ).withOpacity(1),
             backgroundColor: Colors.transparent,
             height: 55, // height of bottom navigationbar
             index: index,

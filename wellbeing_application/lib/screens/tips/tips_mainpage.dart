@@ -51,8 +51,8 @@ class _TipsHomeState extends State<TipsHome> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
-        title: Text("Tips"),
+        backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
+        title: Text("Tips", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy),),
         leading: NavigationWidget(),
       ),
       body: screens[index],
@@ -61,8 +61,8 @@ class _TipsHomeState extends State<TipsHome> {
           iconTheme: IconThemeData( color: Colors.white),
         ),
         child: CurvedNavigationBar(
-            color: Colors.blue,
-            buttonBackgroundColor: Colors.blue,
+            color: Color(Constants.myThemeColour ).withOpacity(1),
+            buttonBackgroundColor:  Color(Constants.myThemeColour ).withOpacity(1),
             backgroundColor: Colors.transparent,
             height: 55, // height of bottom navigationbar
             index: index,

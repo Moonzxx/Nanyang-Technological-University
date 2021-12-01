@@ -64,7 +64,8 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chat"),  // Can change to person avatar and username  // Try to get notification index as well
+        backgroundColor:  Color(Constants.myThemeColour + 25).withOpacity(1),
+        title: Text("Chat", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),  // Can change to person avatar and username  // Try to get notification index as well
       ),
       body: Container(
         child: Stack(

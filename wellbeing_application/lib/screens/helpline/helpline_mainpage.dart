@@ -46,7 +46,7 @@ class _HelplineHomeState extends State<HelplineHome> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
-        title: Text('Helpline'),
+        title: Text('Helpline', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),
         leading: NavigationWidget(),
       ),
       body: screens[index],
@@ -55,8 +55,8 @@ class _HelplineHomeState extends State<HelplineHome> {
           iconTheme: IconThemeData( color: Colors.white),
         ),
         child: CurvedNavigationBar(
-            color: Colors.blue,
-            buttonBackgroundColor: Colors.blue,
+            color: Color(Constants.myThemeColour ).withOpacity(1),
+            buttonBackgroundColor:  Color(Constants.myThemeColour ).withOpacity(1),
             backgroundColor: Colors.transparent,
             height: 55, // height of bottom navigationbar
             index: index,

@@ -3,6 +3,7 @@ import '../../widgets/navigation_drawer_zoom/navigation_widget.dart';
 import '../chat/chat_friendspage.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'chat_blocked.dart';
+import '../../constants.dart';
 
 class ChatMainPage extends StatelessWidget {
   const ChatMainPage({Key? key}) : super(key: key);
@@ -42,7 +43,8 @@ class _ChatHomeState extends State<ChatHome> {
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: Text('Chatroom'),
+        backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
+        title: Text('Chatroom', style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),
         leading: NavigationWidget(),
       ),
       body: screens[index],
@@ -51,8 +53,8 @@ class _ChatHomeState extends State<ChatHome> {
           iconTheme: IconThemeData( color: Colors.white),
         ),
         child: CurvedNavigationBar(
-            color: Colors.blue,
-            buttonBackgroundColor: Colors.blue,
+            color: Color(Constants.myThemeColour ).withOpacity(1),
+            buttonBackgroundColor:  Color(Constants.myThemeColour ).withOpacity(1),
             backgroundColor: Colors.transparent,
             height: 55, // height of bottom navigationbar
             index: index,

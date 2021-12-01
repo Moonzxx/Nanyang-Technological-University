@@ -4,6 +4,7 @@ import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../constants.dart';
+import 'forum_viewForumPost.dart';
 
 class UserBookmarked extends StatefulWidget {
   const UserBookmarked({Key key}) : super(key: key);
@@ -42,6 +43,10 @@ class _UserBookmarkedState extends State<UserBookmarked> {
             var bookmarkMap = new Map();
             bookmarkMap['postName'] = postDocs[a]['name'];
             bookmarkMap['category'] = postCategory;
+            bookmarkMap['content'] = postDocs[a]['content'];
+            bookmarkMap['user'] = postDocs[a]['username'];
+            bookmarkMap['bookmarked'] = postDocs[a]['bookmarkedBy'];
+
             setState(() {
               userBookmarkedPost.add(bookmarkMap);
             });
@@ -59,7 +64,12 @@ class _UserBookmarkedState extends State<UserBookmarked> {
         itemCount: userBookmarkedPost.length,
         itemBuilder: (context, index){
           return userBookmarkedTile(postCategory: userBookmarkedPost[index]["category"],
-              postName: userBookmarkedPost[index]["postName"]);
+              postName: userBookmarkedPost[index]["postName"],
+            postUser: userBookmarkedPost[index]["user"],
+            postDescription: userBookmarkedPost[index]["content"],
+          postBookmarked: userBookmarkedPost[index]["bookmarked"],
+
+          );
         });
   }
 
@@ -67,8 +77,8 @@ class _UserBookmarkedState extends State<UserBookmarked> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
-        title: Text("Bookmarked", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
+        title: Text("Bookmarked", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -86,13 +96,18 @@ class _UserBookmarkedState extends State<UserBookmarked> {
 class userBookmarkedTile extends StatelessWidget {
   final String postName;
   final String postCategory;
-  userBookmarkedTile({this.postName, this.postCategory});
+  final String postDescription;
+  final String postUser;
+  final List postBookmarked;
+  userBookmarkedTile({this.postName, this.postCategory, this.postDescription, this.postBookmarked, this.postUser});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        //  Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => ViewForumPost(
+          fTitle: this.postName , fDescription: this.postDescription , fUser: this.postUser, fCategory: this.postCategory , fBookmarked: this.postBookmarked ,
+        )));
       },
       child: Container(
         height: MediaQuery.of(context).size.height/10,

@@ -39,7 +39,7 @@ class _MoodPageState extends State<MoodPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor:  Color(Constants.myThemeColour + 25).withOpacity(1),
-        title: Text("Select Mood", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        title: Text("Select Mood", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -52,7 +52,7 @@ class _MoodPageState extends State<MoodPage> {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            //crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(

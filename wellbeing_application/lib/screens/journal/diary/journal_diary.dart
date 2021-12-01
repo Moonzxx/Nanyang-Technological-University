@@ -68,8 +68,8 @@ class _DiaryEntryListState extends State<DiaryEntryList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
-        title: Text("Diary", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
+        title: Text("Diary", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -86,7 +86,7 @@ class _DiaryEntryListState extends State<DiaryEntryList> {
             Navigator.push(context, MaterialPageRoute(builder: (context) => AddDiaryEntry()));
           }, //make sure of bool to make it null,
           child: Icon(Icons.add),
-          backgroundColor: Colors.blue,
+          backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
         ),
       ),
     );

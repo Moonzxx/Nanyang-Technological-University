@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wellbeing_application/constants.dart';
 import 'package:wellbeing_application/widgets/custom_snackbar.dart';
 import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_page.dart';
 import '../admins/TipsTools/admin_CreateTips.dart';
@@ -131,9 +132,10 @@ class _AdminViewCatState extends State<AdminViewCat> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(
-      backgroundColor: Colors.blue[700],
-      title: Text(widget.category, style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+    return Scaffold(
+        appBar: AppBar(
+      backgroundColor:  Color(Constants.myThemeColour + 25).withOpacity(1),
+      title: Text(widget.category, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
       centerTitle: true,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(

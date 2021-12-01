@@ -5,41 +5,61 @@ import 'package:wellbeing_application/utils/firebase_api.dart';
 import '../../../constants.dart';
 import '../../../widgets/custom_AlertBox.dart';
 
-class CreateTips extends StatefulWidget {
-  const CreateTips({Key key}) : super(key: key);
+class CreateTools extends StatefulWidget {
+  const CreateTools({Key key}) : super(key: key);
 
   @override
-  _CreateTipsState createState() => _CreateTipsState();
+  _CreateToolsState createState() => _CreateToolsState();
 }
 
-class _CreateTipsState extends State<CreateTips> {
-  final _createTipsFormKey = GlobalKey<FormState>();
+class _CreateToolsState extends State<CreateTools> {
+
+  final _createToolsFormKey = GlobalKey<FormState>();
   FirebaseApi databaseMethods = new FirebaseApi();
-  TextEditingController tipSources = new TextEditingController(); //Maybe split string using commas?
-  TextEditingController tipMainTitle = new TextEditingController();
-  TextEditingController tipDescription = new TextEditingController();
+  TextEditingController andriodSourceController = new TextEditingController();
+  TextEditingController iosSourceController = new TextEditingController();
+  TextEditingController toolsMainTitleController = new TextEditingController();
+  TextEditingController toolsDescriptionController = new TextEditingController();
   QuerySnapshot categoriesSnapshot = null;
-  // Add dropdown category
 
   String postName = "";
   String postDescription = "";
-  List<String> postSources = [];
+  String postIosSource = "";
+  String postAndroidSource = "";
   String postCategory = "";
-  String selectedPostCategory = "Finance";
-  List<String> tipsPostCategory = [];
+  String selectedPostCategory;
+  List<String> toolsPostCategory = [];
 
 
-  getTipsCategories() async{
-    QuerySnapshot coll = await FirebaseFirestore.instance.collection("tips").doc("Tips").collection("categories").get();
+  getToolsCategories() async{
+    QuerySnapshot coll = await FirebaseFirestore.instance.collection("tips").doc("Tools").collection("categories").get();
     List<DocumentSnapshot> collDocs = coll.docs;
-    print(collDocs.length); // returns 3
-    for(var i = 0; i < collDocs.length; i++) {
-      setState(() {
-        tipsPostCategory.add(collDocs[i]['name']);
-      });
 
+    for(var i = 0; i < collDocs.length; i++){
+      setState(() {
+        toolsPostCategory.add(collDocs[i]['name']);
+      });
     }
 
+    selectedPostCategory = toolsPostCategory[0];
+  }
+
+  @override
+  void initState(){
+    getToolsCategories();
+    super.initState();
+  }
+
+  // Postname only accept alphabets, numbers and spaces
+  String validateTitle(String value){
+
+    RegExp nameTitle = new RegExp(r'^[a-zA-Z0-9 ]*$');
+    if (!nameTitle.hasMatch(value)){
+      return 'Name must contain only alphabets';
+    }
+    else{
+      return null;
+    }
   }
 
   // Description to accept alphabets, numbers,
@@ -56,21 +76,8 @@ class _CreateTipsState extends State<CreateTips> {
     }
   }
 
-  // Postname only accept alphabets, numbers and spaces
-  String validateTitle(String value){
-
-    RegExp nameTitle = new RegExp(r'^[a-zA-Z0-9 ]*$');
-    if (!nameTitle.hasMatch(value)){
-      return 'Name must contain only alphabets';
-    }
-    else{
-      return null;
-    }
-  }
-
-
   String validateSources(String value){
-  ///[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
+    ///[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi
     RegExp nameSources = new RegExp(r'[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?');
     if (!nameSources.hasMatch(value)){
       return 'Name must contain only alphabets';
@@ -80,28 +87,21 @@ class _CreateTipsState extends State<CreateTips> {
     }
   }
 
-
-  @override
-  void initState(){
-    getTipsCategories();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Create Tip Post"),
+        title: Text("Create Tool Post"),
         backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
       ),
       body: SingleChildScrollView(
         child: Form(
-          key: _createTipsFormKey,
+          key: _createToolsFormKey,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
               TextFormField(
-                controller: tipMainTitle,
+                controller: toolsMainTitleController,
                 decoration: inputDecoration("Post Title"
                 ),
                 maxLength: 20,
@@ -114,7 +114,7 @@ class _CreateTipsState extends State<CreateTips> {
               ),
               SizedBox(height: 10),
               TextFormField(
-                controller: tipDescription,
+                controller: toolsDescriptionController,
                 decoration: inputDecoration("Post Description"
                 ),
                 maxLength: null,
@@ -127,8 +127,8 @@ class _CreateTipsState extends State<CreateTips> {
               ),
               SizedBox(height: 10),
               TextFormField(
-                controller: tipSources,
-                decoration: inputDecoration("Post Sources: (separate sources using commas)"
+                controller: iosSourceController,
+                decoration: inputDecoration("IOS Source: "
                 ),
                 maxLength: null,
                 validator: validateSources,
@@ -137,8 +137,25 @@ class _CreateTipsState extends State<CreateTips> {
                     // Firstly, remove whitespaces
                     // Then, split into List using commas
                     // Post Sources contains a list of sources
-                    value = value.replaceAll(' ', '');
-                    postSources = value.split(',');
+
+                    postIosSource = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                controller: andriodSourceController,
+                decoration: inputDecoration("Android Source: "
+                ),
+                maxLength: null,
+                validator: validateSources,
+                onSaved: (value){
+                  setState(() {
+                    // Firstly, remove whitespaces
+                    // Then, split into List using commas
+                    // Post Sources contains a list of sources
+
+                    postAndroidSource = value;
                   });
                 },
               ),
@@ -162,7 +179,7 @@ class _CreateTipsState extends State<CreateTips> {
                           selectedPostCategory = newValue;
                         });
                       },
-                      items:  tipsPostCategory
+                      items:  toolsPostCategory
                           .map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
@@ -177,30 +194,36 @@ class _CreateTipsState extends State<CreateTips> {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    margin: EdgeInsets.all(10),
-                    height: 50.0,
-                    child: ElevatedButton(
-                        onPressed: (){
+                      margin: EdgeInsets.all(10),
+                      height: 50.0,
+                      child: ElevatedButton(
+                          onPressed: (){
 
-                          final valid = _createTipsFormKey.currentState.validate();
-                          if(valid){
-                            _createTipsFormKey.currentState.save();
-                            // information is a map of items
-                            Map<String, dynamic> postInformation = {
-                              "bookmarkedBy" : [""],
-                              "content" : postDescription,
-                              "name" : postName,
-                              "sourcesFrom": postSources
-                            };
-                            CustomAlertBox.createTipPostAlert(context, "Confirm Post Information?", selectedPostCategory, postName, postInformation);
-                          }
+                            final valid = _createToolsFormKey.currentState.validate();
+                            if(valid){
+                              _createToolsFormKey.currentState.save();
+                              // information is a map of items
 
-                        } ,
-                        style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 20), primary: Colors.green , elevation: 5, ),
-                        child: Text('Create'))
-                    ),
+                              Map<String, String> appLinks = new Map();
+                              appLinks["android"] = postAndroidSource;
+                              appLinks["ios"] = postIosSource;
+
+                              Map<String, dynamic> postInformation = {
+                                "appLinks" : appLinks,
+                                "bookmarkedBy" : {},
+                                "content" : postDescription,
+                                "name" : postName,
+                              };
+
+                              CustomAlertBox.createToolPostAlert(context, "Confirm Post Information?", selectedPostCategory, postName, postInformation);
+                            }
+
+                          } ,
+                          style: ElevatedButton.styleFrom(textStyle: TextStyle(fontSize: 20), primary: Colors.green , elevation: 5, ),
+                          child: Text('Create'))
                   ),
                 ),
+              ),
             ],
           ),
         ),
