@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'tips_TTViewPost.dart';
+import '../../constants.dart';
 
 class PostLists extends StatefulWidget {
   //which cat
@@ -51,6 +52,7 @@ class _PostListsState extends State<PostLists> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
         title: Text(widget.sCategory),
       ),
       body: TTPostList(),
@@ -83,6 +85,10 @@ class PostTiles extends StatelessWidget {
         child: Card(
           elevation: 5,
           child: ListTile(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+              side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
+            ),
               title: Text(this.postTitle),
             trailing: Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue),
 

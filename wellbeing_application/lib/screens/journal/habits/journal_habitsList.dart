@@ -13,7 +13,8 @@ Purpose of this page: To list all the habits in that specific category
 
 class HabitsList extends StatefulWidget {
   final String categoryName;
-  HabitsList({ this.categoryName});
+  final int catColour;
+  HabitsList({ this.categoryName, this.catColour});
 
   @override
   _HabitsListState createState() => _HabitsListState();
@@ -21,6 +22,7 @@ class HabitsList extends StatefulWidget {
 
 class _HabitsListState extends State<HabitsList> {
 
+  bool mainCategory = false;
   FirebaseApi databaseMethods = new FirebaseApi();
   Stream userHabitList;
 
@@ -29,6 +31,9 @@ class _HabitsListState extends State<HabitsList> {
     databaseMethods.getUsersHabitsfromCategory(Constants.myUID, widget.categoryName).then((value){
       setState(() {
         userHabitList = value;
+        if(widget.categoryName == "Be Aware" || widget.categoryName == "Be Active" ||  widget.categoryName == "Help Others" ||  widget.categoryName == "Connect" || widget.categoryName == "Keep Learning" ){
+          mainCategory = true;
+        }
       });
     });
     super.initState();
@@ -45,6 +50,7 @@ class _HabitsListState extends State<HabitsList> {
               habitDescription: (snapshot.data as QuerySnapshot).docs[index]["description"],
               habitdays: (snapshot.data as QuerySnapshot).docs[index]["days"],
               habitActivation: (snapshot.data as QuerySnapshot).docs[index]["activated"],
+              colors: widget.catColour,
             );
           },
         ) : Center(
@@ -61,7 +67,17 @@ class _HabitsListState extends State<HabitsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.categoryName),
+        title: Text(widget.categoryName, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        centerTitle: true,
+
+        actions: (mainCategory) ? [IconButton(onPressed: null, icon: Icon(Icons.edit, color: Colors.grey )),
+          IconButton(onPressed: null, icon: Icon(Icons.delete, color: Colors.grey ))] :
+          [IconButton(onPressed: (){
+        //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
+    }, icon: Icon(Icons.edit, color: Colors.white )),
+    IconButton(onPressed: (){
+    //CustomAlertBox.deleteDiaryEntryConfirmation(context, "Delete diary Entry?", Constants.myUID, widget.diaryName);
+    }, icon: Icon(Icons.delete, color: Colors.white ))],
       ),
 
       body: HabitList(),
@@ -82,7 +98,8 @@ class HabitTile extends StatelessWidget {
   final String habitDescription;
   final bool habitActivation;
   final List habitdays;
-  HabitTile({ this.habitName, this.habitDescription, this.habitdays, this.habitActivation});
+  final int colors;
+  HabitTile({ this.habitName, this.habitDescription, this.habitdays, this.habitActivation, this.colors});
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +110,7 @@ class HabitTile extends StatelessWidget {
                 Hactivation: this.habitActivation, Hdays: this.habitdays)));
       },
       child: Card(
-        color: Colors.pink,
+        color: Color(this.colors).withOpacity(1),
         child: ListTile(
             title: Text(this.habitName),
             trailing: Icon(Icons.arrow_forward_rounded)

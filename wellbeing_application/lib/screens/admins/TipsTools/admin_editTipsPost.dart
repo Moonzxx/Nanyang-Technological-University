@@ -11,7 +11,7 @@ class EditTipsPosts extends StatefulWidget {
   final String subCat;
   final String postName;
   final String postContent;
-  final List<String> postSource;
+  final List<dynamic> postSource;
   EditTipsPosts({this.mainCat, this.subCat, this.postName, this.postContent, this.postSource});
 
   @override

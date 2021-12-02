@@ -85,7 +85,7 @@ class _ViewForumPostState extends State<ViewForumPost> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.blue[700],
+          backgroundColor: Constants.secondaryColour,
           title: Text("In need of a study buddy", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
           centerTitle: true,
           shape: RoundedRectangleBorder(
@@ -147,6 +147,7 @@ class _ViewForumPostState extends State<ViewForumPost> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        backgroundColor: Constants.secondaryColour,
           child: Icon(Icons.reply_rounded),
           onPressed: (){
             Navigator.push(context, MaterialPageRoute(builder: (context) => createForumReply(

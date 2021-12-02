@@ -118,6 +118,10 @@ class userBookmarkedTile extends StatelessWidget {
         child: Card(
           elevation: 5,
           child: ListTile(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
+            ),
             title: Text(this.postName),
             trailing: Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue),
 

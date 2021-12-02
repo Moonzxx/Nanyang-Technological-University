@@ -4,6 +4,7 @@ import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../constants.dart';
 import '../../widgets/custom_snackbar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // Can be applied to tools as well
 // When displaying post, can bookmarked it
@@ -55,7 +56,13 @@ class _TTViewPostState extends State<TTViewPost> {
         sources = searchSnapshot.docs[0]["sourcesFrom"];
         for(var i = 0; i < sources.length; i++){
           textWidgetList.add(
-            Text(sources[i])
+            InkWell(
+              child: Text(sources[i], style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
+              onTap: (){
+                launch(Uri.encodeFull(sources[i]));
+              },
+            )
+           // Text(sources[i])
           );
         }
         //print(sources);
@@ -90,8 +97,8 @@ class _TTViewPostState extends State<TTViewPost> {
     return Scaffold(
       // Returning Tips Post View
       appBar: AppBar(
-          backgroundColor: Colors.blue[700],
-          title: Text(widget.postTitleName, style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
+          title: Text(widget.postTitleName, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
           centerTitle: true,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
@@ -127,22 +134,27 @@ class _TTViewPostState extends State<TTViewPost> {
               height: MediaQuery.of(context).size.height/10,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
-                      color: Colors.red
+                      color: Colors.black
                   )
               ),
               child: Scrollbar(
                 child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Text("Sources"),
-                    Column(
-                      children: textWidgetList,
-                    ),
-                  ],
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Sources", style: TextStyle(fontSize: 35, fontFamily: systemFontFamily, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                      SizedBox(height: 20),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: textWidgetList,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              ),
+              )
             ),
           ) : PreferredSize(
             preferredSize: Size.fromHeight(100),
@@ -151,30 +163,47 @@ class _TTViewPostState extends State<TTViewPost> {
               height: MediaQuery.of(context).size.height/10,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
-                      color: Colors.red
+                      color: Colors.black
                   )
               ),
 
               child: Scrollbar(
                 child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Text("IOS: "),
-                          SizedBox(width: 15),
-                          Text(ios)
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text("Android: "),
-                          SizedBox(width: 15),
-                          Text(android)
-                        ],
-                      )
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            Text("iOS", style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                            Text(":", style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, )),
+                            SizedBox(width: 15),
+                            InkWell(
+                              child: Text(ios, style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
+                              onTap: (){
+                                launch(Uri.encodeFull(ios));
+                              },
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text("Android", style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                            Text(":", style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, )),
+                            SizedBox(width: 15),
+                            InkWell(
+                              child: Text(android, style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
+                              onTap: (){
+                                launch(Uri.encodeFull(android));
+                              },
+                            )
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -188,12 +217,23 @@ class _TTViewPostState extends State<TTViewPost> {
             margin: EdgeInsets.all(20),
             height: MediaQuery.of(context).size.height/1.4,
             width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Colors.red
-                )
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              border: Border.all(
+                  color: Colors.black
+              )
+          ),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.postTitleName, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 30, decoration: TextDecoration.underline)),
+                  SizedBox(height: 15,),
+                  Text(postInformation),
+                ],
+              ),
             ),
-            child: Text(postInformation),
         ),
       ),
     );
@@ -219,3 +259,4 @@ if(marked == true){
                 });
               }
  */
+

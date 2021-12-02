@@ -311,7 +311,7 @@ class _DailyGoalsCheckState extends State<DailyGoalsCheck> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
-        title: Text("Daily Goals", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        title: Text("Daily Goals", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -508,7 +508,7 @@ class _RoutineTileState extends State<RoutineTile> {
         // do we need to initstate? check
     }
     else{
-        databaseMethods.UpdateUserRoutineCompletionTileUnchecked(Constants.myUID, widget.rCategory, widget.rTitle, widget.checkCurrDate).then((val){
+        databaseMethods.UpdateUserRoutineCompletionTileChecked(Constants.myUID, widget.rCategory, widget.rTitle, widget.checkCurrDate).then((val){
           setState(() {
             widget.completion.add(widget.checkCurrDate);
           });

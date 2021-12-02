@@ -22,7 +22,6 @@ class _ExternalHelplinePageState extends State<ExternalHelplinePage> {
     databaseMethods.getAroundSG().then((val){
       setState(() {
         cAroundSG = val;
-        print(Colors.blue[700].value);
       });
     });
     super.initState();
@@ -76,12 +75,15 @@ class AroundSGTiles extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ClinicsInfo(sgContinent: areaTitle,)));
       },
       child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Card(
           elevation: 5,
           color: Color(this.colour).withOpacity(1),
           child: ListTile(
-            title: Text(this.areaTitle),
-
+            title: Text(this.areaTitle, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 30, fontWeight: FontWeight.bold)),
+            trailing: Icon(Icons.arrow_forward_ios_rounded, color: Colors.black),
           ),
         ),
       ),

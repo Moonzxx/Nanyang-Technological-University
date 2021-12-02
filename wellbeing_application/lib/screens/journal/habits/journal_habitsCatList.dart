@@ -18,7 +18,7 @@ class _HabitsState extends State<Habits> {
 
   FirebaseApi databaseMethods = new FirebaseApi();
   Stream userHabitCatList;
-  List<Color> colors = [Colors.blue, Colors.green, Colors.pinkAccent,Colors.deepPurpleAccent, Colors.yellow, Colors.blueGrey];
+  //List<Color> colors = [Colors.blue, Colors.green, Colors.pinkAccent,Colors.deepPurpleAccent, Colors.yellow, Colors.blueGrey];
 
 
 
@@ -30,6 +30,8 @@ class _HabitsState extends State<Habits> {
       });
     });
     super.initState();
+    // get number and save it to desc
+    // update initialisation state
   }
 
   Widget HabitCatList(){
@@ -40,8 +42,8 @@ class _HabitsState extends State<Habits> {
          itemCount: (snapshot.data as QuerySnapshot).docs.length ,
           itemBuilder: (context, index){
            return HabitCatTile(habitName: (snapshot.data as QuerySnapshot).docs[index]["name"],
-               shortDescp: (snapshot.data as QuerySnapshot).docs[index]["short_description"],
-           colors: colors[index],);
+               shortDescp: (snapshot.data as QuerySnapshot).docs[index]["short_desc"],
+           colors: (snapshot.data as QuerySnapshot).docs[index]["colour"],);
           },
         ) : Container();
       },
@@ -84,17 +86,17 @@ class _HabitsState extends State<Habits> {
 class HabitCatTile extends StatelessWidget {
   final String habitName;
   final String shortDescp;
-  final Color colors;
+  final int colors;
   HabitCatTile({ this.habitName,  this.shortDescp, this.colors});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HabitsList(categoryName: this.habitName)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HabitsList(categoryName: this.habitName, catColour: this.colors,)));
       },
       child: Card(
-        color: this.colors,
+        color: Color(this.colors).withOpacity(1),
         child: ListTile(
           title: Text(this.habitName),
           subtitle: Text(this.shortDescp),

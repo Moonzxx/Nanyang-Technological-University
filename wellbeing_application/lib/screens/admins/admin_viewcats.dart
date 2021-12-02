@@ -5,6 +5,9 @@ import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_
 import '../admins/TipsTools/admin_CreateTips.dart';
 import '../admins/helpline/admin_searchHelpline.dart';
 import '../admins/helpline/admin_createHelpline.dart';
+import '../admins/users/admin_searchUsers.dart';
+import '../admins/forums/admin_forumCategories.dart';
+import '../admins/TipsTools/admin_searchTipsTools.dart';
 
 class AdminViewCat extends StatefulWidget {
   final String category;
@@ -22,7 +25,8 @@ class _AdminViewCatState extends State<AdminViewCat> {
   List<String> HelplineOptions = ["Create", "Edit/Del"];
   int selectedIndex = -1;
 
-  Widget adminGridOptions(){
+
+  Widget UsersAdminOptions(){
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GridView.builder(
@@ -41,6 +45,13 @@ class _AdminViewCatState extends State<AdminViewCat> {
                   print(selectedIndex);
                 });
 
+                // If 0, create
+                if(selectedIndex == 0){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchUsers() ));
+                }
+
+                // If 1, Edit
+                // If 2, delete
                 //Navigator.push(context, MaterialPageRoute(builder: (context) => ));
               },
               child: Container(
@@ -52,6 +63,46 @@ class _AdminViewCatState extends State<AdminViewCat> {
           }),
     );
   }
+
+  Widget ForumAdminOptions(){
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 200,
+              childAspectRatio: 3 / 2,
+              crossAxisSpacing: 20,
+              mainAxisSpacing: 20),
+          itemCount: option.length,
+          itemBuilder: (BuildContext ctx, index){
+            return GestureDetector(
+              onTap: (){
+                //make use of index
+                setState(() {
+                  selectedIndex = index;
+                  print(selectedIndex);
+                });
+
+                // If 0, create
+                if(selectedIndex == 0){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchForumCategoriesPost() ));
+                }
+
+                // If 1, Edit
+                // If 2, delete
+                //Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+              },
+              child: Container(
+                alignment: Alignment.center,
+                child: Text(option[index],style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white)),
+                decoration : BoxDecoration(color: Colors.blueAccent, borderRadius: BorderRadius.circular(15)),
+              ),
+            );
+          }),
+    );
+  }
+
+
 
   Widget TipsToolsAdminOptions(){
     return Padding(
@@ -75,6 +126,9 @@ class _AdminViewCatState extends State<AdminViewCat> {
                 // If 0, create
                 if(selectedIndex == 0){
                   Navigator.push(context, MaterialPageRoute(builder: (context) => CreateTips() ));
+                }
+                if(selectedIndex == 1){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SearchTipsTools() ));
                 }
 
                 // If 1, Edit
@@ -144,9 +198,10 @@ class _AdminViewCatState extends State<AdminViewCat> {
           )
       ),
     ),
-      body: (widget.category == "USERS") ? adminGridOptions() :
+      body: (widget.category == "USERS") ? UsersAdminOptions() :
       (widget.category == "TIPS") ? TipsToolsAdminOptions() :
-      (widget.category == "HELPLINE") ? HelplineAdminOptions() : Container()// Maybe can else if here for different categories
+      (widget.category == "HELPLINE") ? HelplineAdminOptions() :
+      (widget.category == "FORUMS") ? ForumAdminOptions() : Container()// Maybe can else if here for different categories
     );
   }
 }

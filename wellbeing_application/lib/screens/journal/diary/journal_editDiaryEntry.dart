@@ -41,8 +41,8 @@ class _EditDiaryEntryState extends State<EditDiaryEntry> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit " + widget.diaryEntryName),
-        backgroundColor: Colors.blue[700],
+        title: Text("Edit " + widget.diaryEntryName,  style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),
+        backgroundColor: Constants.secondaryColour,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -51,12 +51,14 @@ class _EditDiaryEntryState extends State<EditDiaryEntry> {
             key: _editDiaryFormKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Mood:'),
-                    SizedBox(width: 15,),
+                    Text("Mood", style: TextStyle(fontSize: 35, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                    SizedBox(width: 10,),
                     DropdownButton(
                         value: editSelectedDiaryMood,
                         icon: const Icon(Icons.arrow_downward),
@@ -124,7 +126,7 @@ class _EditDiaryEntryState extends State<EditDiaryEntry> {
 
                             }
                           },
-                          child: const Text('Save Changes')
+                          child: const Text('Update Entry')
                       ),
                     ),
                   ),

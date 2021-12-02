@@ -8,7 +8,7 @@ import '../../screens/feed/homepagetester3.dart';
 import '../../screens/feed/homepagetester2.dart';
 import 'navigation_item.dart';
 
-
+import '../../screens/admin_noAccess.dart';
 import '../../screens/feed/feed_page.dart';
 import '../../screens/journal/journal_mainpage.dart';
 import '../../screens/profile/profile.dart';
@@ -39,6 +39,7 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
   NavigationItem currentItem = NavigationItems.feed;
   FirebaseApi databaseMethods = new FirebaseApi();
   DocumentSnapshot userInformation;
+  String role;
 
   @override
   void initState(){
@@ -50,8 +51,10 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
     Constants.myName = await HelperFunctions.getUserNameInSharedPreference();
     Constants.myUID = await HelperFunctions.getUserUIDInSharedPreference();
     Constants.myAvatar = await HelperFunctions.getUserAvatarInSharedPreference();
+    Constants.myRole = await HelperFunctions.getUserTypeInSharedPreference();
     databaseMethods.getUserInformation(Constants.myUID).then((val){
       setState(() {
+        role = Constants.myRole;
         userInformation = val;
         Constants.myThemeColour = userInformation["colour"];
         Constants.myMoodColour = userInformation["mood_colour"];
@@ -88,7 +91,7 @@ class _NavigationHomePageState extends State<NavigationHomePage> {
         return HelplineMainPage();
         break;
       case NavigationItems.admin:
-        return AdminMainPage();
+        return (role == "admin") ? AdminMainPage() : AdminNoAccess();
         break;
 
     }

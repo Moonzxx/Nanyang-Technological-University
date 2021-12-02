@@ -25,8 +25,8 @@ class _ViewDiaryEntryState extends State<ViewDiaryEntry> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue[700],
-        title: Text(widget.diaryName, style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        backgroundColor: Constants.secondaryColour,
+        title: Text(widget.diaryName, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -42,33 +42,40 @@ class _ViewDiaryEntryState extends State<ViewDiaryEntry> {
           }, icon: Icon(Icons.delete, color: Colors.white ))],
       ),
       body: SingleChildScrollView(
-        child:Column(
-          children: [
-            Row(
-              children: [
-                Text("Mood: "),
-                SizedBox(width: 20,),
-                Text(widget.diaryMood)
-              ],
-            ),
-            SizedBox(height: 30),
-            Text("Thoughts"),
-            SizedBox(height:10),
-            Container(
-              height: MediaQuery.of(context).size.height/1.4,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black,
+        child: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Mood", style: TextStyle(fontSize: 35, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                  SizedBox(height: 10,),
+                  Text(widget.diaryMood, style: TextStyle(fontSize: 30, fontFamily: systemFontFamily))
+                ],
+              ),
+              SizedBox(height: 30),
+              Text("Thoughts", style: TextStyle(fontSize: 35, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+              SizedBox(height:10),
+              Container(
+                height: MediaQuery.of(context).size.height/1.4,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black,
+                  ),
+                  borderRadius: BorderRadius.circular(20)
                 ),
-                borderRadius: BorderRadius.circular(20)
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Text(widget.diaryContent , style: TextStyle(fontSize: 20, fontFamily: systemFontFamily)),
+                ),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(widget.diaryContent),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

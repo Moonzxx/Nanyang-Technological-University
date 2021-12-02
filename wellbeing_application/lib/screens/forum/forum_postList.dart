@@ -52,9 +52,10 @@ class _ForumCategoryPostListState extends State<ForumCategoryPostList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.selectedCategory)
-      ),
+        appBar: AppBar(
+          backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
+          title: Text(widget.selectedCategory),
+        ),
       body: ForumCategoryList()
     );
   }
@@ -78,52 +79,26 @@ class ForumTile extends StatelessWidget {
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) => ViewForumPost(fTitle: this.forumTitle, fDescription: this.forumDescription, fUser: this.forumUser , fCategory: this.fCategory , fBookmarked: this.bookmarked,)));
       },
-       child: Card(
-        shadowColor: Colors.black,
-        elevation: 5.0,
-        margin: EdgeInsets.all(10),
-        child: Column(
-          children: [
-            Container(
-              child: Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: Container(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(this.forumTitle, textAlign: TextAlign.left, style: TextStyle(fontWeight: FontWeight.bold),),
-                          Text("some small desciption", textAlign: TextAlign.left,),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(onPressed: (){}, icon: Icon(Icons.star_border_rounded), color: Colors.yellowAccent,),
-                      Text("23")
-                    ],
-                  ),
-                  SizedBox(width: 5),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(onPressed: (){}, icon: Icon(Icons.reply_rounded), color: Colors.blue),
-                      Text("2")
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        )
+       child:  Container(
+         height: MediaQuery.of(context).size.height/11,
+         width: MediaQuery.of(context).size.width,
+         decoration: BoxDecoration(
+           borderRadius: BorderRadius.circular(20),
+         ),
+         child: Card(
+           elevation: 5,
+           child: ListTile(
+             shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(15.0),
+                 side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
+             ),
+             title: Text(this.forumTitle),
+             subtitle: Text(this.forumDescription),
+             trailing: Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue),
 
-      ),
+           ),
+         ),
+       ),
     );
   }
 }

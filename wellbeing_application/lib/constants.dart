@@ -24,6 +24,8 @@ const systemFontFamily = "StudentsTeacher";
 const systemHeaderFontFamiy = "Nunito";
 
 
+
+
 // Application colour in general
 const kbackgroundColor = Color(0xFF202020);
 const kPrimaryColor = Color(0xFFFFBD73);
@@ -32,8 +34,11 @@ class Constants{
   static String myName = "";
   static String myUID = "";
   static String myAvatar = "";
+  static String myRole = "";
   static int myThemeColour = 0;
   static int myMoodColour = 0;
+  static Color secondaryColour = Color(Constants.myThemeColour + 25).withOpacity(1);
+  static Color primaryColour = Color(Constants.myThemeColour).withOpacity(1);
 }
 
 // Main page AppBar

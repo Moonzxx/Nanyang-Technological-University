@@ -117,6 +117,7 @@ class _SearchTipsToolsState extends State<SearchTipsTools> {
               onChanged: (String newValue) {
                 setState(() {
                   selectedCategory = newValue;
+                  TipsToolsSubCategories = [];
                   getTTCategories(selectedCategory);
                   // refresh second dropdown
                 });
@@ -149,11 +150,7 @@ class _SearchTipsToolsState extends State<SearchTipsTools> {
                 );
               }).toList()),
           SizedBox(height: 20),
-          Container(
-              height: MediaQuery.of(context).size.height / 5,
-              width: MediaQuery.of(context).size.width,
-              child: SingleChildScrollView(child: displayTipToolsPostList()))
-
+          displayTipToolsPostList()
           //DisplaySGRegionClinicList(),
         ],
       ),
@@ -166,7 +163,7 @@ class TipsPostTiles extends StatelessWidget {
   final String subCategory;
   final String postName;
   final String postContent;
-  final List<String> postSources;
+  final List<dynamic> postSources;
 
   TipsPostTiles(
       {this.postName,

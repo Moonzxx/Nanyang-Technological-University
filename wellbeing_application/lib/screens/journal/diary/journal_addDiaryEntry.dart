@@ -1,4 +1,5 @@
 // @dart=2.10
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import '../../../widgets/custom_snackbar.dart';
@@ -27,11 +28,14 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
   String selectedMoodDropDownMenu = "Happy";
   List<String> mood = ["Happy", "Sad", "Disgusted", "Night"];
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Adding new Diary Entry"),
+        backgroundColor: Constants.secondaryColour,
+        title: Text("Adding new Diary Entry", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -109,6 +113,8 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
                                 "mood": selectedMoodDropDownMenu
                               };
 
+
+
                               databaseMethods.createUserDiaryEntry(Constants.myUID, currentDate, diaryEntryInfo);
                               Navigator.pop(context);
                               CustomSnackBar.buildPositiveSnackbar(context, "Entry Successfully Created");
@@ -124,7 +130,7 @@ class _AddDiaryEntryState extends State<AddDiaryEntry> {
 
 
                           },
-                          child: const Text('Next Step')
+                          child: const Text('Create Entry')
                       ),
                     ),
                   ),

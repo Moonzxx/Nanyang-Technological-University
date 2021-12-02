@@ -104,12 +104,18 @@ class LandingPage extends StatelessWidget{
 
                             // Navigating to Admin Page
                             if(user['role'] == 'admin'){
+                              var clientinfo = new Map();
+                              clientinfo['UID'] = UID;
+                              clientinfo['email'] =  user['email'].toString();
+                              clientinfo['username']   = user['username'].toString();
+                              clientinfo['avatarURL'] = user['url-avatar'].toString();
                               HelperFunctions.saveUserLoggedInSharedPreference(true);
                               HelperFunctions.saveUserUIDSharedPreference(UID);
                               HelperFunctions.saveUserNameSharedPreference(user['username'].toString());
                               HelperFunctions.saveUserEmailSharedPreference(user['email'].toString());
                               HelperFunctions.saveUserAvatarSharedPreference(user['url-avatar'].toString());
-                              return AdminHomePage();
+                              HelperFunctions.saveUserTypeSharedPreference(user['role'].toString());
+                              return NavigationHomePage(userUID: UID, userDetails: clientinfo);
                             }
                             else{
 
@@ -124,6 +130,7 @@ class LandingPage extends StatelessWidget{
                               HelperFunctions.saveUserNameSharedPreference(user['username'].toString());
                               HelperFunctions.saveUserEmailSharedPreference(user['email'].toString());
                               HelperFunctions.saveUserAvatarSharedPreference(user['url-avatar'].toString());
+                              HelperFunctions.saveUserTypeSharedPreference(user['role'].toString());
                               return NavigationHomePage(userUID: UID, userDetails: clientinfo);
                             }
                           }

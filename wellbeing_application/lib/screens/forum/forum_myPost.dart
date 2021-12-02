@@ -83,7 +83,6 @@ class _UserForumPostsState extends State<UserForumPosts> {
                 bottom: Radius.circular(30)
             )
         ),
-        actions: [IconButton(onPressed: (){}, icon: Icon(Icons.delete ))],
       ),
       body: userPostList()
     );
@@ -114,8 +113,23 @@ class userPostTile extends StatelessWidget {
         child: Card(
           elevation: 5,
           child: ListTile(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
+            ),
             title: Text(this.postName),
-            trailing: Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(onPressed: (){
+
+                  //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
+                }, icon: Icon(Icons.delete, color: Colors.blueGrey )),
+                SizedBox(width: 2),
+                Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue)
+
+              ],
+            ),
 
           ),
         ),
@@ -123,3 +137,5 @@ class userPostTile extends StatelessWidget {
     );
   }
 }
+// icon delete
+// Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue)

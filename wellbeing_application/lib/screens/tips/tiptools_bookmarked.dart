@@ -42,6 +42,7 @@ class _TTBookmarkedState extends State<TTBookmarked> {
       // returns the name of the categories
       QuerySnapshot postColl = await FirebaseFirestore.instance.collection("tips").doc(mainCat).collection("categories").doc(collDocs[i]['name']).collection("posts").get();
       List<DocumentSnapshot> postDocs = postColl.docs;
+      // this is sub cat
       print(postDocs.length);
       for(var a = 0; a < postDocs.length; a++){
         TipsBk = postDocs[a]['bookmarkedBy'];
@@ -49,6 +50,7 @@ class _TTBookmarkedState extends State<TTBookmarked> {
           if(TipsBk[b] == Constants.myUID){
             var maptester = new Map();
             maptester['postname'] = postDocs[a]['name'];
+            maptester['subCat'] = collDocs[i]['name'];
             maptester['mainCat'] = mainCat;
             print(postDocs[a]['name']);
             setState(() {
@@ -79,7 +81,7 @@ class _TTBookmarkedState extends State<TTBookmarked> {
         shrinkWrap: true,
         itemBuilder: (context, index){
           return PostTiles(mCat: TipsBookmarkedByUser[index]["mainCat"],
-              sCat: TipsBookmarkedByUser[index]["postname"],
+              sCat: TipsBookmarkedByUser[index]["subCat"],
               postTitle: TipsBookmarkedByUser[index]["postname"]);
         });
   }
@@ -90,7 +92,7 @@ class _TTBookmarkedState extends State<TTBookmarked> {
         shrinkWrap: true,
         itemBuilder: (context, index){
           return PostTiles(mCat: ToolsBookmarkedByUser[index]["mainCat"],
-              sCat: ToolsBookmarkedByUser[index]["postname"],
+              sCat: ToolsBookmarkedByUser[index]["subCat"],
               postTitle: ToolsBookmarkedByUser[index]["postname"]);
         });
   }
@@ -114,15 +116,16 @@ class _TTBookmarkedState extends State<TTBookmarked> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height:20),
             Container(
-              child: Text("Tips"),
+              child: Text("Tips",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
             ),
             SizedBox(height: 10),
             Container(
                 height: MediaQuery.of(context).size.height/5,
                 child: TipsBookmarkedList()),
             Container(
-              child: Text("Tools")
+              child: Text("Tools", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
             ),
             SizedBox(height: 10),
             Container(
@@ -161,6 +164,10 @@ class PostTiles extends StatelessWidget {
         child: Card(
           elevation: 5,
           child: ListTile(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
+            ),
             title: Text(this.postTitle),
             trailing: Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue),
 

@@ -39,7 +39,8 @@ class _createForumReplyState extends State<createForumReply> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Reply Post"),
+        backgroundColor: Constants.secondaryColour,
+        title: Text("Reply Post", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),
       ),
       body: SingleChildScrollView(
         child: Form(

@@ -67,24 +67,7 @@ class _FeedPageState extends State<FeedPage> {
     }
    */
 
-  double calculateWellB(double a, List catWellbeing){
-    double wb = 0.0;
-    //Alpha controls the rate of learning
-    double alpha = a;
-
-    for(var i = 0; i < catWellbeing.length; i++){
-      if(i == 0){
-        wb = catWellbeing[i];
-      }
-      else{
-        wb = wb + (alpha * (catWellbeing[i-1] - wb));
-      }
-    }
-    return wb;
-  }
-
-  // Calculating user wellbeing
-  calculateUserWellbeing(List categories) async{
+  calculateUserWellbeingTwo(List categories) async{
     // Should consist maps of cats and values?
 
     // traverse through map by traversing though categories that user have
@@ -98,14 +81,22 @@ class _FeedPageState extends State<FeedPage> {
       String category = categories[i];
       // Traversing through dates
       for(var a =0; a < collDocs.length; a++){
+        print(collDocs[a]);
         //get daily wellbeing information (each date)
         Map<String, dynamic> wellbeing = new Map();
         wellbeing = collDocs[a]['wellbeing'];
         // getting daily dates category info
-        catDailyWellbeing.add(wellbeing[category]);
+        //print("wellbeing: " + wellbeing.toString());
+        if(wellbeing[category] == 1.0 || wellbeing[category] == 0.0){
+          catDailyWellbeing.add(wellbeing[category]);
+        }
+
+
       }
       //After traversing through the dates
       // calculate prediction
+      print(category);
+      print(catDailyWellbeing);
       double userCatWellbeing = calculateWellB(0.4, catDailyWellbeing);
       //save cat results
 
@@ -123,7 +114,25 @@ class _FeedPageState extends State<FeedPage> {
     // After traversing all categories and calculating their prediction
     // display results
 
+  }
+
+
+  double calculateWellB(double a, List catWellbeing){
+    double wb = 0.0;
+    //Alpha controls the rate of learning
+    double alpha = a;
+
+    for(var i = 0; i < catWellbeing.length; i++){
+      if(i == 0){
+        wb = catWellbeing[i];
+      }
+      else{
+        wb = wb + (alpha * (catWellbeing[i-1] - wb));
+      }
     }
+    return wb;
+  }
+
 
   getUserWellbeingInfo() async{
 
@@ -135,6 +144,53 @@ class _FeedPageState extends State<FeedPage> {
     DocumentSnapshot coll = await FirebaseFirestore.instance.collection("users").doc(Constants.myUID).collection("wellbeing").doc(currentDate).get();
     if(coll.exists){
      //update
+      QuerySnapshot userHabitsColl = await FirebaseFirestore.instance.collection("habits").doc(Constants.myUID).collection("categories").get();
+      List<DocumentSnapshot> userHabitDocs = userHabitsColl.docs;
+      // traverse through the categories
+      for(var i = 0; i < userHabitDocs.length; i++){
+        // Traverse through habits from the category
+        String cat = userHabitDocs[i]["name"];
+        allCat.add(cat);
+        QuerySnapshot userHabitCat = await FirebaseFirestore.instance.collection("habits").doc(Constants.myUID).collection("categories").doc(cat).collection("routines").get();
+        List<DocumentSnapshot> userHabitCatRoutines = userHabitCat.docs;
+        // Go through each habits and see if it is completed on that dat
+        for(var a = 0; a < userHabitCatRoutines.length; a++){
+          List completed = userHabitCatRoutines[a]["completed"];
+          for(var b = 0; b < completed.length; b++){
+            if(completed[b] == currentDate){
+              completedCat.add(cat);
+              // put the cat name on the list
+            }
+          }
+
+        }
+
+      }
+      // returns unique identifier inside completedCat List
+      completedCat = completedCat.toSet().toList();
+
+      // creation of map to set into database
+      Map<String, dynamic> categoryWellbeing = new Map();
+      for(var c= 0 ; c < allCat.length; c++){
+        bool checked = false;
+        for(var d= 0; d < completedCat.length; d++){
+          if(allCat[c] == completedCat[d]){
+            categoryWellbeing[allCat[c]] = 1.0;
+            checked = true;
+          }
+        }
+        if(checked != true){
+          categoryWellbeing[allCat[c]] = 0.0;
+        }
+      }
+
+      Map<String, dynamic> dailyUserWellbeing = {
+        "name": currentDate,
+        "datetime": DateTime.now().millisecondsSinceEpoch,
+        "wellbeing" : categoryWellbeing// insert map
+      };
+      databaseMethods.updateUserCurrentDayWellbeing(Constants.myUID, currentDate, dailyUserWellbeing);
+      calculateUserWellbeingTwo(allCat);
     }
     else{
       //set
@@ -185,7 +241,7 @@ class _FeedPageState extends State<FeedPage> {
         "wellbeing" : categoryWellbeing// insert map
       };
       databaseMethods.updateUserCurrentDayWellbeing(Constants.myUID, currentDate, dailyUserWellbeing);
-      calculateUserWellbeing(allCat);
+      calculateUserWellbeingTwo(allCat);
       //Once check comeptled, add the daily result touser wellbeing current day
 
     }

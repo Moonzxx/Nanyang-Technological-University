@@ -11,6 +11,7 @@ class HelperFunctions{
   static String sharedPreferenceUserAvatar = "USERAVATARKEY";
   static String sharedPreferenceUserUID = "USERUIDKEY";
   static String sharedPreferenceUserVerified = "USERVERIFIEDKEY";
+  static String sharedPreferenceUserType = "USERTYPEKEY";
 
 
   // Saving data to SharedPreference
@@ -45,6 +46,12 @@ class HelperFunctions{
     return await prefs.setString(sharedPreferenceUserUID, userUID);
   }
 
+  static Future<bool> saveUserTypeSharedPreference(
+      String userType) async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.setString(sharedPreferenceUserType, userType);
+  }
+
 
   // Getting data from SharedPreferences
 
@@ -72,6 +79,11 @@ class HelperFunctions{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return await prefs.getString(sharedPreferenceUserUID);
   }
+  static Future<String> getUserTypeInSharedPreference() async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return await prefs.getString(sharedPreferenceUserType);
+  }
+
 
 
 

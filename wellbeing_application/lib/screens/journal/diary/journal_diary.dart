@@ -102,7 +102,11 @@ class diaryTiles extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        title: Text(this.entryDate)
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+              side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
+          ),
+        title: Center(child: Text(this.entryDate, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: systemFontFamily)))
       ),
     );
   }

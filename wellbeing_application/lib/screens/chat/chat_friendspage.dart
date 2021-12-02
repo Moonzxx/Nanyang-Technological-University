@@ -67,7 +67,7 @@ class _ChatFriendsPageState extends State<ChatFriendsPage> {
             )
         ),
       ),
-     //body: chatRoomList(),
+     body: chatRoomList(),
      floatingActionButton: Padding(
        padding: const EdgeInsets.only( bottom: 50.0),
        child: FloatingActionButton(
@@ -97,6 +97,18 @@ class ChatRoomTile extends StatelessWidget {
   final String chatRoomId;
   ChatRoomTile({this.userName, this.chatRoomId});
 
+  FirebaseApi databaseMethods = new FirebaseApi();
+  QuerySnapshot searchsnap = null;
+  int userMood = 0;
+
+  int getUserMoodColour(){
+    databaseMethods.getUserMoodColour(this.userName).then((val){
+      searchsnap = val;
+      return userMood = searchsnap.docs[0]["mood_colour"];
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -115,7 +127,8 @@ class ChatRoomTile extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: Colors.blue,
-                borderRadius: BorderRadius.circular(40)
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(color: Color(this.userMood).withOpacity(1), width: 2)
               ),
               child: Text("${userName.substring(0,1).toUpperCase()}"),
             ),

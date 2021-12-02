@@ -1,5 +1,6 @@
 // @dart=2.10
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import '../../constants.dart';
@@ -31,6 +32,7 @@ class _ClinicsInfoState extends State<ClinicsInfo> {
         SGContinentClinicList = val;
       });
     });
+
   }
 
   Widget SGContinentClinicsList(){
@@ -58,7 +60,7 @@ class _ClinicsInfoState extends State<ClinicsInfo> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
-        title: Text( widget.sgContinent, style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+        title: Text( widget.sgContinent, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -67,7 +69,9 @@ class _ClinicsInfoState extends State<ClinicsInfo> {
             )
         ),
       ),
-      body: SGContinentClinicsList()
+      body: Container(
+        padding: EdgeInsets.only(top: 20),
+          child: SGContinentClinicsList())
     );
   }
 }
@@ -89,43 +93,72 @@ class ClinicTile extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) =>
             ViewClinicInfo(viewClinicName: clinicName , viewClinicAddr: clinicAddr , viewClinicTel: clinicTel , viewClinicFee: clinicFee, viewClinicRegion: this.sgRegion)));
       },
-      child: Container(
-        height: MediaQuery.of(context).size.height/8,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-                color: Colors.black,
-                width: 2
-            )
-        ),
-        child:  Row(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height/8,
-              //color: Colors.red,
-              width: 70,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(18),
-                      bottomLeft:  Radius.circular(18)),
-                  color: Colors.red
-              ),
-              child: Icon(Icons.cake_rounded, color: Colors.white,),  // change to clinic logo
-            ),
-            SizedBox(width: 30),
-            Column(
+      child: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: Container(
+          height: MediaQuery.of(context).size.height/8,
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                  color: Constants.secondaryColour,
+                  width: 2
+              )
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Text(clinicName),
-                Text(clinicAddr),
-                Text(clinicTel.toString()),
-                Text(clinicFee.toString())
+                Text(clinicName, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                SizedBox(height: 10),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(clinicAddr),
+                        Text("Tel : " + clinicTel.toString()),
+                        Text("Fee : " + clinicFee.toString())],
+                    )
+
+                  ],
+                )
+
               ],
             ),
+          )/*
+           Row(
+            children: [
 
-          ],
+              Container(
+                height: MediaQuery.of(context).size.height/8,
+                //color: Colors.red,
+                width: 70,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18),
+                        bottomLeft:  Radius.circular(18)),
+                    color: Colors.red
+                ),
+                child: Icon(Icons.cake_rounded, color: Colors.white,),  // change to clinic logo
+              ),
+              SizedBox(width: 30),
+              Column(
+                children: [
+                  Text(clinicName),
+                  Text(clinicAddr),
+                  Text(clinicTel.toString()),
+                  Text(clinicFee.toString())
+                ],
+              ),
+
+            ],
+          ),
+          */
+
         ),
-
       ),
     );
   }

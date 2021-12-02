@@ -1,4 +1,5 @@
 // @dart=2.10
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:day_picker/day_picker.dart';
@@ -21,6 +22,7 @@ class _AddNewHabitState extends State<AddNewHabit> {
   FirebaseApi databaseMethods = new FirebaseApi();
   TextEditingController nameController = new TextEditingController();
   TextEditingController descController = new TextEditingController();
+  List<String> existingCategories = [];
 
   bool btn1 = false;
   bool btn2 = false;
@@ -37,6 +39,8 @@ class _AddNewHabitState extends State<AddNewHabit> {
   String selectedRoutineDropDownMenu = "Morning";
   List<String> routine = ["Morning", "Afternoon", "Evening", "Night"];
   List<String> finalRoutine;
+
+
 
   List<DayInWeek> _days = [
     DayInWeek(
@@ -66,6 +70,7 @@ class _AddNewHabitState extends State<AddNewHabit> {
   String _hour, _minute, _time;
   String _setTime;
   TextEditingController _timeController = new TextEditingController();
+
 
   Future<Null> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
@@ -110,7 +115,8 @@ class _AddNewHabitState extends State<AddNewHabit> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add a new Habit")
+        backgroundColor: Constants.secondaryColour,
+        title: Text("Adding a new habit", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy)),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -255,11 +261,12 @@ class _AddNewHabitState extends State<AddNewHabit> {
                       height: 50.0,
                       child: ElevatedButton(
                           onPressed: () {
+                            print(hour);
                             String partOfDay = "";
                             if(hour < 12){
                               partOfDay = "Morning";
                             }
-                            else if( 12 >= hour && hour < 17){
+                            else if( hour >= 12 && hour < 17){
                               partOfDay = "Afternoon";
                             }
                             else if( hour < 20){
@@ -281,6 +288,9 @@ class _AddNewHabitState extends State<AddNewHabit> {
                               "completed": [""],
                               "notCompleted" : [""]
                             };
+
+                            // If cat does not exist
+
                             databaseMethods.setUsersHabitsfromCategory(Constants.myUID, widget.categoryName, nameController.text, createHabitInfoMap);
                             Navigator.pop(context);
 

@@ -50,7 +50,7 @@ class _ViewClinicInfoState extends State<ViewClinicInfo> {
           checker++;
         }
         if(checker >= mostPopular){
-          mostPopular = checker;
+          mostPopular = ratings[a];
         }
       }
     }
@@ -68,12 +68,13 @@ class _ViewClinicInfoState extends State<ViewClinicInfo> {
     });
   }
 
-  Widget displayClinicRemarsList(){
+  Widget displayClinicRemarksList(){
     return StreamBuilder(
       stream: clinicUserRemarks,
       builder: (context, snapshot){
         return snapshot.hasData ? ListView.builder(
           itemCount: (snapshot.data as QuerySnapshot).docs.length,
+          shrinkWrap: true,
           itemBuilder: (context, index){
             return userRemarkInfoTile(
               user: (snapshot.data as QuerySnapshot).docs[index]["user"],
@@ -109,13 +110,36 @@ class _ViewClinicInfoState extends State<ViewClinicInfo> {
               color: Colors.indigo, // replace with image
             ),
             SizedBox(height: 10),
-            Text(widget.viewClinicName),
-            Text(widget.viewClinicAddr),
+            //Text(widget.viewClinicName),
+            Row(
+              children: [
+                Text("Address", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                Text(":")
+              ],
+            ),
+            SizedBox(height: 5),
+            Text(widget.viewClinicAddr, style: TextStyle()),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Text("Telephone", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                Text(":")
+              ],
+            ),
+            SizedBox(height: 5),
             Text(widget.viewClinicTel.toString()),
-            Text(widget.viewClinicFee.toString()),
+            SizedBox(height: 10),
+            Row(
+              children: [
+                Text("Fee", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                Text(":")
+              ],
+            ),
+            Text("\$ " + widget.viewClinicFee.toString()),
             SizedBox(height: 20),
             Text("Reviews"),
-            Text(this.starRating.toString())
+            Text(this.starRating.toString()),
+            displayClinicRemarksList()
             // Display Lis tof reviews
           ],
         ),
@@ -146,7 +170,7 @@ class userRemarkInfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Container(
+    return Container(
       height: MediaQuery.of(context).size.height/8,
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -160,9 +184,14 @@ class userRemarkInfoTile extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text(this.user),
+              Text(this.user, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, fontSize: 10),),
               Spacer(),
-              Text(this.rate.toString() + " / 5")
+              Row(
+                children: [
+                  Text(this.rate.toString(), style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, fontSize: 10)),
+                  Text( " / 5")
+                ],
+              )
             ],
           ),
           SizedBox(height: 10),

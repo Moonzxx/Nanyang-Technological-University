@@ -45,34 +45,39 @@ class _CreateProfileState extends State<CreateProfile> {
   // Default information to ne initiliased in the databsed once the user is successfully created
   Future<void> initiliaseDefaultDatabase(String id) async{
 
-    Map<String, String> beAwareCatInfo = {
+    Map<String, dynamic> beAwareCatInfo = {
       "name" : "Be Aware",
       "short_description": "short desc aware",
-      "description" : "desc aware"
+      "about" : "desc aware",
+      "colour": 4283215696
     };
 
-    Map<String, String> beActiveCatInfo = {
+    Map<String, dynamic> beActiveCatInfo = {
       "name" : "Be Active",
-      "short_description": "short desc active",
-      "description" : "desc active"
+      "short_desc": "short desc active",
+      "about" : "desc active",
+      "colour" : 4280391411
     };
 
-    Map<String, String> connectCatInfo = {
+    Map<String, dynamic> connectCatInfo = {
       "name" : "Connect",
-      "short_description": "short desc connect",
-      "description" : "desc connect"
+      "short_desc": "short desc connect",
+      "about" : "desc connect",
+      "colour" : 4294918273
     };
 
-    Map<String, String> helpOthersCatInfo = {
+    Map<String, dynamic> helpOthersCatInfo = {
       "name" : "Help Others",
-      "short_description": "short desc help",
-      "description" : "desc help"
+      "short_desc": "short desc help",
+      "about" : "desc help",
+      "colour" : 4286336511
     };
 
-    Map<String, String> KeepLearningCatInfo = {
+    Map<String, dynamic> KeepLearningCatInfo = {
       "name" : "Keep Learning",
-      "short_description": "short desc learning",
-      "description" : "desc Learning"
+      "short_desc": "short desc learning",
+      "about" : "desc Learning",
+      "colour" : 4294961979
     };
 
     databaseMethods.createDefaultHabitCategories(id, "Be Aware", beAwareCatInfo);

@@ -118,6 +118,10 @@ class FirebaseApi{
 
    */
 
+  getUserMoodColour(String userName) async{
+    return await FirebaseFirestore.instance.collection("users").where("username", isEqualTo: userName).get();
+  }
+
   // Getting specific user information
   getUserInformation(String UID) async{
     return await FirebaseFirestore.instance.collection("users").doc(UID).get();
@@ -182,6 +186,8 @@ class FirebaseApi{
     FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(cat).set(categoryInfoMap).catchError((e){print(e.toString());});
   }
 
+
+
   // Getting the user Habit Categories
   getUsersHabitCategories(String userID) async {
     return await FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").snapshots();
@@ -190,6 +196,16 @@ class FirebaseApi{
   // Setting the user Habit Categories and Routines
   setUsersHabitsfromCategory(String userID, String cat, String habit, habitInfoMap){
     FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(cat).collection("routines").doc(habit).set(habitInfoMap).catchError((e){print(e.toString());});
+  }
+
+  setUserNewCat(String userID ,String cat, newCatInfo) async{
+    FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(cat).set(newCatInfo).catchError((e){print(e.toString());});
+  }
+
+  setUserNewCatAndHabit(String userID, String cat, String habit, newCatInfo, habitInfoMap) async{
+    FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(cat).set(newCatInfo).then((value) {
+      FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(cat).collection("routines").doc(habit).set(habitInfoMap).catchError((e){print(e.toString());});
+    });
   }
 
   // Getting the number of habits from the user
