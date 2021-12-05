@@ -8,6 +8,7 @@ Set Mood Page
 
 */
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
@@ -54,6 +55,7 @@ class _MoodPageState extends State<MoodPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             //crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+
               Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,

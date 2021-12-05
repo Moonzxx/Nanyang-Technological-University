@@ -115,7 +115,7 @@ class _EditTipsPostsState extends State<EditTipsPosts> {
                 controller: EditpostContentController,
                 decoration: inputDecoration("Post Content:"
                 ),
-                maxLength: 50,
+                maxLength: null,
                 // accept alphabet, number and spaces
                 validator: validateDesc,
                 onSaved: (value){
@@ -129,7 +129,7 @@ class _EditTipsPostsState extends State<EditTipsPosts> {
                 controller: EditpostSourceController,
                 decoration: inputDecoration("Post Sources:"
                 ),
-                maxLength: 50,
+                maxLength: null,
                 // accept alphabet, number and spaces
                 validator: validateSources,
                 onSaved: (value){

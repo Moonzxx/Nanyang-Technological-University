@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'package:wellbeing_application/constants.dart';
+import 'package:wellbeing_application/widgets/custom_AlertBox.dart';
 
 
 
@@ -86,6 +87,9 @@ class _SearchForumPostState extends State<SearchForumPost> {
   @override
   void initState(){
     useSearch();
+    setState(() {
+      selectedForumCategory = widget.catName;
+    });
     super.initState();
   }
 
@@ -157,13 +161,14 @@ class forumCategoryPostTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    FirebaseApi databaseMethods = new FirebaseApi();
+
     return Container(
-      height: MediaQuery.of(context).size.height/10,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-      ),
+
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
         elevation: 5,
         child: ListTile(
           shape: RoundedRectangleBorder(
@@ -172,9 +177,14 @@ class forumCategoryPostTile extends StatelessWidget {
           ),
           title: Text(this.forumTitle),
           trailing: IconButton(onPressed: (){
+            print(this.fCategory);
+            print( this.forumTitle);
+              CustomAlertBox.deleteForumPostConfirmation(context, "Delete Post?" , this.fCategory, this.forumTitle);
+           // databaseMethods.deleteForumPosts(this.fCategory, this.forumTitle);
+
 
             //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
-          }, icon: Icon(Icons.delete, color: Colors.blueGrey )),
+          }, icon: Icon(Icons.delete, color: Colors.red )),
 
         ),
       ),

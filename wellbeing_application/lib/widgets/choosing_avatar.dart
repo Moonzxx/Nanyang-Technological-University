@@ -19,7 +19,8 @@ import 'create_profile.dart';
 
 class ChooseAvatar extends StatefulWidget {
   final String accountUID;
-  ChooseAvatar({Key key, this.accountUID}) : super(key: key);
+  final String userEmail;
+  ChooseAvatar({this.accountUID, this.userEmail});
 
   @override
   _ChooseAvatarState createState() => _ChooseAvatarState();
@@ -155,7 +156,7 @@ class _ChooseAvatarState extends State<ChooseAvatar> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID)
+                builder: (context) => CreateProfile(chosenProfilePic: imageFile, accountUID: widget.accountUID, userEmail: widget.userEmail,)
             ),
           );
         });

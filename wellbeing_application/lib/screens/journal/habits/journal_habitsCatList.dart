@@ -43,7 +43,8 @@ class _HabitsState extends State<Habits> {
           itemBuilder: (context, index){
            return HabitCatTile(habitName: (snapshot.data as QuerySnapshot).docs[index]["name"],
                shortDescp: (snapshot.data as QuerySnapshot).docs[index]["short_desc"],
-           colors: (snapshot.data as QuerySnapshot).docs[index]["colour"],);
+           colors: (snapshot.data as QuerySnapshot).docs[index]["colour"],
+           longDesc: (snapshot.data as QuerySnapshot).docs[index]["about"],);
           },
         ) : Container();
       },
@@ -87,18 +88,19 @@ class HabitCatTile extends StatelessWidget {
   final String habitName;
   final String shortDescp;
   final int colors;
-  HabitCatTile({ this.habitName,  this.shortDescp, this.colors});
+  final String longDesc;
+  HabitCatTile({ this.habitName,  this.shortDescp, this.colors, this.longDesc});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => HabitsList(categoryName: this.habitName, catColour: this.colors,)));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => HabitsList(categoryName: this.habitName, catColour: this.colors, HDescription: this.longDesc,)));
       },
       child: Card(
         color: Color(this.colors).withOpacity(1),
         child: ListTile(
-          title: Text(this.habitName),
+          title: Text(this.habitName, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 15)),
           subtitle: Text(this.shortDescp),
           trailing: Icon(Icons.arrow_forward_rounded)
         ),

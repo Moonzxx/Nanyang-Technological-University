@@ -123,6 +123,7 @@ class _UpdateUserDetailsState extends State<UpdateUserDetails> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
+              SizedBox(height: 20),
               GestureDetector(
                 onTap: (){
                   selectFile();
@@ -186,8 +187,11 @@ class _UpdateUserDetailsState extends State<UpdateUserDetails> {
               // How to check if picture is stil the same, bytes could be empty
               if(dpChanged == false){
                 print("it reaches here");
-                CustomAlertBox.updateProfileAlertBox1(context, "Confirm save changes?", Constants.myUID, userName, userFirstName, userLastName);
+                //CustomAlertBox.updateProfileAlertBox1(context, "Confirm save changes?", Constants.myUID, userName, userFirstName, userLastName);
+
+                databaseMethods.saveUserDetails(Constants.myUID, this.userName, userFirstName, userLastName);
                 Navigator.pop(context);
+                CustomSnackBar.buildPositiveSnackbar(context, "User Profile Updated");//Navigator.pop(context);
                 //CustomAlertBox.updateProfileAlertBox2(context, "Confirm save changes?", Constants.myUID, userName, userFirstName, userLastName, bytes);
                // Navigator.pop(context);
                 //databaseMethods.saveUserDetails(Constants.myUID, userName, userFirstName, userLastName);

@@ -23,8 +23,9 @@ import '../widgets/navigation_drawer_zoom/navigation_start.dart';
 class CreateProfile extends StatefulWidget {
   final Uint8List chosenProfilePic;
   final String accountUID;
+  final String userEmail;
   //CreateProfile({ this.chosenProfilePic});
-  CreateProfile({Key key, this.chosenProfilePic, this.accountUID}) : super(key: key);
+  CreateProfile({Key key, this.chosenProfilePic, this.accountUID, this.userEmail}) : super(key: key);
 
   @override
   _CreateProfileState createState() => _CreateProfileState();
@@ -47,36 +48,36 @@ class _CreateProfileState extends State<CreateProfile> {
 
     Map<String, dynamic> beAwareCatInfo = {
       "name" : "Be Aware",
-      "short_description": "short desc aware",
-      "about" : "desc aware",
+      "short_desc": "Practice mindfulness",
+      "about" : "Finding time in your day, to notice how you are and what is right with yourself and your life, boosts your sense of wellbeing!",
       "colour": 4283215696
     };
 
     Map<String, dynamic> beActiveCatInfo = {
       "name" : "Be Active",
-      "short_desc": "short desc active",
-      "about" : "desc active",
+      "short_desc": "Healthy Lifestyle",
+      "about" : "Find an activity you enjoy and make it a part of your life.",
       "colour" : 4280391411
     };
 
     Map<String, dynamic> connectCatInfo = {
       "name" : "Connect",
-      "short_desc": "short desc connect",
+      "short_desc": "Develop relationships with those around you.",
       "about" : "desc connect",
       "colour" : 4294918273
     };
 
     Map<String, dynamic> helpOthersCatInfo = {
       "name" : "Help Others",
-      "short_desc": "short desc help",
-      "about" : "desc help",
+      "short_desc": "Be Kind",
+      "about" : "Even the smallest act of kindness helps!",
       "colour" : 4286336511
     };
 
     Map<String, dynamic> KeepLearningCatInfo = {
       "name" : "Keep Learning",
-      "short_desc": "short desc learning",
-      "about" : "desc Learning",
+      "short_desc": "Try new things",
+      "about" : "Trying new things will make you more confident and give you a snese of achievement!",
       "colour" : 4294961979
     };
 
@@ -118,11 +119,12 @@ class _CreateProfileState extends State<CreateProfile> {
       "url-avatar": urlDownload,
         "colour": 4282435440,
         "mood_colour": 4282435440,
-        "profile_creation" :  true
+        "profile_creation" :  true,
       });
 
+
       // Saving information into HelperFunction to keep tabs on user
-      final email = await HelperFunctions.sharedPreferenceUserEmailKey;
+      String email = widget.userEmail;
       HelperFunctions.saveUserLoggedInSharedPreference(true);
       HelperFunctions.saveUserUIDSharedPreference(uid);
       HelperFunctions.saveUserAvatarSharedPreference(urlDownload);

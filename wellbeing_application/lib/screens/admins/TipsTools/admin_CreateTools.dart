@@ -100,6 +100,7 @@ class _CreateToolsState extends State<CreateTools> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
+              SizedBox(height: 15),
               TextFormField(
                 controller: toolsMainTitleController,
                 decoration: inputDecoration("Post Title"

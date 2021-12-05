@@ -11,7 +11,8 @@ class ViewClinicInfo extends StatefulWidget {
   final int viewClinicTel;
   final int viewClinicFee;
   final String viewClinicRegion;
-  ViewClinicInfo({ this.viewClinicName, this.viewClinicAddr, this.viewClinicTel, this.viewClinicFee, this.viewClinicRegion});
+  final String viewClinicDesc;
+  ViewClinicInfo({ this.viewClinicName, this.viewClinicAddr, this.viewClinicTel, this.viewClinicFee, this.viewClinicRegion, this.viewClinicDesc});
 
   @override
   _ViewClinicInfoState createState() => _ViewClinicInfoState();
@@ -102,46 +103,119 @@ class _ViewClinicInfoState extends State<ViewClinicInfo> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height /9,
-              width: MediaQuery.of(context).size.width,
-              color: Colors.indigo, // replace with image
-            ),
-            SizedBox(height: 10),
-            //Text(widget.viewClinicName),
-            Row(
-              children: [
-                Text("Address", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
-                Text(":")
-              ],
-            ),
-            SizedBox(height: 5),
-            Text(widget.viewClinicAddr, style: TextStyle()),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text("Telephone", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
-                Text(":")
-              ],
-            ),
-            SizedBox(height: 5),
-            Text(widget.viewClinicTel.toString()),
-            SizedBox(height: 10),
-            Row(
-              children: [
-                Text("Fee", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
-                Text(":")
-              ],
-            ),
-            Text("\$ " + widget.viewClinicFee.toString()),
-            SizedBox(height: 20),
-            Text("Reviews"),
-            Text(this.starRating.toString()),
-            displayClinicRemarksList()
-            // Display Lis tof reviews
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+
+              SizedBox(height: 10),
+              Container(
+                width: MediaQuery.of(context).size.width/1.5,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    border: Border.all(
+                        color: Constants.secondaryColour,
+                        width: 2
+                    )
+                ),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Description", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                    Text(":")
+                  ],
+                ),
+
+              ),
+              SizedBox(height: 5),
+              Text(widget.viewClinicDesc, style: TextStyle()),
+              SizedBox(height: 10),
+              //Text(widget.viewClinicName),
+              Container(
+                width: MediaQuery.of(context).size.width/1.5,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40),
+                    border: Border.all(
+                        color: Constants.secondaryColour,
+                        width: 2
+                    )
+                ),
+
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Address", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                      Text(":")
+                    ],
+                  ),
+
+              ),
+              SizedBox(height: 5),
+              Text(widget.viewClinicAddr, style: TextStyle()),
+              SizedBox(height: 10),
+              Container(
+                width: MediaQuery.of(context).size.width/1.5,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    border: Border.all(
+                        color: Constants.secondaryColour,
+                        width: 2
+                    )
+                ),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Telephone", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                    Text(":")
+                  ],
+                ),
+
+              ),
+              SizedBox(height: 5),
+              Text(widget.viewClinicTel.toString()),
+              SizedBox(height: 10),
+              Container(
+                width: MediaQuery.of(context).size.width/1.5,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    border: Border.all(
+                        color: Constants.secondaryColour,
+                        width: 2
+                    )
+                ),
+
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Fee", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                    Text(":")
+                  ],
+                ),
+
+              ),
+              Text("\$ " + widget.viewClinicFee.toString()),
+              SizedBox(height: 30),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                  children: [
+                    Text("Reviews", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30, fontFamily: systemHeaderFontFamiy, decoration: TextDecoration.underline)),
+                    Text(": "),
+                    Text(this.starRating.toString(), style: TextStyle(fontSize: 25, fontFamily: systemHeaderFontFamiy,)),
+                    Text(" / 5")
+                  ],
+                ),],
+              ),
+              SizedBox(height: 10),
+
+              displayClinicRemarksList()
+              // Display Lis tof reviews
+            ],
+          ),
         ),
       ),
       floatingActionButton: Padding(
@@ -170,35 +244,42 @@ class userRemarkInfoTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height/8,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-              color: Colors.black,
-              width: 2
-          )
-      ),
-      child:  Column(
-        children: [
-          Row(
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        height: MediaQuery.of(context).size.height/9,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+                color: Constants.secondaryColour,
+                width: 2
+            )
+        ),
+        child:  Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(this.user, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, fontSize: 10),),
-              Spacer(),
               Row(
                 children: [
-                  Text(this.rate.toString(), style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, fontSize: 10)),
-                  Text( " / 5")
+                  Text(this.user, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, fontSize: 20),),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Text(this.rate.toString(), style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, fontSize: 20)),
+                      Text( " / 5")
+                    ],
+                  )
                 ],
-              )
+              ),
+              SizedBox(height: 10),
+              Text(this.comment)
             ],
           ),
-          SizedBox(height: 10),
-          Text(this.comment)
-        ],
-      ),
+        ),
 
+      ),
     );
   }
 }

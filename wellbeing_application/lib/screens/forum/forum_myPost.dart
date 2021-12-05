@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../constants.dart';
 import 'forum_viewForumPost.dart';
+import '../../widgets/custom_AlertBox.dart';
 
 class UserForumPosts extends StatefulWidget {
   const UserForumPosts({Key key}) : super(key: key);
@@ -105,12 +106,11 @@ class userPostTile extends StatelessWidget {
             ViewForumPost(fTitle: this.postName , fDescription: this.postContent , fUser: this.postUser , fCategory: this.postCategory , fBookmarked: this.postBookmarked )));
       },
       child: Container(
-        height: MediaQuery.of(context).size.height/10,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
+
         child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
           elevation: 5,
           child: ListTile(
             shape: RoundedRectangleBorder(
@@ -122,9 +122,9 @@ class userPostTile extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(onPressed: (){
-
+                  CustomAlertBox.deleteForumPostConfirmation(context, "Delete Post?", this.postCategory, this.postName);
                   //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
-                }, icon: Icon(Icons.delete, color: Colors.blueGrey )),
+                }, icon: Icon(Icons.delete, color: Colors.red )),
                 SizedBox(width: 2),
                 Icon(Icons.arrow_forward_ios_rounded, color: Colors.blue)
 

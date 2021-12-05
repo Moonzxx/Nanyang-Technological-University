@@ -11,7 +11,8 @@ class EditSgClinicInfo extends StatefulWidget {
   final int sgClinicTel;
   final int sgClinicFee;
   final String sgSelectedRegion;
-  EditSgClinicInfo({this.sgClinicName, this.sgClinicAddr, this.sgClinicTel, this.sgClinicFee, this.sgSelectedRegion});
+  final String sgClinicDesc;
+  EditSgClinicInfo({this.sgClinicName, this.sgClinicAddr, this.sgClinicTel, this.sgClinicFee, this.sgSelectedRegion, this.sgClinicDesc});
 
   @override
   _EditSgClinicInfoState createState() => _EditSgClinicInfoState();
@@ -22,6 +23,7 @@ class _EditSgClinicInfoState extends State<EditSgClinicInfo> {
   final _editHelplineFormKey = GlobalKey<FormState>();
   FirebaseApi databaseMethods = new FirebaseApi();
 
+  TextEditingController EditSGClinicDesc = new TextEditingController();
   TextEditingController EditSGClinicName = new TextEditingController();
   TextEditingController EditSGClinicAddr = new TextEditingController();
   TextEditingController EditSGClinicTel = new TextEditingController();
@@ -31,6 +33,7 @@ class _EditSgClinicInfoState extends State<EditSgClinicInfo> {
   String savedSClinicAddr;
   int savedSGClinicTel;
   int savedSGClinicFee;
+  String savedSGClinicDesc;
 
   String validateClinicName(String value){
 
@@ -85,6 +88,7 @@ class _EditSgClinicInfoState extends State<EditSgClinicInfo> {
       EditSGClinicAddr.text = widget.sgClinicAddr;
       EditSGClinicTel.text = widget.sgClinicTel.toString();
       EditSGClinicFee.text = widget.sgClinicFee.toString();
+      EditSGClinicDesc.text = widget.sgClinicDesc.toString();
     });
     super.initState();
   }
@@ -112,6 +116,20 @@ class _EditSgClinicInfoState extends State<EditSgClinicInfo> {
                 onSaved: (value){
                   setState(() {
                     savedSGClinicName = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10),
+              TextFormField(
+                controller: EditSGClinicDesc,
+                decoration: inputDecoration("Clinic Desc:"
+                ),
+                maxLength: 200,
+                // accept alphabet, number and spaces
+                validator: validateClinicName,
+                onSaved: (value){
+                  setState(() {
+                    savedSGClinicDesc = value;
                   });
                 },
               ),
@@ -176,7 +194,8 @@ class _EditSgClinicInfoState extends State<EditSgClinicInfo> {
                                 "clinicName" : savedSGClinicName,
                                 "address": savedSClinicAddr,
                                 "tel": savedSGClinicTel,
-                                "fee": savedSGClinicFee
+                                "fee": savedSGClinicFee,
+                                "description": savedSGClinicDesc
                               };
 
                               databaseMethods.updateSGClinicInfo(widget.sgSelectedRegion, widget.sgClinicName, updatedClinicInformation);

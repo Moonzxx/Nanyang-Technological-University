@@ -62,6 +62,10 @@ class FirebaseApi{
     });
   }
 
+  deleteUser(String userID) async{
+    FirebaseFirestore.instance.collection("users").doc(userID).delete();
+  }
+
   // Saving the user details without the avatar
   saveUserDetails(String UID, String uname, String ufirstname, String ulastname){
     final db = FirebaseFirestore.instance.collection("users").doc(UID);
@@ -273,6 +277,10 @@ class FirebaseApi{
   }
 
 
+  deleteForumPosts(String category, String docName) async{
+    await FirebaseFirestore.instance.collection("forums").doc(category).collection("posts").doc(docName).delete();
+  }
+
   // Get forum post replies
   // need to make changes here
   getRepliesPost(String category, String title) async{
@@ -425,6 +433,9 @@ class FirebaseApi{
     FirebaseFirestore.instance.collection("helplines").doc("external").collection("aroundSG").doc(sgLine).collection("clinics").doc(clinicName).collection("remarks").add(userRemark).catchError((e){print(e.toString());});
   }
 
+  setAlert(userAlertInformation) async{
+    FirebaseFirestore.instance.collection("users").doc("d3qslDFQHhciFPsJDjGAF9hTePA3").collection("Alerts").add(userAlertInformation).catchError((e){print(e.toString());});
+  }
 
 
 
@@ -467,9 +478,12 @@ class FirebaseApi{
 
 
 
+
+
   getUserNotification(String userID) async{
     return await FirebaseFirestore.instance.collection("users").doc(userID).collection("notifications").snapshots();
   }
+
 
   setNotification(String  userID, appNotificationInfo) async{
     FirebaseFirestore.instance.collection("users").doc(userID).collection("notifications").add(appNotificationInfo).then((val){
@@ -482,4 +496,23 @@ class FirebaseApi{
   }
 
 
+
+  deleteUserAlert(String userID, String userAlertUID ) async{
+    FirebaseFirestore.instance.collection("users").doc(userID).collection("Alerts").where("userAlert", isEqualTo: userAlertUID);
+  }
+
+
+  deleteJournalCategory(String userID, String categoryName){
+    FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(categoryName).delete();
+  }
+  deleteJournalCategoryHabits(String userID, String categoryName, String habitName){
+    FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(categoryName).collection("routines").doc(habitName).delete();
+  }
+
+
+  updateJournalCategory(String userID, String categoryName, String desc) async{
+    FirebaseFirestore.instance.collection("habits").doc(userID).collection("categories").doc(categoryName).update({"description" : desc}).catchError((e){print(e.toString());});
+  }
+  
+  
 }

@@ -37,7 +37,7 @@ class _AdminHomeState extends State<AdminHome> {
 
   final List<Widget> screens = [
     AdminHomePage(),
-    PlaceholderWidget(Colors.pinkAccent)
+    AdminAssignment()
   ];
 
 

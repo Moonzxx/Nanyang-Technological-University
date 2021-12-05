@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:wellbeing_application/utils/firebase_api.dart';
 import '../../constants.dart';
+import '../../widgets/custom_snackbar.dart';
 
 class SchoolHelplinePage extends StatefulWidget {
   const SchoolHelplinePage({Key? key}) : super(key: key);
@@ -9,6 +11,9 @@ class SchoolHelplinePage extends StatefulWidget {
 }
 
 class _SchoolHelplinePageState extends State<SchoolHelplinePage> {
+
+  FirebaseApi databaseMethods = new FirebaseApi();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +50,14 @@ class _SchoolHelplinePageState extends State<SchoolHelplinePage> {
                   Text("Click on this button if you need \nsomeone to talk to immediately", style: TextStyle(fontSize: 20)),
                   ElevatedButton(
                       onPressed: (){
-                        print('Pressed');
+                        Map<String, dynamic> userAlertInfo = {
+                          "userAlert" : Constants.myName,
+                          "userID" : Constants.myUID,
+                          "userEmail": Constants.myEmail
+                        };
+                        databaseMethods.setAlert(userAlertInfo);
+                        CustomSnackBar.buildPositiveSnackbar(context, "ADMIN HAS BEEN ALERTED!");
+
                       },
                       child: Text("HELP"),
                     style: ElevatedButton.styleFrom(

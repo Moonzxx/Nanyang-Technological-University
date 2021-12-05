@@ -58,6 +58,7 @@ class _ViewForumPostState extends State<ViewForumPost> {
             return ReplyPosts(
               replyUserName: (snapshot.data as QuerySnapshot).docs[index]['username'],
               replyUserContent: (snapshot.data as QuerySnapshot).docs[index]['content'],
+              forumUser: widget.fUser,
             );
           },
         ) : Container();
@@ -86,7 +87,7 @@ class _ViewForumPostState extends State<ViewForumPost> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Constants.secondaryColour,
-          title: Text("In need of a study buddy", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          title: Text(widget.fTitle, style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
           centerTitle: true,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.vertical(
@@ -117,29 +118,37 @@ class _ViewForumPostState extends State<ViewForumPost> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-                Container(
-                  height: MediaQuery.of(context).size.height/3,
-                  width: MediaQuery.of(context).size.width/4,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: Colors.red // see how is fits
-                    )
-                  ),
-                  child: Padding(
-                    // can refer to show tips view
-                    padding: EdgeInsets.all(15.0),
-                    child: Column(
-                      children: [
-                        Text(widget.fUser),
-                        SizedBox(height: 10),
-                        Text(widget.fDescription)
-                      ],
+            SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Container(
+                    padding: EdgeInsets.all(10.0),
+                    height: MediaQuery.of(context).size.height/3,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                      border: Border.all(
+                        color: Colors.black // see how is fits
+                      )
+                    ),
+                    child: Padding(
+                      // can refer to show tips view
+                      padding: EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(widget.fUser, style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy, fontSize: 25, decoration: TextDecoration.underline)),
+                          SizedBox(height: 10),
+                          Text(widget.fDescription, style: TextStyle(fontFamily: systemHeaderFontFamiy))
+                        ],
+                      ),
                     ),
                   ),
                 ),
 
             SizedBox(height: 30),
-            Text("Replies"),
+            Text("Replies", style: TextStyle(fontWeight: FontWeight.bold, fontFamily: systemHeaderFontFamiy, fontSize: 30, decoration: TextDecoration.underline)),
+              SizedBox(height: 10),
               displayReplyPosts()
               //getRepliesPost(),
 
@@ -191,10 +200,7 @@ class DisplayForumPost extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height/ 3,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
-      ),
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -207,8 +213,11 @@ class DisplayForumPost extends StatelessWidget {
             width: MediaQuery.of(context).size.width/3,
             height: MediaQuery.of(context).size.height/4,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+                border: Border.all(
+                    color: Constants.secondaryColour
+                )
             ),
             child: Text(this.userContent),
           ),
@@ -221,24 +230,39 @@ class DisplayForumPost extends StatelessWidget {
 class ReplyPosts extends StatelessWidget {
   final String replyUserName;
   final String replyUserContent;
-  ReplyPosts({this.replyUserName, this.replyUserContent});
+  final String forumUser;
+  ReplyPosts({this.replyUserName, this.replyUserContent, this.forumUser});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height/7,
-      width: MediaQuery.of(context).size.width/ 1.4,
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            // reply to be red if it is the users own post
-            // if users's comment, if anonymous true, name will be anonymous
-            // can reply anonymously??
-            Text(replyUserName),
-            SizedBox(height: 10),
-            Text(replyUserContent)
-          ],
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Container(
+        height: MediaQuery.of(context).size.height/9,
+        width: MediaQuery.of(context).size.width/ 1.4,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: Colors.white,
+            border: Border.all(
+                color: Constants.secondaryColour,
+                    width: 2
+            )
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // reply to be red if it is the users own post
+              // if users's comment, if anonymous true, name will be anonymous
+              // can reply anonymously??
+              Text(replyUserName, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 18.0, fontWeight: FontWeight.bold, decoration: TextDecoration.underline,
+              color: (replyUserName == Constants.myName && forumUser != "Anonymous") ? Colors.red: Colors.black)),
+              SizedBox(height: 10),
+              Text(replyUserContent, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 14))
+            ],
+          ),
         ),
       ),
     );

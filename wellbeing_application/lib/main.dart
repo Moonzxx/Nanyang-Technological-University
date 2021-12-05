@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:keyboard_visibility/keyboard_visibility.dart';
 import 'package:wellbeing_application/screens/feed/homepagetester3.dart';
+import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'screens/loginpage.dart';
 import 'screens/homepage.dart';
 import 'screens/homepagetester.dart';
@@ -16,6 +17,7 @@ import 'widgets/choosing_avatar.dart';
 import 'dart:async';
 import 'widgets/navigation_drawer_zoom/navigation_start.dart';
 import 'utils/helperfunctions.dart';
+import 'dart:math';
 
 
 // To start the wellbeing app
@@ -54,6 +56,28 @@ class LandingPage extends StatelessWidget{
   final Future<FirebaseApp> _initialisation = Firebase.initializeApp();
 
 
+  FirebaseApi databaseMethods = new FirebaseApi();
+
+
+  getRandomNotification(String userID) async{
+    QuerySnapshot coll = await FirebaseFirestore.instance.collection("affirmations").get();
+    List<DocumentSnapshot> collDocs = coll.docs;
+    int rand1 = Random().nextInt(collDocs.length);
+    QuerySnapshot cat = await FirebaseFirestore.instance.collection("affirmations").doc(collDocs[rand1]["name"]).collection("messages").get();
+    List<DocumentSnapshot> catDocs = cat.docs;
+    int rand2 = Random().nextInt(catDocs.length);
+    String randomMessage = catDocs[rand2]["message"];
+
+    Map<String, dynamic> randomNotifContent = {
+      "from" : "Daily Affirmation",
+      "content" : randomMessage
+    };
+    
+    databaseMethods.setNotification(userID, randomNotifContent);
+    
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -90,50 +114,66 @@ class LandingPage extends StatelessWidget{
                     stream: FirebaseFirestore.instance.collection("users").doc(UID).snapshots() ,
                     builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
                       if(snapshot.hasData && snapshot.data != null) {
-
                         // Creation of new profile
 
                         final user = snapshot.data;
                         final userr = FirebaseAuth.instance.currentUser;
 
-                       // if(userr.emailVerified == true){
-                          if(user['profile_creation'] == false){
-                            return ChooseAvatar(accountUID: UID);
+                         if(userr.emailVerified == true || user['role'] == "admin"){
+                        if (user['profile_creation'] == false) {
+                          return ChooseAvatar(accountUID: UID, userEmail: user["email"]);
+                        }
+                        else {
+                          // Navigating to Admin Page
+                          if (user['role'] == 'admin') {
+                            var clientinfo = new Map();
+                            clientinfo['UID'] = UID;
+                            clientinfo['email'] = user['email'].toString();
+                            clientinfo['username'] =
+                                user['username'].toString();
+                            clientinfo['avatarURL'] =
+                                user['url-avatar'].toString();
+                            HelperFunctions.saveUserLoggedInSharedPreference(
+                                true);
+                            HelperFunctions.saveUserUIDSharedPreference(UID);
+                            HelperFunctions.saveUserNameSharedPreference(
+                                user['username'].toString());
+                            HelperFunctions.saveUserEmailSharedPreference(
+                                user['email'].toString());
+                            HelperFunctions.saveUserAvatarSharedPreference(
+                                user['url-avatar'].toString());
+                            HelperFunctions.saveUserTypeSharedPreference(
+                                user['role'].toString());
+                            getRandomNotification(UID);
+                            return NavigationHomePage(
+                                userUID: UID, userDetails: clientinfo);
                           }
-                          else{
-
-                            // Navigating to Admin Page
-                            if(user['role'] == 'admin'){
-                              var clientinfo = new Map();
-                              clientinfo['UID'] = UID;
-                              clientinfo['email'] =  user['email'].toString();
-                              clientinfo['username']   = user['username'].toString();
-                              clientinfo['avatarURL'] = user['url-avatar'].toString();
-                              HelperFunctions.saveUserLoggedInSharedPreference(true);
-                              HelperFunctions.saveUserUIDSharedPreference(UID);
-                              HelperFunctions.saveUserNameSharedPreference(user['username'].toString());
-                              HelperFunctions.saveUserEmailSharedPreference(user['email'].toString());
-                              HelperFunctions.saveUserAvatarSharedPreference(user['url-avatar'].toString());
-                              HelperFunctions.saveUserTypeSharedPreference(user['role'].toString());
-                              return NavigationHomePage(userUID: UID, userDetails: clientinfo);
-                            }
-                            else{
-
-                              // Navigating to student page
-                              var clientinfo = new Map();
-                              clientinfo['UID'] = UID;
-                              clientinfo['email'] =  user['email'].toString();
-                              clientinfo['username']   = user['username'].toString();
-                              clientinfo['avatarURL'] = user['url-avatar'].toString();
-                              HelperFunctions.saveUserLoggedInSharedPreference(true);
-                              HelperFunctions.saveUserUIDSharedPreference(UID);
-                              HelperFunctions.saveUserNameSharedPreference(user['username'].toString());
-                              HelperFunctions.saveUserEmailSharedPreference(user['email'].toString());
-                              HelperFunctions.saveUserAvatarSharedPreference(user['url-avatar'].toString());
-                              HelperFunctions.saveUserTypeSharedPreference(user['role'].toString());
-                              return NavigationHomePage(userUID: UID, userDetails: clientinfo);
-                            }
+                          else {
+                            // Navigating to student page
+                            var clientinfo = new Map();
+                            clientinfo['UID'] = UID;
+                            clientinfo['email'] = user['email'].toString();
+                            clientinfo['username'] =
+                                user['username'].toString();
+                            clientinfo['avatarURL'] =
+                                user['url-avatar'].toString();
+                            HelperFunctions.saveUserLoggedInSharedPreference(
+                                true);
+                            HelperFunctions.saveUserUIDSharedPreference(UID);
+                            HelperFunctions.saveUserNameSharedPreference(
+                                user['username'].toString());
+                            HelperFunctions.saveUserEmailSharedPreference(
+                                user['email'].toString());
+                            HelperFunctions.saveUserAvatarSharedPreference(
+                                user['url-avatar'].toString());
+                            HelperFunctions.saveUserTypeSharedPreference(
+                                user['role'].toString());
+                            getRandomNotification(UID);
+                            return NavigationHomePage(
+                                userUID: UID, userDetails: clientinfo);
                           }
+                        }
+                      }
 
 
 

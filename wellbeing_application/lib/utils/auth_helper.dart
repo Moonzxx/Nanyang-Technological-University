@@ -53,7 +53,8 @@ class UserHelper {
       "build_number": buildNumber,
       "profile_creation": false,// Boolean or number
       "colour" : 4282435440,
-      "mood_colour" : 4282435440
+      "mood_colour" : 4282435440,
+      "blocked" : {}
     };
 
     // CHeck if the user exists

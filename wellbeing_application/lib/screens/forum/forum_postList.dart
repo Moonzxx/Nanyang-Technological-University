@@ -80,12 +80,11 @@ class ForumTile extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => ViewForumPost(fTitle: this.forumTitle, fDescription: this.forumDescription, fUser: this.forumUser , fCategory: this.fCategory , fBookmarked: this.bookmarked,)));
       },
        child:  Container(
-         height: MediaQuery.of(context).size.height/11,
-         width: MediaQuery.of(context).size.width,
-         decoration: BoxDecoration(
-           borderRadius: BorderRadius.circular(20),
-         ),
+
          child: Card(
+           shape: RoundedRectangleBorder(
+             borderRadius: BorderRadius.circular(15.0),
+           ),
            elevation: 5,
            child: ListTile(
              shape: RoundedRectangleBorder(

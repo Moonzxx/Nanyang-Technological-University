@@ -63,8 +63,21 @@ class _ForumHomePageState extends State<ForumHomePage> {
   }
 
   // Return top 3 liked post
-  Widget top3post(){
+  topThreepost() async{
 
+    List topThreePosts = [];
+
+    QuerySnapshot coll = await FirebaseFirestore.instance.collection("forums").get();
+    List<DocumentSnapshot> collDocs = coll.docs;
+    print(collDocs.length);
+    for(var i = 0; i < collDocs.length; i++){
+      QuerySnapshot catColl = await FirebaseFirestore.instance.collection("forums").doc(collDocs[i]["name"]).collection("posts").get();
+      List<DocumentSnapshot> catDocs = catColl.docs;
+      Map<String, dynamic> forumInfo = new Map();
+      List bookmarks = catDocs[i]["bookmarkedBy"];
+
+
+    }
   }
 
 
@@ -153,17 +166,7 @@ class _ForumHomePageState extends State<ForumHomePage> {
                 bottom: Radius.circular(30)
             )
         ),
-        actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: Icon(Icons.add),
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => CreateForumPost(forumCategories: ForumCategoriesNum)));
-              },      // Create a function for this
-            ),
-          )
-        ],
+
       ),
 
       body: Center(
@@ -198,6 +201,16 @@ class _ForumHomePageState extends State<ForumHomePage> {
             //ForumCategories()
 
           ],
+        ),
+      ),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 50.0),
+        child: FloatingActionButton(
+          onPressed: (){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => CreateForumPost(forumCategories: ForumCategoriesNum)));
+          }, //make sure of bool to make it null,
+          child: Icon(Icons.add),
+          backgroundColor: Color(Constants.myThemeColour).withOpacity(1),
         ),
       ),
     );

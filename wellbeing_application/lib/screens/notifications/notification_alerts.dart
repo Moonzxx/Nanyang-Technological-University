@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:wellbeing_application/constants.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'package:wellbeing_application/widgets/navigation_drawer_zoom/navigation_widget.dart';
+import '../../widgets/custom_snackbar.dart';
 
 class UserNotifcations extends StatefulWidget {
   const UserNotifcations({Key key}) : super(key: key);
@@ -15,39 +16,44 @@ class UserNotifcations extends StatefulWidget {
 class _UserNotifcationsState extends State<UserNotifcations> {
 
   FirebaseApi databaseMethods = new FirebaseApi();
-  List userNotifications = [];
+  List userNotificationsList = [];
 
 
   getUserNotifications() async{
     QuerySnapshot coll = await FirebaseFirestore.instance.collection("users").doc(Constants.myUID).collection("notifications").get();
     List<DocumentSnapshot> collDocs = coll.docs;
     for(var i = 0; i < collDocs.length; i++){
-      Map<String, String> notifcationInfo = new Map();
-      notifcationInfo["name"] = collDocs[i]["name"];
-      notifcationInfo["content"] = collDocs[i]["content"];
-      notifcationInfo["notifID"] = collDocs[i]["notifID"];
-      userNotifications.add(notifcationInfo);
+      Map<String, dynamic> notificationInfo = new Map();
+      notificationInfo["from"] = collDocs[i]["from"];
+      notificationInfo["content"] = collDocs[i]["content"];
+      notificationInfo["notifID"] = collDocs[i]["notifID"];
+      setState(() {
+        userNotificationsList.add(notificationInfo);
+      });
+
     }
+
   }
-  
+
   Widget displayUserNotificationList(){
-    return (userNotifications.length > 0) ? ListView.builder(
-      itemCount: userNotifications.length,
+    return (userNotificationsList.length > 0) ? ListView.builder(
+      itemCount: userNotificationsList.length,
       itemBuilder: (context, index){
-        final item = userNotifications[index];
+        final item = userNotificationsList[index]["notifID"];
         return Dismissible(
           key: Key(item),
 
           onDismissed: (direction) {
             setState(() {
-              userNotifications.removeAt(index);
-              databaseMethods.deleteUserNotification(Constants.myUID, userNotifications[index]["notifID"]);
+              databaseMethods.deleteUserNotification(Constants.myUID, userNotificationsList[index]["notifID"]);
+              userNotificationsList.removeAt(index);
+              CustomSnackBar.buildPositiveSnackbar(context, "Notification Deleted!");
             });
           },
           background: Container(color: Colors.red),
           child: userNotifTile(
-            featureName: userNotifications[index]["name"],
-            featureMessage: userNotifications[index]["content"],
+            featureName: userNotificationsList[index]["from"],
+            featureMessage: userNotificationsList[index]["content"],
           ),
         );
       },
@@ -56,25 +62,27 @@ class _UserNotifcationsState extends State<UserNotifcations> {
 
   @override
   void initState(){
+    getUserNotifications();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: NavigationWidget() ,
-        backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
-        title: Text("Notifications", style: TextStyle(fontFamily: 'Nunito', fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
-        centerTitle: true,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              //top: Radius.circular(30),
-                bottom: Radius.circular(30)
-            )
+        appBar: AppBar(
+          leading: NavigationWidget() ,
+          backgroundColor: Color(Constants.myThemeColour + 25).withOpacity(1),
+          title: Text("Notifications", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, letterSpacing: 2.0, fontSize: 30),),
+          centerTitle: true,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                //top: Radius.circular(30),
+                  bottom: Radius.circular(30)
+              )
+          ),
+
         ),
-        actions: [IconButton(onPressed: (){}, icon: Icon(Icons.delete ))],
-      ),
+        body: displayUserNotificationList()
 
     );
   }

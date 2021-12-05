@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'package:wellbeing_application/constants.dart';
+import '../../../widgets/custom_AlertBox.dart';
 
 class SearchUsers extends StatefulWidget {
   const SearchUsers({Key key}) : super(key: key);
@@ -126,7 +127,7 @@ class SearchTile extends StatelessWidget {
           ),
           title: Text(this.userName),
           trailing: IconButton(onPressed: (){
-
+              CustomAlertBox.deleteUser(context, "Delete User? ", this.otherUserID);
             //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
           }, icon: Icon(Icons.delete, color: Colors.blueGrey )),
 

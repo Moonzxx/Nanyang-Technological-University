@@ -633,6 +633,320 @@ class CustomAlertBox{
     );
   }
 
+  static deleteForumPostConfirmation(BuildContext context, String message, String fCAT, String fPostName){
+    FirebaseApi databaseMethods = new FirebaseApi();
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+            ),
+            child: Container(
+              height: 200,
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: message
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)))
+                            ),
+                            onPressed: (){
+                              // Execution of pressing No
+                              Navigator.pop(context);
+                            },
+                            child: Text("No",style: TextStyle(color: Colors.white),
+                            ),
+
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              //final urlDownload = await snapshot.ref.getDownloadURL();
+                              // databaseMethods.deleteSGClinicInfo(sgRegion, sgClinicName);
+                              //databaseMethods.deleteTipToolsPost(mainCat, subCat, postTitle);
+                              databaseMethods.deleteForumPosts(fCAT, fPostName);
+                              Navigator.pop(context);
+                              CustomSnackBar.buildPositiveSnackbar(context, "Post Successfully Deleted!");
+
+
+                            },
+                            child: Text("Yes",style: TextStyle(color: Colors.white),
+                            ),
+
+                          ),
+
+                        )
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+    );
+  }
+
+  static deleteUser(BuildContext context, String message, String userIDDelete){
+    FirebaseApi databaseMethods = new FirebaseApi();
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+            ),
+            child: Container(
+              height: 200,
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: message
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)))
+                            ),
+                            onPressed: (){
+                              // Execution of pressing No
+                              Navigator.pop(context);
+                            },
+                            child: Text("No",style: TextStyle(color: Colors.white),
+                            ),
+
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              //final urlDownload = await snapshot.ref.getDownloadURL();
+                              // databaseMethods.deleteSGClinicInfo(sgRegion, sgClinicName);
+                              //databaseMethods.deleteTipToolsPost(mainCat, subCat, postTitle);
+                              //databaseMethods.deleteForumPosts(fCAT, fPostName);
+                              databaseMethods.deleteUser(userIDDelete);
+                              Navigator.pop(context);
+                              CustomSnackBar.buildPositiveSnackbar(context, "User Successfully Deleted!");
+
+
+                            },
+                            child: Text("Yes",style: TextStyle(color: Colors.white),
+                            ),
+
+                          ),
+
+                        )
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+    );
+  }
+
+
+  static deleteJournalCategory(BuildContext context, String message, String userID, String categoryName){
+    FirebaseApi databaseMethods = new FirebaseApi();
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+            ),
+            child: Container(
+              height: 200,
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: message
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)))
+                            ),
+                            onPressed: (){
+                              // Execution of pressing No
+                              Navigator.pop(context);
+                            },
+                            child: Text("No",style: TextStyle(color: Colors.white),
+                            ),
+
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              //final urlDownload = await snapshot.ref.getDownloadURL();
+                              // databaseMethods.deleteSGClinicInfo(sgRegion, sgClinicName);
+                              //databaseMethods.deleteTipToolsPost(mainCat, subCat, postTitle);
+                              databaseMethods.deleteJournalCategory(userID, categoryName);
+                              Navigator.pop(context);
+                              CustomSnackBar.buildPositiveSnackbar(context, "Category Successfully Deleted!");
+
+
+                            },
+                            child: Text("Yes",style: TextStyle(color: Colors.white),
+                            ),
+
+                          ),
+
+                        )
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+    );
+  }
+
+  static deleteJournalCategorHabit(BuildContext context, String message, String userID, String categoryName, String habitName){
+    FirebaseApi databaseMethods = new FirebaseApi();
+    showDialog(
+        context: context,
+        builder: (BuildContext context){
+          return Dialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)
+            ),
+            child: Container(
+              height: 200,
+              child: Padding(
+                padding: EdgeInsets.all(12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: message
+                      ),
+                    ),
+                    SizedBox(height: 20),
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(Colors.blue),
+                                shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)))
+                            ),
+                            onPressed: (){
+                              // Execution of pressing No
+                              Navigator.pop(context);
+                            },
+                            child: Text("No",style: TextStyle(color: Colors.white),
+                            ),
+
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        SizedBox(
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              //final urlDownload = await snapshot.ref.getDownloadURL();
+                              // databaseMethods.deleteSGClinicInfo(sgRegion, sgClinicName);
+                              //databaseMethods.deleteTipToolsPost(mainCat, subCat, postTitle);
+                              databaseMethods.deleteJournalCategoryHabits(userID, categoryName, habitName);
+                              Navigator.pop(context);
+                              CustomSnackBar.buildPositiveSnackbar(context, "Habit Successfully Deleted!");
+
+
+                            },
+                            child: Text("Yes",style: TextStyle(color: Colors.white),
+                            ),
+
+                          ),
+
+                        )
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+
+    );
+  }
+
 
 
 }

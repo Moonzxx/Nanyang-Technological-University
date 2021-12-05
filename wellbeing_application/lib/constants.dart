@@ -35,6 +35,7 @@ class Constants{
   static String myUID = "";
   static String myAvatar = "";
   static String myRole = "";
+  static String myEmail = "";
   static int myThemeColour = 0;
   static int myMoodColour = 0;
   static Color secondaryColour = Color(Constants.myThemeColour + 25).withOpacity(1);

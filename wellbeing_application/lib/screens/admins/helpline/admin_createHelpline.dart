@@ -19,11 +19,13 @@ class _createaHelplineInfoState extends State<createaHelplineInfo> {
   TextEditingController clinicAddressController = new TextEditingController();
   TextEditingController clinicTelController = new TextEditingController();
   TextEditingController clinicFeeController = new TextEditingController();
+  TextEditingController clinicDescController = new TextEditingController();
 
   String savedClinicName;
   String savedClinicAddr;
   int savedClinicTel;
   int savedClinicFee;
+  String savedClinicDesc;
 
   String selectedRegionDropDownMenu = "Central";
   List<String> sgRegions = ["Central", "East", "North", "North-East", "West"];
@@ -132,6 +134,19 @@ class _createaHelplineInfoState extends State<createaHelplineInfo> {
               ),
               SizedBox(height: 10),
               TextFormField(
+                controller: clinicDescController,
+                decoration: inputDecoration("Clinic Desc:"
+                ),
+                maxLength: 200,
+                // accept alphabet, number and spaces
+                onSaved: (value){
+                  setState(() {
+                    savedClinicDesc = value;
+                  });
+                },
+              ),
+              SizedBox(height: 10),
+              TextFormField(
                 controller: clinicAddressController,
                 decoration: inputDecoration("Clinic Address:"
                 ),
@@ -191,7 +206,8 @@ class _createaHelplineInfoState extends State<createaHelplineInfo> {
                                 "address": savedClinicAddr,
                                 "tel": savedClinicTel,
                                 "fee": savedClinicFee,
-                                "rating": 0
+                                "rating": 0,
+                                "description" : savedClinicDesc
                               };
 
                               databaseMethods.createSGClinic(selectedRegionDropDownMenu, savedClinicName , clinicInformation);

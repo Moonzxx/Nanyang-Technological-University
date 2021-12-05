@@ -41,7 +41,7 @@ class _CreateForumPostState extends State<CreateForumPost> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar:AppBar(
-        title: Text("Create new post")
+        title: Text("Create new post", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold))
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -117,6 +117,7 @@ class _CreateForumPostState extends State<CreateForumPost> {
                       margin: EdgeInsets.all(10),
                       height: 50.0,
                       child: ElevatedButton(
+                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.green)),
                         onPressed: (){
 
                           // Allowing to set as anonymous

@@ -102,9 +102,9 @@ class _LoginPageState extends State<LoginPage> {
   // Firebase methods
   Future<void> _createUser() async {
     try{
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password); //.then((_){
-      //  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyEmail()));
-     // });
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _email, password: _password).then((_){
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => VerifyEmail()));
+      });
       print("User: $userCredential");
       HelperFunctions.saveUserEmailSharedPreference(_email);
     } on FirebaseAuthException catch(e){
@@ -411,13 +411,7 @@ class _LoginPageState extends State<LoginPage> {
                         if (_formKey.currentState.validate()){
                         // _formKey.currentState.save();     // If all data are correct, then save data to out variable
                           final message = 'Email: $_email\nPassword: $_password' ;
-                          final snackBar = SnackBar(
-                        content: Text(
-                        message,
-                        style: TextStyle(fontSize: 20),
-                        ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);   // Will show up from the bottom
+                             // Will show up from the bottom
                           _createUser();
                         }
                         else{

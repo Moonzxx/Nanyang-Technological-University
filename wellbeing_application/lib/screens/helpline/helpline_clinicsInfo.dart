@@ -47,6 +47,7 @@ class _ClinicsInfoState extends State<ClinicsInfo> {
                 clinicAddr: (snapshot.data as QuerySnapshot).docs[index]["address"],
                 clinicFee: (snapshot.data as QuerySnapshot).docs[index]["fee"],
                 clinicTel: (snapshot.data as QuerySnapshot).docs[index]["tel"],
+            clinicDesc: (snapshot.data as QuerySnapshot).docs[index]["description"],
             sgRegion: widget.sgContinent);
           },
         ) : Container();
@@ -83,7 +84,8 @@ class ClinicTile extends StatelessWidget {
   final int clinicTel;
   final int clinicFee;
   final String sgRegion;
-  ClinicTile({this.clinicName, this.clinicAddr, this.clinicTel, this.clinicFee, this.sgRegion});
+  final String clinicDesc;
+  ClinicTile({this.clinicName, this.clinicAddr, this.clinicTel, this.clinicFee, this.sgRegion, this.clinicDesc});
 
 
   @override
@@ -91,7 +93,7 @@ class ClinicTile extends StatelessWidget {
     return GestureDetector(
       onTap: (){
         Navigator.push(context, MaterialPageRoute(builder: (context) =>
-            ViewClinicInfo(viewClinicName: clinicName , viewClinicAddr: clinicAddr , viewClinicTel: clinicTel , viewClinicFee: clinicFee, viewClinicRegion: this.sgRegion)));
+            ViewClinicInfo(viewClinicDesc: clinicDesc,viewClinicName: clinicName , viewClinicAddr: clinicAddr , viewClinicTel: clinicTel , viewClinicFee: clinicFee, viewClinicRegion: this.sgRegion)));
       },
       child: Padding(
         padding: const EdgeInsets.all(10.0),

@@ -110,12 +110,11 @@ class userBookmarkedTile extends StatelessWidget {
         )));
       },
       child: Container(
-        height: MediaQuery.of(context).size.height/10,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-        ),
+
         child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
           elevation: 5,
           child: ListTile(
             shape: RoundedRectangleBorder(

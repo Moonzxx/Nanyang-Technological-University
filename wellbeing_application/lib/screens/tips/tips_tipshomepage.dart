@@ -104,9 +104,9 @@ class TipsTiles extends StatelessWidget {
                         borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(18),
                         bottomLeft:  Radius.circular(18)),
-                      color: Colors.red
+                      color: Colors.blue
                     ),
-                    child: Icon(Icons.cake_rounded, color: Colors.white,),
+                    child: Icon(Icons.arrow_forward_ios_rounded, color: Colors.white,),
                   ),
                   SizedBox(width: 30),
                   Expanded(

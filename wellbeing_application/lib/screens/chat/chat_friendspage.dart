@@ -126,14 +126,14 @@ class ChatRoomTile extends StatelessWidget {
               width: 40,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: Colors.white,
                 borderRadius: BorderRadius.circular(40),
                 border: Border.all(color: Color(this.userMood).withOpacity(1), width: 2)
               ),
               child: Text("${userName.substring(0,1).toUpperCase()}"),
             ),
-            SizedBox(width: 8,),
-            Text(userName)
+            SizedBox(width: 10,),
+            Text(userName, style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy),)
           ],
         )
       ),

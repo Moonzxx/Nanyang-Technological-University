@@ -7,20 +7,20 @@ import '../../../widgets/custom_AlertBox.dart';
 import 'admin_editTipsPost.dart';
 import 'admin_editToolsPost.dart';
 
-class SearchTipsTools extends StatefulWidget {
-  const SearchTipsTools({Key key}) : super(key: key);
+class SearchTools extends StatefulWidget {
+  const SearchTools({Key key}) : super(key: key);
 
   @override
-  _SearchTipsToolsState createState() => _SearchTipsToolsState();
+  _SearchToolsState createState() => _SearchToolsState();
 }
 
-class _SearchTipsToolsState extends State<SearchTipsTools> {
+class _SearchToolsState extends State<SearchTools> {
   FirebaseApi databaseMethods = new FirebaseApi();
   List<String> TipsToolsSubCategories = [];
   String selectedSubCat;
   Stream TipsToolsPosts;
 
-  String selectedCategory = "Tips";
+  String selectedCategory = "Tools";
   List<String> categories = ["Tips", "Tools"];
 
   @override
@@ -32,7 +32,7 @@ class _SearchTipsToolsState extends State<SearchTipsTools> {
   getTTCategories() async {
     QuerySnapshot coll = await FirebaseFirestore.instance
         .collection("tips")
-        .doc("Tips")
+        .doc("Tools")
         .collection("categories")
         .get();
     List<DocumentSnapshot> collDocs = coll.docs;
@@ -45,7 +45,7 @@ class _SearchTipsToolsState extends State<SearchTipsTools> {
   }
 
   useSearch(String region) {
-    databaseMethods.getTTCatPosts("Tips", selectedSubCat).then((val) {
+    databaseMethods.getTTCatPosts("Tools", selectedSubCat).then((val) {
       setState(() {
         TipsToolsPosts = val;
       });
@@ -59,21 +59,22 @@ class _SearchTipsToolsState extends State<SearchTipsTools> {
       builder: (context, snapshot) {
         return snapshot.hasData
             ? ListView.builder(
-                itemCount: (snapshot.data as QuerySnapshot).docs.length,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return TipsPostTiles(
-                    mainCategory: selectedCategory,
-                    subCategory: selectedSubCat,
-                    postName: (snapshot.data as QuerySnapshot).docs[index]
-                        ["name"],
-                    postSources: (snapshot.data as QuerySnapshot).docs[index]
-                        ["sourcesFrom"],
-                    postContent: (snapshot.data as QuerySnapshot).docs[index]
-                        ["content"],
-                  );
-                },
-              )
+          itemCount: (snapshot.data as QuerySnapshot).docs.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) {
+            return ToolsPostTiles(
+              mainCategory: selectedCategory,
+              subCategory: selectedSubCat,
+              postName: (snapshot.data as QuerySnapshot).docs[index]
+              ["name"],postIosSource: (snapshot.data as QuerySnapshot).docs[index]
+            ["appLinks"]["ios"],postAndroidSource: (snapshot.data as QuerySnapshot).docs[index]
+            ["appLinks"]["android"],
+
+              postContent: (snapshot.data as QuerySnapshot).docs[index]
+              ["content"],
+            );
+          },
+        )
             : Container();
       },
     );
@@ -95,7 +96,7 @@ class _SearchTipsToolsState extends State<SearchTipsTools> {
         centerTitle: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
-                //top: Radius.circular(30),
+              //top: Radius.circular(30),
                 bottom: Radius.circular(30))),
         actions: [
           IconButton(
@@ -123,12 +124,12 @@ class _SearchTipsToolsState extends State<SearchTipsTools> {
                 });
               },
               items: TipsToolsSubCategories.map<DropdownMenuItem<String>>(
-                  (String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value.toString()),
-                );
-              }).toList()),
+                      (String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value.toString()),
+                    );
+                  }).toList()),
           SizedBox(height: 20),
           displayTipToolsPostList()
           //DisplaySGRegionClinicList(),
@@ -147,25 +148,19 @@ class TipsPostTiles extends StatelessWidget {
 
   TipsPostTiles(
       {this.postName,
-      this.mainCategory,
-      this.postContent,
-      this.subCategory,
-      this.postSources});
+        this.mainCategory,
+        this.postContent,
+        this.subCategory,
+        this.postSources});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-
+      height: MediaQuery.of(context).size.height / 8,
+      width: MediaQuery.of(context).size.width,
       child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
         elevation: 5,
         child: ListTile(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-              side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
-          ),
           leading: Icon(Icons.play_arrow_rounded),
           title: Text(this.postName),
           trailing: Row(
@@ -212,11 +207,11 @@ class ToolsPostTiles extends StatelessWidget {
 
   ToolsPostTiles(
       {this.postName,
-      this.mainCategory,
-      this.postContent,
-      this.subCategory,
-      this.postIosSource,
-      this.postAndroidSource});
+        this.mainCategory,
+        this.postContent,
+        this.subCategory,
+        this.postIosSource,
+        this.postAndroidSource});
 
   @override
   Widget build(BuildContext context) {
@@ -243,13 +238,13 @@ class ToolsPostTiles extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => EditToolsPosts(
-                                  mainCat: this.mainCategory,
-                                  subCat: this.subCategory,
-                                  postName: this.postName,
-                                  postContent: this.postContent,
-                                  postIosSource: this.postIosSource,
-                                  postAndoridSource: this.postAndroidSource,
-                                )));
+                              mainCat: this.mainCategory,
+                              subCat: this.subCategory,
+                              postName: this.postName,
+                              postContent: this.postContent,
+                              postIosSource: this.postIosSource,
+                              postAndoridSource: this.postAndroidSource,
+                            )));
                   },
                   icon: Icon(Icons.edit, color: Colors.green)),
               SizedBox(width: 2),

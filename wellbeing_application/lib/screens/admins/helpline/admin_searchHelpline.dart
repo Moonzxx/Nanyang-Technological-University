@@ -52,6 +52,7 @@ class _searchSGClinicState extends State<searchSGClinic> {
                   sgRegionClinicTel: (snapshot.data as QuerySnapshot).docs[index]["tel"],
                   sgRegionClinicFee: (snapshot.data as QuerySnapshot).docs[index]["fee"],
                   sgRegionSelected: selectedRegionDropDownMenu,
+                  sgRegionClinicDesc: (snapshot.data as QuerySnapshot).docs[index]["description"],
                 );
               },
 
@@ -128,16 +129,22 @@ class SgClinicNameTiles extends StatelessWidget {
   final int sgRegionClinicTel;
   final int sgRegionClinicFee;
   final String sgRegionSelected;
-  SgClinicNameTiles({this.sgRegionClinicName, this.sgRegionClinicAddr, this.sgRegionClinicFee, this.sgRegionClinicTel, this.sgRegionSelected});
+  final String sgRegionClinicDesc;
+  SgClinicNameTiles({this.sgRegionClinicDesc,this.sgRegionClinicName, this.sgRegionClinicAddr, this.sgRegionClinicFee, this.sgRegionClinicTel, this.sgRegionSelected});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: MediaQuery.of(context).size.height/8,
-      width: MediaQuery.of(context).size.width,
       child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
         elevation: 5,
         child: ListTile(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+              side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
+          ),
           leading: Icon(Icons.play_arrow_rounded),
           title: Text(sgRegionClinicName),
           trailing: Row(
@@ -151,14 +158,16 @@ class SgClinicNameTiles extends StatelessWidget {
                       sgClinicTel: sgRegionClinicTel,
                       sgClinicFee: sgRegionClinicFee,
                       sgSelectedRegion: sgRegionSelected,
+                      sgClinicDesc: sgRegionClinicDesc,
+
                     )));
                 //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
-              }, icon: Icon(Icons.edit, color: Colors.blueGrey )),
+              }, icon: Icon(Icons.edit, color: Colors.green )),
               SizedBox(width: 2),
               IconButton(onPressed: (){
                 CustomAlertBox.deleteSGClinicInfo(context, "Delete Clinic?", sgRegionSelected, sgRegionClinicName);
                 //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
-              }, icon: Icon(Icons.delete, color: Colors.blueGrey ))
+              }, icon: Icon(Icons.delete, color: Colors.red ))
 
             ],
           ),

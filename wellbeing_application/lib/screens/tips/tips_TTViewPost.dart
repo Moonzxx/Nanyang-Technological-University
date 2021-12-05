@@ -41,7 +41,13 @@ class _TTViewPostState extends State<TTViewPost> {
       print(searchSnapshot.docs[0]["name"]);
       print(searchSnapshot.docs[0]["bookmarkedBy"][0]);
      // print(searchSnapshot.docs[0]["description"]);
-      postInformation = searchSnapshot.docs[0]["content"];
+      setState(() {
+        postInformation = searchSnapshot.docs[0]["content"];
+        postInformation= postInformation.replaceAll("bbb", "\n");
+        postInformation= postInformation.replaceAll("bbbbbb", "\n");
+      });
+
+
 
       for(var a = 0; a < searchSnapshot.docs[0]["bookmarkedBy"].length; a++){
         if(searchSnapshot.docs[0]["bookmarkedBy"][a] == Constants.myUID){
@@ -141,17 +147,20 @@ class _TTViewPostState extends State<TTViewPost> {
               ),
               child: Scrollbar(
                 child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Sources", style: TextStyle(fontSize: 35, fontFamily: systemFontFamily, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
-                      SizedBox(height: 20),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: textWidgetList,
-                      ),
-                    ],
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Sources", style: TextStyle(fontSize: 35, fontFamily: systemFontFamily, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                        SizedBox(height: 20),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: textWidgetList,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               )
@@ -178,14 +187,16 @@ class _TTViewPostState extends State<TTViewPost> {
                         SizedBox(height: 10),
                         Row(
                           children: [
-                            Text("iOS", style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
+                            Text("iOS",style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
                             Text(":", style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, )),
                             SizedBox(width: 15),
-                            InkWell(
-                              child: Text(ios, style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
-                              onTap: (){
-                                launch(Uri.encodeFull(ios));
-                              },
+                            Flexible(
+                              child: InkWell(
+                                child: Text(ios, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
+                                onTap: (){
+                                  launch(Uri.encodeFull(ios));
+                                },
+                              ),
                             )
                           ],
                         ),
@@ -194,11 +205,13 @@ class _TTViewPostState extends State<TTViewPost> {
                             Text("Android", style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),),
                             Text(":", style: TextStyle(fontSize: 20, fontFamily: systemHeaderFontFamiy, fontWeight: FontWeight.bold, )),
                             SizedBox(width: 15),
-                            InkWell(
-                              child: Text(android, style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
-                              onTap: (){
-                                launch(Uri.encodeFull(android));
-                              },
+                            Flexible(
+                              child: InkWell(
+                                child: Text(android, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.white, decoration: TextDecoration.underline)),
+                                onTap: (){
+                                  launch(Uri.encodeFull(android));
+                                },
+                              ),
                             )
                           ],
                         )

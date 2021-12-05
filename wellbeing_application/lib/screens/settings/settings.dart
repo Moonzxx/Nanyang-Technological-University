@@ -25,9 +25,14 @@ class _SettingsPageState extends State<SettingsPage> {
   bool isSwitched = true;
 
 
+ // getRandNotif() async{
+  //  DocumentSnapshot userInfo = await FirebaseFirestore.instance.collection("users").doc(Constants.myUID).get();
+  //  setS
+//  }
 
   @override
   void initState(){
+
     setState(() {
       color = Color(widget.themeColour).withOpacity(1);
     });
@@ -146,7 +151,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 });
               });
               Navigator.of(context).pop();
-              CustomSnackBar.buildPositiveSnackbar(context, "New Colour Theme Updated!");
+              CustomSnackBar.buildPositiveSnackbar(context, "Forum Post Deleted!");
             }
           ),
         ],

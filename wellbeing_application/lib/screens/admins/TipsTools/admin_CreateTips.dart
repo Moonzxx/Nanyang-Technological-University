@@ -100,6 +100,7 @@ class _CreateTipsState extends State<CreateTips> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           child: Column(
             children: [
+              SizedBox(height: 15),
               TextFormField(
                 controller: tipMainTitle,
                 decoration: inputDecoration("Post Title"

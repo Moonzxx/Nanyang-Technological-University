@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wellbeing_application/utils/firebase_api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'admin_searchpost.dart';
+import 'package:wellbeing_application/constants.dart';
 
 
 class SearchForumCategoriesPost extends StatefulWidget {
@@ -95,13 +96,18 @@ class ForumCatTiles extends StatelessWidget {
         Navigator.push(context, MaterialPageRoute(builder: (context) => SearchForumPost(catName: this.catName)));
       },
       child: Container(
-        height: MediaQuery.of(context).size.height/8,
-        width: MediaQuery.of(context).size.width,
         child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
           elevation: 5,
           child: ListTile(
-            leading: Icon(Icons.play_arrow_rounded),
-            title: Text(this.catName),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                side: BorderSide(width: 2, color: Color(Constants.myThemeColour + 25).withOpacity(1),)
+            ),
+            trailing: Icon(Icons.play_arrow_rounded),
+            title: Text(this.catName, style: TextStyle(fontSize: 20, fontFamily:  systemHeaderFontFamiy, fontWeight: FontWeight.bold)),
 
           ),
         ),

@@ -15,39 +15,40 @@ class UserNotifcations extends StatefulWidget {
 class _UserNotifcationsState extends State<UserNotifcations> {
 
   FirebaseApi databaseMethods = new FirebaseApi();
-  List userNotifications = [];
+  List userNotificationsList = [];
 
 
   getUserNotifications() async{
     QuerySnapshot coll = await FirebaseFirestore.instance.collection("users").doc(Constants.myUID).collection("notifications").get();
     List<DocumentSnapshot> collDocs = coll.docs;
     for(var i = 0; i < collDocs.length; i++){
-      Map<String, String> notifcationInfo = new Map();
-      notifcationInfo["name"] = collDocs[i]["name"];
-      notifcationInfo["content"] = collDocs[i]["content"];
-      notifcationInfo["notifID"] = collDocs[i]["notifID"];
-      userNotifications.add(notifcationInfo);
+      Map<String, String> notificationInfo = new Map();
+      notificationInfo["from"] = collDocs[i]["from"];
+      notificationInfo["content"] = collDocs[i]["content"];
+      notificationInfo["notifID"] = collDocs[i]["notifID"];
+      userNotificationsList.add(notificationInfo);
     }
+
   }
 
   Widget displayUserNotificationList(){
-    return (userNotifications.length > 0) ? ListView.builder(
-      itemCount: userNotifications.length,
+    return (userNotificationsList.length > 0) ? ListView.builder(
+      itemCount: userNotificationsList.length,
       itemBuilder: (context, index){
-        final item = userNotifications[index];
+        final item = userNotificationsList[index];
         return Dismissible(
           key: Key(item),
 
           onDismissed: (direction) {
             setState(() {
-              userNotifications.removeAt(index);
-              databaseMethods.deleteUserNotification(Constants.myUID, userNotifications[index]["notifID"]);
+              userNotificationsList.removeAt(index);
+              databaseMethods.deleteUserNotification(Constants.myUID, userNotificationsList[index]["notifID"]);
             });
           },
           background: Container(color: Colors.red),
           child: userNotifTile(
-            featureName: userNotifications[index]["name"],
-            featureMessage: userNotifications[index]["content"],
+            featureName: userNotificationsList[index]["from"],
+            featureMessage: userNotificationsList[index]["content"],
           ),
         );
       },
@@ -55,7 +56,8 @@ class _UserNotifcationsState extends State<UserNotifcations> {
   }
 
   @override
-  void initState(){
+  Future<void> initState() async {
+    getUserNotifications();
     super.initState();
   }
 
@@ -73,8 +75,10 @@ class _UserNotifcationsState extends State<UserNotifcations> {
                 bottom: Radius.circular(30)
             )
         ),
-        actions: [IconButton(onPressed: (){}, icon: Icon(Icons.delete ))],
+        actions: [IconButton(onPressed: () {
+        }, icon: Icon(Icons.delete ))],
       ),
+      body: displayUserNotificationList()
 
     );
   }

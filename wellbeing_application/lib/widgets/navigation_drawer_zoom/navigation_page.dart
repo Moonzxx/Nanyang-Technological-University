@@ -78,9 +78,7 @@ class NavigationPage extends StatelessWidget {
                     title:Text(user['username'],
                         style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w800)
                     ),
-                    subtitle: Text(user['email'],
-                    style: TextStyle(color: Colors.white, fontSize:20)
-                    ),
+
                     leading: CircleAvatar(
                       radius: 40,
                       child: Container(

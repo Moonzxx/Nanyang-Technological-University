@@ -105,7 +105,7 @@ class _EditToolsPostsState extends State<EditToolsPosts> {
                 controller: EditpostNameController,
                 decoration: inputDecoration("Post Name:"
                 ),
-                maxLength: 50,
+                maxLength: null,
                 // accept alphabet, number and spaces
                 validator: validateName,
                 onSaved: (value){
@@ -119,7 +119,7 @@ class _EditToolsPostsState extends State<EditToolsPosts> {
                 controller: EditpostContentController,
                 decoration: inputDecoration("Post Content:"
                 ),
-                maxLength: 50,
+                maxLength: null,
                 // accept alphabet, number and spaces
                 validator: validateDesc,
                 onSaved: (value){
@@ -133,7 +133,7 @@ class _EditToolsPostsState extends State<EditToolsPosts> {
                 controller: EditIosSourceController,
                 decoration: inputDecoration("Ios Source:"
                 ),
-                maxLength: 50,
+                maxLength: null,
                 // accept alphabet, number and spaces
                 validator: validateSources,
                 onSaved: (value){
@@ -147,7 +147,7 @@ class _EditToolsPostsState extends State<EditToolsPosts> {
                 controller: EditAndroidSourceController,
                 decoration: inputDecoration("Android Source:"
                 ),
-                maxLength: 50,
+                maxLength: null,
                 // accept alphabet, number and spaces
                 validator: validateSources,
                 onSaved: (value){

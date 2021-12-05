@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:day_picker/day_picker.dart';
 import '../../../constants.dart';
-
+import '../../../widgets/custom_AlertBox.dart';
 
 class HabitDescription extends StatefulWidget {
   final String Hname;
   final String Hdescription;
   final bool Hactivation;
   final List Hdays;
-  HabitDescription({  this.Hname,  this.Hdescription,  this.Hactivation,  this.Hdays});
+  final String Hcat;
+  HabitDescription({  this.Hname,  this.Hdescription,  this.Hactivation,  this.Hdays, this.Hcat});
 
   @override
   _HabitDescriptionState createState() => _HabitDescriptionState();
@@ -75,45 +76,43 @@ class _HabitDescriptionState extends State<HabitDescription> {
             //Navigator.push(context, MaterialPageRoute(builder: (context) => EditDiaryEntry(diaryEntryName: widget.diaryName, editDiaryContent: widget.diaryContent, editDiaryMood:  widget.diaryMood)));
           }, icon: Icon(Icons.edit, color: Colors.white )),
             IconButton(onPressed: (){
+              print(widget.Hcat);
+              print(widget.Hname);
+              CustomAlertBox.deleteJournalCategorHabit(context, "Delete habit?", Constants.myUID, widget.Hcat, widget.Hname);
+              Navigator.pop(context);
               //CustomAlertBox.deleteDiaryEntryConfirmation(context, "Delete diary Entry?", Constants.myUID, widget.diaryName);
             }, icon: Icon(Icons.delete, color: Colors.white ))],
+
         ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              Text(widget.Hname),
-              Text(widget.Hdescription),
-              Text(daysActivated),
-              Text((widget.Hactivation) ? "Yes" : "No"),
-
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SelectWeekDays(
-                    days: _days,
-                    border: true,
-                    boxDecoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        colors: [Colors.lightBlue, Colors.blue],
-                        tileMode: TileMode.repeated,
-                      )
-                    ),
-                    selectedDayTextColor: Colors.black,
-                    unSelectedDayTextColor: Colors.white,
-                    onSelect: (values){
-                      // returns as a list
-                      print(values);
-                    },
-                  ),
-                ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Habit Name:", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 25, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
+                SizedBox(height: 5),
+                Text(widget.Hname, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 20)),
+                SizedBox(height: 25),
+                Text("Habit Description:", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 25, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
+                SizedBox(height: 5),
+                Text(widget.Hdescription, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 20)),
+                SizedBox(height: 25),
+                Text("Days Activated:", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 25, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
+                SizedBox(height: 5),
+                Text(daysActivated, style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 20)),
+                SizedBox(height: 25),
+                Text("Activated:", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 25, fontWeight: FontWeight.bold, decoration: TextDecoration.underline)),
+                SizedBox(height: 5),
+                Text((widget.Hactivation) ? "Yes" : "No", style: TextStyle(fontFamily: systemHeaderFontFamiy, fontSize: 20)),
+                SizedBox(height: 25),
 
 
-              )
-            ],
+              ],
+            ),
           ),
         )
       )
