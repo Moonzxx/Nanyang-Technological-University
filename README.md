@@ -11,7 +11,7 @@ Bachelor of Engineering (Computer Science)
 | MH1812      |          Discrete Mathematics           |             |
 | HW0188      |       Engineering Communication 1       |             |
 | GC0001      | Sustainability: Seeing through the haze |             |
-| VZ1007      |             Data Structures             |             |
+| VZ1007      |             Data Structures             |  Learning about Object-Oriented Programming           |
 | CZ1013      |          Physics for Computing          |             |
 | CM8002      |            Forensic Science             |             |
 | CZ1003      | Introduction to Computational Thinking  |             |
