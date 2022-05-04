@@ -1,0 +1,41 @@
+#VRML V2.0 utf8
+
+
+# To visualizae the scene defined below, click at the monitor button above.
+
+# Transform node may define 3 affine transformations: scaling, rotation and translation. 
+# They will be applied in exactly this order. Transform nodes can be nested.
+Transform {
+	rotation  1 0 0 0.7
+	translation	0 0 0
+	scale 1 1 1
+	children[
+
+# Shape node includes geometry and appearance definitions (nodes).
+		Shape {
+# Purple color with 50% of shininess is defined 
+			appearance Appearance {
+			material Material	{
+				diffuseColor  0.5 0 0.5
+				shininess     0.5 } }	
+# Geometry is defined as a cylinder with radius 3 and height 6. 
+# The centre of the cylinder is at the origin.
+# Top, bottom and side polygons can be removed if FALSE is defined.
+			geometry Cylinder  {
+				radius 3    	height 6
+				side TRUE  top TRUE  bottom TRUE 
+			}   	
+				}
+		]   	
+	}
+# Point light source with white color is defined at point with coordinates 250 400 150
+# It can be visible within 1500 m distance.
+PointLight {
+	on	TRUE
+	ambientIntensity	1
+	color	1 1 1
+    location 250 400 150
+	radius 1500   }
+# Blue background color is set for the scene.
+Background { skyColor 0 0 1 }
+

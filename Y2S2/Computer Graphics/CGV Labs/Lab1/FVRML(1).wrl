@@ -1,0 +1,256 @@
+#VRML V2.0 utf8
+
+#addParent is a pointer to the parent node
+#refresh is used to repolygonize
+#Copyright by Qi Liu, Alexei Sourin, NTU
+
+PROTO FGeometry [
+	exposedField SFString definition ""
+	exposedField MFFloat parameters []
+	exposedField MFInt32 resolution [50 50 50]
+	exposedField SFVec3f bboxCenter 0 0 0
+	exposedField SFVec3f bboxSize 10 10 10
+	exposedField SFString type ""
+	exposedField MFNode	parents []
+	#Defines the range of the fourth dimension
+	exposedField SFVec2f timeSpan 0 1
+] {
+	Script {
+		directOutput TRUE
+		mustEvaluate TRUE
+		url	"object:clsid={4F9263EB-AEBB-415E-AA64-F0CDF4540CB2}"
+		exposedField MFNode parents IS parents
+		exposedField SFString definition IS definition
+		exposedField MFFloat parameters IS parameters
+		exposedField MFInt32 resolution IS resolution
+		exposedField SFVec3f bboxCenter IS bboxCenter
+		exposedField SFVec3f bboxSize IS bboxSize
+		exposedField SFString type IS type
+		exposedField SFVec2f timeSpan IS timeSpan
+	}
+}
+
+PROTO FMaterial [
+	exposedField SFString diffuseColor ""
+	exposedField SFString type ""
+	exposedField MFColor patternColor []
+	exposedField MFFloat patternKey []
+	exposedField SFString ambientIntensity ""     
+	exposedField SFString emissiveColor ""
+	exposedField SFString shininess ""        
+	exposedField SFString specularColor ""     
+	exposedField SFString transparency ""         
+	exposedField MFNode	parents []
+	#Defines the range of the fourth dimension
+	exposedField SFVec2f timeSpan 0 1
+	exposedField MFFloat parameters []
+	exposedField SFVec3f bboxCenter 0 0 0
+	exposedField SFVec3f bboxSize -1 -1 -1
+] {
+	Script {
+		directOutput TRUE
+		mustEvaluate TRUE
+		url	"object:clsid={2BA89EC1-ACB7-4289-91C0-E250D20CBBD1}"
+		exposedField MFNode parents IS parents
+		exposedField SFString diffuseColor IS diffuseColor
+		exposedField SFString type IS type
+		exposedField MFColor patternColor IS patternColor
+		exposedField MFFloat patternKey IS patternKey
+		exposedField SFString ambientIntensity IS ambientIntensity
+		exposedField SFString emissiveColor IS emissiveColor
+		exposedField SFString shininess IS shininess
+		exposedField SFString specularColor IS specularColor
+		exposedField SFString transparency IS transparency
+		exposedField SFVec2f timeSpan IS timeSpan
+		exposedField MFFloat parameters IS parameters
+		exposedField SFVec3f bboxCenter IS bboxCenter
+		exposedField SFVec3f bboxSize IS bboxSize
+	}
+}
+
+PROTO FTexture3D [
+	exposedField SFString definition ""
+	exposedField SFString type ""
+	exposedField MFFloat parameters []
+	exposedField MFNode	parents []
+	#Defines the range of the fourth dimension
+	exposedField SFVec2f timeSpan 0 1
+	exposedField SFVec3f bboxCenter 0 0 0
+	exposedField SFVec3f bboxSize -1 -1 -1
+] {
+	Script {
+		directOutput TRUE
+		mustEvaluate TRUE
+		url	"object:clsid={AFD15D36-4497-4CC9-8B99-A2C5E7F77748}"
+		exposedField MFNode parents IS parents
+		exposedField SFString definition IS definition
+		exposedField SFString type IS type
+		exposedField MFFloat parameters IS parameters
+		exposedField SFVec2f timeSpan IS timeSpan
+		exposedField SFVec3f bboxCenter IS bboxCenter
+		exposedField SFVec3f bboxSize IS bboxSize
+	}
+}
+
+PROTO FAppearance [
+	exposedField SFNode	material NULL
+	exposedField SFNode	texture NULL
+	exposedField SFNode	textureTransform NULL
+	exposedField SFNode	texture3D NULL
+	exposedField MFNode	parents []
+	eventIn	SFBool refresh
+] {
+	Script {
+		directOutput TRUE
+		mustEvaluate TRUE
+		url	"object:clsid={07E97BD0-6C67-456C-9EB9-EDAC01A205BB}"
+		exposedField MFNode parents IS parents
+		eventIn	SFBool refresh IS refresh
+		exposedField SFNode	material IS material
+		exposedField SFNode	texture IS texture
+		exposedField SFNode	textureTransform IS textureTransform
+	}
+}
+
+PROTO FShape [
+	exposedField SFNode	geometry NULL
+	exposedField SFNode	appearance NULL
+	exposedField SFString polygonizer "analytical"
+	exposedField MFNode	parents []
+	eventIn SFBool refresh
+	#time-dependent
+	exposedField SFTime	startTime 0
+	exposedField SFTime stopTime 0
+    exposedField SFTime cycleInterval 1
+    exposedField SFBool	loop FALSE
+	exposedField SFBool	enabled TRUE
+	eventOut SFTime	cycleTime
+	#Used for external TimeSensor
+	eventIn SFFloat set_fraction
+	#Cache frames
+	#0 means no cache
+	field SFInt32 frames 0
+] {
+	DEF GG Group {
+	}
+
+	DEF	Run Script {
+		directOutput TRUE
+		mustEvaluate TRUE
+		url	"object:clsid={AA77BEEF-38BC-48A2-B053-6C8DF3C604D8}"
+		exposedField MFNode parents IS parents
+		eventIn	SFBool refresh IS refresh
+		exposedField SFNode geometry IS geometry
+		exposedField SFNode appearance IS appearance
+		exposedField SFString polygonizer IS polygonizer
+		eventOut SFString console
+		eventOut MFNode	shapes
+		eventIn SFFloat set_fraction IS set_fraction
+		eventIn	SFTime time
+		field SFInt32 frames IS frames
+	}
+
+	DEF	Time TimeSensor	{
+		enabled	IS enabled
+		loop IS	loop
+		startTime IS startTime
+		cycleInterval IS cycleInterval
+		cycleTime IS cycleTime
+		stopTime IS	stopTime
+	}
+
+	DEF	Getter TimeSensor {
+		enabled	TRUE
+		loop TRUE
+	}
+
+    DEF Console Script {
+		eventIn	SFString str
+		url	"javascript: function str(v) {print(v);}"
+	}
+
+	ROUTE Run.console TO Console.str
+	ROUTE Run.shapes TO	GG.children
+	ROUTE Time.fraction_changed	TO Run.set_fraction
+	ROUTE Getter.time TO Run.time
+}
+
+PROTO FTransform [
+	exposedField SFString operation "union"
+	exposedField SFString type ""
+	exposedField SFString polygonizer "analytical"
+	exposedField MFFloat parameters []
+	exposedField SFString center ""
+	exposedField SFString rotation ""
+	exposedField SFString scale ""
+	exposedField SFString scaleOrientation ""
+	exposedField SFString translation ""
+	exposedField MFNode children []
+	exposedField MFNode	parents []
+	eventIn	SFBool refresh
+	#Defines the range of the fourth dimension
+    exposedField SFVec2f timeSpan 0 1
+	#time-dependent
+	exposedField SFTime	startTime 0
+	exposedField SFTime stopTime 0
+    exposedField SFTime cycleInterval 1
+    exposedField SFBool	loop FALSE
+	exposedField SFBool	enabled TRUE
+	eventOut SFTime	cycleTime
+	#Used for external TimeSensor
+	eventIn SFFloat set_fraction
+	#Cache frames
+	#0 means no cache
+	field SFInt32 frames 0
+]  {
+	DEF GG Group {
+	}
+
+	DEF Run Script {
+		directOutput TRUE
+		mustEvaluate TRUE
+		url	"object:clsid={0DCAF047-A124-45D5-BF53-D9AFFCDDFE74}"
+		exposedField MFNode parents IS parents
+		eventIn	SFBool refresh IS refresh
+		exposedField MFNode children IS children
+		exposedField SFString type IS type
+		exposedField SFString polygonizer IS polygonizer
+		exposedField MFFloat parameters IS parameters
+		exposedField SFString operation IS operation
+		exposedField SFString center IS center
+		exposedField SFString rotation IS rotation
+		exposedField SFString scale IS scale
+		exposedField SFString scaleOrientation IS scaleOrientation
+		exposedField SFString translation IS translation
+		exposedField SFVec2f timeSpan IS timeSpan
+		eventOut SFString console
+		eventOut MFNode	shapes
+		eventIn SFFloat set_fraction IS set_fraction
+		eventIn	SFTime time
+		field SFInt32 frames IS frames
+	}
+
+	DEF	Time TimeSensor	{
+		enabled	IS enabled
+		loop IS	loop
+		startTime IS startTime
+		cycleInterval IS cycleInterval
+		cycleTime IS cycleTime
+		stopTime IS	stopTime
+	}
+
+	DEF	Getter TimeSensor {
+		enabled	TRUE
+		loop TRUE
+	}
+
+    DEF Console Script {
+		eventIn	SFString str
+		url	"javascript: function str(v) {print(v);}"
+	}
+
+	ROUTE Run.console TO Console.str
+	ROUTE Run.shapes TO	GG.children
+	ROUTE Time.fraction_changed	TO Run.set_fraction
+	ROUTE Getter.time TO Run.time
+}

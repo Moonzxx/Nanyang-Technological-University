@@ -1,0 +1,4 @@
+QN: What happens when more than 2?
+Ans: Color shown is at max (=1) if positive
+If any negative,color will be black
+

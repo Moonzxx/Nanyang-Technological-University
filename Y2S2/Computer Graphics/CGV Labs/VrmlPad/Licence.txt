@@ -1,0 +1,234 @@
+*** LICENCE AGREEMENT ***
+
+This licence applies to the registered version of VrmlPad v. 2.1.
+If you are using a trial version of VrmlPad v. 2.1, see the section 
+titled "Evaluation Licence" below.
+
+PARALLELGRAPHICS LIMITED
+END-USER LICENCE AGREEMENT
+
+IMPORTANT – READ CAREFULLY: This ParallelGraphics End-User Licence Agreement 
+(the “Agreement”) is a legal agreement between you (either an individual or a single entity) 
+and ParallelGraphics Limited for the ParallelGraphics software product VrmlPad  v. 2.1 
+(the “Software”).  By installing, copying or otherwise using the Software, you 
+agree to be bound by the terms and conditions of this Agreement. If you do not agree to the 
+terms and conditions of this Agreement, do not install, copy or otherwise use the Software, 
+you may however return the Software to your place of purchase for a full refund.
+
+1. Agreement 
+
+1.1 ParallelGraphics Limited (“ParallelGraphics”) hereby grants you the following rights for 
+your own purposes only, and not those of any third party:
+
+(a) You may install and use one copy of the Software on a single computer (into RAM 
+and/or onto computer hard drive);
+(b) You may access the Software and query, display and manipulate the data contained 
+therein;
+(c) You may make a single copy of the Software for back-up purposes.
+
+1.2 The Software and any associated documentation (the “Documentation”) contain 
+confidential information of ParallelGraphics and all copyright, trademarks and all other 
+intellectual property rights in and to the Software and Documentation are and shall 
+remain the sole and exclusive property of ParallelGraphics. Nothing in this Agreement 
+shall confer any rights in any tradename, business name or trademark of 
+ParallelGraphics on you. The provisions of this Clause 1.2 shall continue to operate after 
+the termination of this Agreement.
+
+1.3 Save as otherwise expressly set out herein and as otherwise expressly permitted by law, 
+you shall not:
+(a) Make any temporary or permanent reproduction by any means and in any form, in 
+whole or in part, of the Software or the Documentation;
+(b) Make any translation, adaptation, arrangement or any other alteration of the Software 
+or the Documentation;
+(c) Make any form of distribution to the public of the Software or the Documentation, in 
+whole or in part, or of copies thereof;
+(d) Make any communication, display or performance to the public of the Software or the 
+Documentation;
+(e) Disseminate, sell, give away, hire, lease, offer or expose for sale or distribute the 
+Software, or another product wholly or partially derived from any of the foregoing;
+(f) Assign, transfer, sell, lease, rent, charge or otherwise deal in or encumber the 
+Software or the Documentation or  use the Software or the Documentation on behalf 
+of any third party, or make available the same to any third party without the prior 
+written consent of ParallelGraphics; 
+(g) Copy, adapt or reverse compile the whole or any part of the Software or the 
+Documentation;
+(h) Remove or alter any copyright or other proprietary notice from the Software or the 
+Documentation. 
+
+1.4	ParallelGraphics will not be bound by any term, condition or other provision proffered by 
+you which is different from or in addition to the provisions of this Agreement unless 
+ParallelGraphics agrees to such provisions in writing.  
+
+1.5	This Agreement supersedes any and all prior agreements, statements and 
+representations between ParallelGraphics and you.
+
+1.6	No amendment, modification or waiver of any of the provisions of this Agreement shall be 
+valid unless set out in writing and signed by each party.
+
+1.7	If any provision of this Agreement shall be found by any court or administrative body of 
+any competent jurisdiction to be invalid or unenforceable, the invalidity or unenforceability 
+of such provision shall not affect the other provisions of this Agreement and all provisions 
+not affected by such invalidity or unenforceability shall remain in full force and effect.
+1.8	You shall not be entitled to assign or otherwise transfer this Agreement nor any of its 
+rights or obligations hereunder, without the prior written consent of ParallelGraphics. 
+
+2. Term and Termination
+
+2.1	ParallelGraphics may terminate this Agreement if you breach any of the terms of this 
+Agreement and fail to remedy such a breach within fifteen (15) days of receipt of written 
+notice from ParallelGraphics. Upon such termination you shall destroy the Software, and 
+the Documentation and any back-up or archival copy of the Software and you shall 
+provide written certification of such destruction to ParallelGraphics.   
+
+2.2 You may terminate this Agreement at any time by destroying the Software, the 
+Documentation and any back-up or archival copy of the Software and notifying 
+ParallelGraphics in writing of such destruction.
+
+2.3	All provisions of this Agreement which in order to give effect to their meaning need to 
+survive its termination shall remain in full force and effect thereafter.
+
+3	Warranties
+
+3.1 ParallelGraphics warrants that its title to and property in the Software and the 
+Documentation is free and unencumbered and that it has the right, power and authority to 
+licence the same upon the terms and conditions of this Agreement. 
+
+4.	Consequential Damages
+
+4.1	In no event shall ParallelGraphics be liable for any indirect, incidental, special or 
+consequential damages (including without limitation any loss of data or business 
+interruption) arising out of the performance or failure of the Software even if such 
+damages were reasonably foreseeable or ParallelGraphics had been advised of the 
+possibility of such damages.
+
+5.	Liability
+
+5.1	ParallelGraphics does not warrant that the Software and/or the Documentation will meet 
+your requirements or that the operation of the Software will be uninterrupted or error free.
+5.2 Except as expressly provided herein, all conditions and warranties (express or implied, 
+statutory or otherwise) are excluded by ParallelGraphics, including without limitation any 
+warranties implied by the Sale of Goods Act 1893 as amended by the Sale of Goods and 
+Supply of Services Act 1980 or by Section 39 of the said 1980 Act. 
+
+6.	Governing Law
+
+6.1 This Agreement will be governed and construed in accordance with the laws of the 
+Ireland.
+
+
+*** EVALUATION LICENCE ***
+
+The following licence applies to the trial version of VrmlPad v. 2.1
+If you have purchased a licence for the registered version of VrmlPad v. 2.1, 
+see the section "Licence Agreement" above.
+
+PARALLELGRAPHICS LIMITED
+END-USER EVALUATION LICENCE AGREEMENT
+
+IMPORTANT – READ CAREFULLY: This ParallelGraphics End-User Evaluation Licence 
+Agreement (the “Agreement”) is a legal agreement between you (either an individual or a 
+single entity) and ParallelGraphics Limited for the ParallelGraphics software product VrmlPad v. 2.1 (the “Software”).  By installing, copying or otherwise using the 
+Software, you agree to be bound by the terms and conditions of this Agreement. If you do not 
+agree to the terms and conditions of this Agreement, do not install, copy or otherwise use the Software. 
+
+1. Agreement 
+
+1.1 ParallelGraphics Limited (“ParallelGraphics”) hereby grants you the following rights for 
+the purposes of evaluating the Software for your own purposes only, and not those of any 
+third party and only for a period of thirty (30) days from the date you first install, copy or  
+use the Software:
+(a) You may install and use one copy of the Software on a single computer (into RAM 
+and/or onto computer hard drive);
+(b) You may access the Software and query, display and manipulate the data contained 
+therein;
+(c) You may make a single copy of the Software for back-up purposes.
+
+1.2 The Software and any associated documentation (the “Documentation”) contain 
+confidential information of ParallelGraphics and all copyright, trademarks and all other 
+intellectual property rights in and to the Software and Documentation are and shall 
+remain the sole and exclusive property of ParallelGraphics. Nothing in this Agreement 
+shall confer any rights in any tradename, business name or trademark of 
+ParallelGraphics on you. The provisions of this Clause 1.2 shall continue to operate after 
+the termination of this Agreement.
+1.3 Save as otherwise expressly set out herein and as otherwise expressly permitted by law, 
+you shall not:
+(a) Make any temporary or permanent reproduction by any means and in any form, in 
+whole or in part, of the Software or the Documentation;
+(b) Make any translation, adaptation, arrangement or any other alteration of the Software 
+or the Documentation;
+(c) Make any form of distribution to the public of the Software or the Documentation, in 
+whole or in part, or of copies thereof;
+(d) Make any communication, display or performance to the public of the Software or the 
+Documentation;
+(e) Disseminate, sell, give away, hire, lease, offer or expose for sale or distribute the 
+Software, or another product wholly or partially derived from any of the foregoing;
+(f) Assign, transfer, sell, lease, rent, charge or otherwise deal in or encumber the 
+Software or the Documentation or  use the Software or the Documentation on behalf 
+of any third party, or make available the same to any third party without the prior 
+written consent of ParallelGraphics; 
+(g) Copy, adapt or reverse compile the whole or any part of the Software or the 
+Documentation;
+(h) Remove or alter any copyright or other proprietary notice from the Software or the 
+Documentation. 
+
+1.4	ParallelGraphics will not be bound by any term, condition or other provision proffered by 
+you which is different from or in addition to the provisions of this Agreement unless 
+ParallelGraphics agrees to such provisions in writing.  
+
+1.5	This Agreement supersedes any and all prior agreements, statements and 
+representations between ParallelGraphics and you.
+
+1.6	No amendment, modification or waiver of any of the provisions of this Agreement shall be 
+valid unless set out in writing and signed by each party.
+
+1.7	If any provision of this Agreement shall be found by any court or administrative body of 
+any competent jurisdiction to be invalid or unenforceable, the invalidity or unenforceability 
+of such provision shall not affect the other provisions of this Agreement and all provisions 
+not affected by such invalidity or unenforceability shall remain in full force and effect.
+
+1.8	You shall not be entitled to assign or otherwise transfer this Agreement nor any of its 
+rights or obligations hereunder, without the prior written consent of ParallelGraphics. 
+
+2. Term and Termination
+
+2.1	ParallelGraphics may terminate this Agreement if you breach any of the terms of this 
+Agreement and fail to remedy such a breach within fifteen (15) days of receipt of written 
+notice from ParallelGraphics. Upon such termination you shall destroy the Software, and 
+the Documentation and any back-up or archival copy of the Software and you shall 
+provide written certification of such destruction to ParallelGraphics.   
+
+2.2 You may terminate this Agreement at any time by destroying the Software, the 
+Documentation and any back-up or archival copy of the Software and notifying 
+ParallelGraphics in writing of such destruction.
+
+2.3	All provisions of this Agreement which in order to give effect to their meaning need to 
+survive its termination shall remain in full force and effect thereafter.
+
+3	Warranties
+
+3.1 ParallelGraphics warrants that its title to and property in the Software and the 
+Documentation is free and unencumbered and that it has the right, power and authority to 
+licence the same upon the terms and conditions of this Agreement. 
+
+
+4.	Consequential Damages
+
+4.1	In no event shall ParallelGraphics be liable for any indirect, incidental, special or 
+consequential damages (including without limitation any loss of data or business 
+interruption) arising out of the performance or failure of the Software even if such 
+damages were reasonably foreseeable or ParallelGraphics had been advised of the 
+possibility of such damages.
+
+5.	Liability
+
+5.1	ParallelGraphics does not warrant that the Software and/or the Documentation will meet 
+your requirements or that the operation of the Software will be uninterrupted or error free.
+
+5.2 Except as expressly provided herein, all conditions and warranties (express or implied, 
+statutory or otherwise) are excluded by ParallelGraphics, including without limitation any 
+warranties implied by the Sale of Goods Act 1893 as amended by the Sale of Goods and 
+Supply of Services Act 1980 or by Section 39 of the said 1980 Act. 
+
+6.	Governing Law
+
+6.1	This Agreement will be governed and construed in accordance with the laws of the Ireland. 
